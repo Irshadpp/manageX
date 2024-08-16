@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { Role } from "../model/role.enum";
-import { UserAttrs, UserDoc, UserModel } from "../model/user.model";
+import { Role } from "../role.enum";
+import { UserAttrs, UserDoc, UserModel } from "../user.model";
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      unique: true,
     },
     phone: {
       type: Number,
@@ -55,6 +54,8 @@ const userSchema = new mongoose.Schema(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.password;
+        delete ret.__v;
       },
     },
   }

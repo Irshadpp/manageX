@@ -1,13 +1,19 @@
-import { UserAttrs, UserDoc } from "../../database/mongodb/model/user.model";
-import { UserRepository } from "../../database/repository/user.repository";
+import { UserAttrs, UserDoc } from "../../model/user.model";
 import Password from "../../utils/password";
 import { IUserService } from "./user.service.interface";
+import { User } from "../../model/schema/user.schema";
 
 export class UserService implements IUserService{
-    private userRepository = new UserRepository();
-
-    async createUser(attrs: UserAttrs): Promise<UserDoc> {
+    
+    async createUser(attrs: UserAttrs): Promise<UserDoc>{
         const hashedPassword = await Password.toHash(attrs.password);
-        return this.userRepository.createUser({...attrs, password: hashedPassword});
+        const newUser = User.build({...attrs, password: hashedPassword});
+        return await newUser.save();
     }
+
+    async findByEmail(email: string): Promise<boolean>{
+        const user = await User.findOne({email});
+        return user !== null
+    }
+
 }
