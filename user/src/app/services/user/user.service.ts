@@ -11,9 +11,12 @@ export class UserService implements IUserService{
         return await newUser.save();
     }
 
-    async findByEmail(email: string): Promise<boolean>{
+    async findByEmail(email: string): Promise<UserDoc | null>{
         const user = await User.findOne({email});
-        return user !== null
+        return user;
     }
 
+    async verifyUserEmail(userId: string): Promise<void> {
+        await User.findByIdAndUpdate(userId, {isEmailVerified: true});
+    }
 }

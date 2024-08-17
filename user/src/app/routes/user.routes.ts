@@ -1,7 +1,7 @@
 import { validateRequest } from "@ir-managex/common";
 import express from "express";
 import { createUserValidator } from "../validators/create-user.validator";
-import { createUser } from "../controllers/user.controller";
+import { createUser, verifyEmail } from "../controllers/user.controller";
 
 const router = express.Router();
 
@@ -11,5 +11,10 @@ const router = express.Router();
     validateRequest,
     createUser
   );
+
+  router.get(
+    "/verify-email",
+    verifyEmail
+  )
   export {router as userRoutes}
 
