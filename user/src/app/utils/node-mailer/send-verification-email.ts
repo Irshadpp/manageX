@@ -1,7 +1,7 @@
 import { emailTransporter } from "./email-transporter";
 
 export const sendVarificationEmail = async (email: string, token: string) =>{
-    const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
+    const verificationLink = `http://localhost:3000/api/v1/users/verify-email?token=${token}`;
 
     const mailOptions = {
         from: process.env.SMTP_USER,
@@ -38,6 +38,5 @@ export const sendVarificationEmail = async (email: string, token: string) =>{
           </div>
         `,
       };
-      console.log("===========")
       await emailTransporter.sendMail(mailOptions);
 } 
