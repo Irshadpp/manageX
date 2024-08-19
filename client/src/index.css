@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 270 100% 50%; /* Electric Violet */
+    --primary: 270 100% 50.2%; /* Electric Violet */
     --primary-foreground: 0 0% 100%;
     --secondary: 275 100% 25%; /* Indigo */
     --secondary-foreground: 0 0% 100%;
@@ -64,6 +64,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#F9F8FE]  text-foreground;
   }
 }

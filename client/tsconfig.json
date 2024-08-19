@@ -22,7 +22,6 @@
 //   }
 // }
 
-
 {
   "compilerOptions": {
     "jsx": "react-jsx", // Ensures JSX is handled correctly in React projects

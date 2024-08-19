@@ -6,7 +6,7 @@ import path from "path"
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-    jsxInject: `import React from 'react'`,
+    // jsxInject: `import React from 'react'`,
   },
   resolve: {
     alias: {

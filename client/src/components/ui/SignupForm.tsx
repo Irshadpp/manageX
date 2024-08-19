@@ -1,3 +1,6 @@
+import { Button } from "./button";
+
+
 const SignupForm = () => {
     return (
         <div className="container mx-auto mt-12 p-6 bg-card rounded-lg shadow-lg">
@@ -31,7 +34,8 @@ const SignupForm = () => {
           <p className="mt-4 text-sm text-muted">
             Already have an account? <a href="/signin" className="text-primary underline">Sign in</a>
           </p>
-        </div>
+          </div>
+
       );
 }
 

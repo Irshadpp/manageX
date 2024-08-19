@@ -1,11 +1,11 @@
-import { LandingNav } from '@/components/ui/Navbar';
-import SignupForm from '../components/ui/SignupForm';
+import Navbar from '@/components/ui/Navbar';
+import SignupForm from '../../components/ui/SignupForm';
 
 
 const SignUpPage = () => {
   return (
     <>
-    <LandingNav/>
+    <Navbar/>
    <div className="min-h-screen flex items-center justify-center bg-background">
       <SignupForm />
     </div> 
