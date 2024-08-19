@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 270 100% 50.2%; /* Electric Violet */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 275 100% 25%; /* Indigo */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 275 30% 80%; /* Lightened Indigo */
+    --muted-foreground: 275 20% 40%;
+    --accent: 300 30% 75%; /* Misty Lilac */
+    --accent-foreground: 270 100% 50%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 275 15% 85%;
+    --input: 275 15% 85%;
+    --ring: 270 100% 50%;
+    --radius: 0.5rem;
+    --chart-1: 280 70% 55%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
+  .dark {
+    --background: 270 100% 10%; /* Dark Electric Violet */
+    --foreground: 0 0% 100%;
+    --card: 270 100% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 270 100% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 270 100% 50%;
+    --secondary: 275 50% 15%; /* Dark Indigo */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 275 30% 25%;
+    --muted-foreground: 275 20% 65%;
+    --accent: 280 30% 20%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 275 30% 25%;
+    --input: 275 30% 25%;
+    --ring: 275 50% 50%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-[#F9F8FE]  text-foreground;
+  }
+}
