@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 245, 71%, 98%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -38,8 +38,8 @@
     --card-foreground: 0 0% 100%;
     --popover: 270 100% 10%;
     --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 270 100% 50%;
+    --primary: 270 100% 50.2%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 275 50% 15%; /* Dark Indigo */
     --secondary-foreground: 0 0% 100%;
     --muted: 275 30% 25%;
@@ -64,6 +64,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#F9F8FE]  text-foreground;
+    @apply bg-background  text-foreground;
   }
 }
