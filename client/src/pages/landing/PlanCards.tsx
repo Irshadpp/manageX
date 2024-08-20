@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
 import { HiCheckCircle } from "react-icons/hi";
 
 export default function PlanCards({
@@ -39,13 +38,13 @@ export default function PlanCards({
       </div>
       <div className="bg-primary rounded-xl p-5">
         <h4 className="text-xl font-bold text-white">Pro</h4>
-        <p className="text-white">
+        <p className="text-primary">
           Experiment the power of infinite possibilities
         </p>
         <h1 className="text-4xl py-3 font-bold text-white">₹{pro}</h1>
-        <div className="flex flex-col gap-3 bg-white text-black px-5 pt-10 rounded-xl text-left">
+        <div className="flex flex-col gap-3 dark:bg-black dark:text-white bg-white text-black px-5 pt-10 rounded-xl text-left">
           <p className="flex gap-2 items-center">
-            <HiCheckCircle className="text-primary text-xl" />
+            <HiCheckCircle className="text-primary  text-xl" />
             All the features of free plan
           </p>
           <p className="flex gap-2 items-center">

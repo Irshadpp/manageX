@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -27,7 +26,7 @@ const InputWithIcon: React.FC<InputWithIconProps> = ({
           type === "password" ? (!showPassword ? "text" : "password") : type
         }
         {...field}
-        className="px-8 bg-backgroundAccent"
+        className="px-8 bg-background"
       />
       {type === "password" && (
         <div

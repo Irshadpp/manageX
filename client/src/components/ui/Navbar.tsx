@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Managex from './Managex';
 import { Link } from 'react-router-dom';
+import { ModeToggle } from './ModeToggle';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,17 +28,17 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex space-x-6">
-          <NavLink href="#" label="Home" />
+          <NavLink href="/" label="Home" />
           <NavLink href="#" label="Blog" />
           <NavLink href="#" label="About Us" />
           <NavLink href="#" label="Testimonials" />
           <NavLink href="#" label="Contact Us" />
         </div>
 
-        {/* Signup/Login Buttons */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Button variant="outline">Login</Button>
+          <Button variant="outline" asChild><Link to={"/login"}>Login</Link></Button>
           <Button variant="default" asChild><Link to={"/signup"}>Sign Up</Link></Button>
+          <ModeToggle/>
         </div>
 
         {/* Mobile Menu Button */}

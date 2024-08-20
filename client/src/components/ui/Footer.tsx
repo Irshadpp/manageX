@@ -3,12 +3,12 @@
 import { FiMail } from "react-icons/fi";
 import Managex from "./Managex";
 import Logo from "/logo.png"
-import InputWithIcon from "./InputWithIcon";
+import InputWithIcon from "../custome/InputWithIcon";
 import { FooterForm } from "./FooterForm";
 
 export default function Footer() {
   return (
-    <div className="px-5 lg:px-40 lg:py-10">
+    <div className="px-5 lg:px-20 lg:py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="lg:py-16">
           <h1 className="text-5xl font-bold">
