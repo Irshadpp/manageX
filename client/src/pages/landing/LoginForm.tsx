@@ -2,7 +2,6 @@ import { Form, FormField } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FaUser } from "react-icons/fa"
 import { HiOutlineMail } from "react-icons/hi";
 import { LuKey } from "react-icons/lu"
 import FormInputWithIcon from "@/components/custome/FormInputWithIcon";

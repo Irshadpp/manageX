@@ -2,13 +2,22 @@ import express from "express";
 import { json } from "body-parser";
 import { appRouter } from "./app/routes";
 import {errorHandler, NotFoundError} from "@ir-managex/common"
+import cors from 'cors'
 
 const app = express();
 
 app.use(json());
 
-app.use("/api/v1", appRouter);
+const corsOptions = {
+    origin: "http://localhost:5173",
+    method: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}
 
+app.use(cors(corsOptions))
+
+app.use("/api/v1", appRouter);
 
 app.all("*",()=>{
     throw new NotFoundError();
