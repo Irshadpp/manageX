@@ -35,7 +35,7 @@ export const createUser = async (
 
     await handleVerificationEmail(user.id, user.email);
 
-    res.status(201).send(user);
+    res.status(201).send({success: true, user});
   } catch (error) {
     console.log(error);
     next(error);

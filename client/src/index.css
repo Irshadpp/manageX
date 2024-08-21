@@ -34,7 +34,7 @@
   .dark {
     --background: 270 100% 10%; /* Dark Electric Violet */
     --foreground: 0 0% 100%;
-    --card: 270 100% 10%;
+    --card: 270, 100%, 15%;
     --card-foreground: 0 0% 100%;
     --popover: 270 100% 10%;
     --popover-foreground: 0 0% 100%;

@@ -8,6 +8,8 @@ import { LuKey } from "react-icons/lu"
 import FormInputWithIcon from "@/components/custome/FormInputWithIcon";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { apiRequest } from "@/services/api/commonRequest";
+import { useNavigate } from "react-router-dom";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
@@ -15,38 +17,39 @@ const formSchema = z.object({
   username: z
     .string()
     .min(2, {
-      message: "Username should be atleast 2 charecters",
+      message: "Username should be at least 2 characters",
     })
-    .max(20, {
-      message: "Username should be less than 20 charecters",
+    .max(30, {
+      message: "Username should be less than 20 characters",
     }),
   email: z
     .string()
     .email()
     .min(2, {
-      message: "Email should be atleast 2 charecters",
+      message: "Email should be at least 2 characters",
     })
-    .max(20, {
-      message: "Email should be less than 20 charecters",
+    .max(50, {
+      message: "Email should be less than 20 characters",
     }),
   password: z
-  .string()
-  .refine(value => passwordRegex.test(value),{
-    message: "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character"
-  }),
-  confirmPasword: z
-  .string()
-})
-.refine((data) => data.password !== data.confirmPasword, {
-    message: "Password doesn't match",
-    path: ["confirmPassword"],
+    .string()
+    .refine(value => passwordRegex.test(value), {
+      message: "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character",
+    }),
+  confirmPassword: z
+    .string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Password doesn't match",
+  path: ["confirmPasword"],
 });
+
 
 
 const RegisterForm = () => {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -54,18 +57,37 @@ const RegisterForm = () => {
             username: "",
             email: "",
             password: "",
-            confirmPasword: ""
+            confirmPassword: ""
         }
     });
 
     const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
+      try {
         setLoading(true);
+        const res = await apiRequest({
+          method: "POST",
+          url: process.env.USERS_URL,
+          route: "/api/v1/users/signup",
+          data: {...values},
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
         
+        if(!res.success){
+          return setError(res?.errors[0]?.message);
+        }
+
+        console.log(res)
+        navigate("/verify-email");
+      } catch (error) {
+        console.log(error)
+      }
     }
 
   return (
     <Form {...form}>
-        <form className="space-y-4">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
             name="username"
             control={form.control}
@@ -105,7 +127,7 @@ const RegisterForm = () => {
             />
             <FormField
             control={form.control}
-            name= "confirmPasword"
+            name= "confirmPassword"
             render={({field})=>(
                 <FormInputWithIcon
                 field={field}
@@ -119,6 +141,7 @@ const RegisterForm = () => {
             <Button type="submit" className="w-full">
                 {loading ? "Loading..." : "Signup"}
             </Button>
+            {error && <p className="text-sm text-red-500">{error}</p>}
         </form>
     </Form>
   )
