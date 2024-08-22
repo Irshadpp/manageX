@@ -21,8 +21,8 @@ const FormInputWithIcon: React.FC<InputWithIconProps> = ({
 }) => {
 
   return (
-    <FormItem>
-        {showTitle && <FormLabel>{title}</FormLabel>}
+    <FormItem className='text-start'>
+        {showTitle && <FormLabel className='font-semibold text-[15px]'>{title}</FormLabel>}
         <InputWithIcon 
         icon={icon}
         placeholder={placeholder}
