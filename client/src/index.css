@@ -67,3 +67,33 @@
     @apply bg-background  text-foreground;
   }
 }
+
+/* global.css */
+/* global.css */
+.custom-calendar select {
+  @apply bg-gray-200 text-gray-700 border-gray-300 rounded-md p-1 mx-1;
+}
+
+.custom-calendar .rdp-caption_dropdowns {
+  @apply flex justify-center space-x-2 mb-2;
+}
+
+.custom-calendar .rdp-caption_label {
+  @apply font-semibold text-gray-800;
+}
+
+.custom-calendar .rdp-table {
+  @apply w-full border-collapse;
+}
+
+.custom-calendar .rdp-day {
+  @apply p-2 text-sm rounded-full hover:bg-blue-500 hover:text-white;
+}
+
+.custom-calendar .rdp-day_selected {
+  @apply bg-blue-600 text-white;
+}
+
+.custom-calendar .rdp-day_disabled {
+  @apply text-gray-300 cursor-not-allowed;
+}

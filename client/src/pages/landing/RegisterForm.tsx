@@ -66,7 +66,7 @@ const RegisterForm = () => {
         setLoading(true);
         const res = await apiRequest({
           method: "POST",
-          url: process.env.USERS_URL,
+          url: import.meta.env.VITE_USERS_URL,
           route: "/api/v1/users/signup",
           data: {...values},
           headers: {
@@ -75,13 +75,16 @@ const RegisterForm = () => {
         })
         
         if(!res.success){
-          return setError(res?.errors[0]?.message);
+          setError(res?.errors[0]?.message || "Something went");
+          return setLoading(false)
         }
 
         console.log(res)
         navigate("/verify-email");
+        setLoading(false)
       } catch (error) {
-        console.log(error)
+        setError("Something went wrong")
+        return setLoading(false)
       }
     }
 
@@ -129,7 +132,7 @@ const RegisterForm = () => {
             control={form.control}
             name= "confirmPassword"
             render={({field})=>(
-                <FormInputWithIcon
+                <FormInputWithIcon 
                 field={field}
                 icon={<LuKey/>}
                 placeholder="Confirm your pasword"

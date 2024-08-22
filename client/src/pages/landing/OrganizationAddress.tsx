@@ -3,42 +3,46 @@ import { FormField, Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaUser } from "react-icons/fa";
 import { z } from "zod";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import DatePicker from "@/components/custome/DatePicker";
-import FormInputWithIcon from "@/components/custome/FormInputWithIcon";
 import { apiRequest } from "@/services/api/commonRequest";
+import FormInput from "@/components/custome/FormInput";
 
 const formSchema = z.object({
-  fName:z
+  orgName:z
   .string()
   .min(2,{
-    message: "First name should be atleast two charecters"
+    message: "Organization name must be atleast two charecters"
   })
   .max(50,{
-    message: "First name should be maximum 50 charecters"
+    message: "Organization name must be maximum 50 charecters"
   }),
-  lName:z
+  description:z
+  .string()
+  .min(1,{
+    message: "Description required"
+  })
+  .max(100,{
+    message: "First name should be maximum 100 charecters"
+  }),
+  industry:z
   .string()
   .min(2,{
-    message: "First name should be atleast two charecters"
-  })
-  .max(50,{
-    message: "First name should be maximum 50 charecters"
-  }),
-  phone:z
-  .string()
-  .min(10,{
-    message: "Please give a valid phone number"
+    message: "Please give a valid industry"
   })
   .max(16,{
-    message: "Please give a valid phone number"
+    message: "Please give a valid industry"
   }),
-  dob:z.date(),
+  website:z
+  .string()
+  .min(2,{
+    message: "Please give a valid website"
+  })
+  .max(16,{
+    message: "Please give a valid website"
+  }),
 });
 
-const UserDetails = ({ handleNext }: { handleNext: any }) => {
+const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -46,22 +50,21 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:{
-      fName: "",
-      lName: "",
-      phone: "",
-      dob: undefined
+      orgName: "",
+      description: "",
+      industry: "",
+      website: ""
     }
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
-    console.log("helloooooo")
     try {
       setLoading(true);
 
     const res = await apiRequest({
       method: "PATCH",
       url: process.env.USERS_URL,
-      route: "/api/v1/users",
+      route: "/api/v1/users/organization",
       headers:{
         "Content-Type": "application/json"
       },
@@ -83,56 +86,58 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
 
   return (
     <div className="space-y-3">
-      <h5 className="text-xl font-semibold">Stpe 2: User Registration</h5>
+      <h5 className="text-xl font-semibold">Stpe 3: Organization Details</h5>
       <p className="text-[17px] font-semibold">
-        Enjoy using our App! You'r all setup
+        Explore the future and functionalities of our app
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
-          name="fName"
+          name="orgName"
           control = {form.control}
           render = {({field})=>(
-            <FormInputWithIcon
+            <FormInput
             field={field}
-            icon={<FaUser/>}
-            title="First Name"
-            placeholder="Your first name"
+            title="Organization Name"
+            placeholder="Your organization name"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="lName"
+          name="description"
           control = {form.control}
           render = {({field})=>(
-            <FormInputWithIcon
+            <FormInput
             field={field}
-            icon={<FaUser/>}
-            title="Last Name"
+            title="Description"
             placeholder="Your last name"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="phone"
+          name="industry"
           control = {form.control}
           render = {({field})=>(
-            <FormInputWithIcon
+            <FormInput
             field={field}
-            icon={<IoPhonePortraitOutline/>}
-            title="Phone"
-            placeholder="Your phone number"
+            title="Industry"
+            placeholder="Industry"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="dob"
+          name="website"
           control = {form.control}
           render = {({field})=>(
-            <DatePicker title="Date Of Birth" field={field}/>
+            <FormInput
+            field={field}
+            title="Website"
+            placeholder="Company website"
+            showTitle={true}
+            />
           )}
           />
           <Button type="submit" className="w-full mt-5">
@@ -145,4 +150,4 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
   );
 };
 
-export default UserDetails;
+export default OrganizationDetails;
