@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { Role } from "../role.enum";
+import { Role } from "../enum";
 import { UserAttrs, UserDoc, UserModel } from "../user.model";
 
 const userSchema = new mongoose.Schema(
@@ -55,6 +55,8 @@ const userSchema = new mongoose.Schema(
         ret.id = ret._id;
         delete ret._id;
         delete ret.password;
+        delete ret.isEmailVerified;
+        delete ret.isActive;
         delete ret.__v;
       },
     },

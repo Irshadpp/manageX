@@ -1,15 +1,14 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import SignUpPage from "./pages/landing/signup"
+import SignUpPage from "./pages/landing/Registration/signup"
 import Home from "./pages/landing/Home"
 import { ThemeProvider } from "./components/ui/ThemProvider"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import Login from "./pages/landing/Login"
-import VerifyEmail from "./pages/landing/VerifyEmail"
-import ValidateEmail from "./pages/landing/ValidateEmail"
-import GetStarted from "./pages/landing/GetStarted"
+import ValidateEmail from "./pages/landing/Registration/ValidateEmail"
+import VerifyEmail from "./pages/landing/Registration/VerifyEmail"
+import GetStarted from "./pages/landing/Registration/GetStarted"
 
 function App() {
-
   return (
     <>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

@@ -1,5 +1,5 @@
 import Navbar from "@/components/ui/Navbar";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../RegisterForm";
 import signupImg from "/signup.png";
 import Logo from "/logo.png";
 import Managex from "@/components/ui/Managex";

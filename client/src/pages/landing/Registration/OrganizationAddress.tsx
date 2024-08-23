@@ -8,41 +8,49 @@ import { apiRequest } from "@/services/api/commonRequest";
 import FormInput from "@/components/custome/FormInput";
 
 const formSchema = z.object({
-  orgName:z
+  street:z
   .string()
   .min(2,{
-    message: "Organization name must be atleast two charecters"
+    message: "Street must be atleast two charecters"
   })
   .max(50,{
-    message: "Organization name must be maximum 50 charecters"
+    message: "Street name must be maximum 50 charecters"
   }),
-  description:z
+  country:z
   .string()
-  .min(1,{
-    message: "Description required"
+  .min(2,{
+    message: "country required"
   })
   .max(100,{
-    message: "First name should be maximum 100 charecters"
+    message: "country name should be maximum 50 charecters"
   }),
-  industry:z
+  state:z
   .string()
   .min(2,{
-    message: "Please give a valid industry"
+    message: "Please give a valid state"
   })
   .max(16,{
-    message: "Please give a valid industry"
+    message: "Please give a valid state"
   }),
-  website:z
+  city:z
   .string()
   .min(2,{
-    message: "Please give a valid website"
+    message: "Please give a valid city"
   })
   .max(16,{
-    message: "Please give a valid website"
+    message: "Please give a valid city"
+  }),
+  zipcode:z
+  .string()
+  .min(2,{
+    message: "Please give a valid zipcode"
+  })
+  .max(16,{
+    message: "Please give a valid zipcode"
   }),
 });
 
-const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
+const OrganizationAddress = ({ handleNext }: { handleNext: any }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,10 +58,11 @@ const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:{
-      orgName: "",
-      description: "",
-      industry: "",
-      website: ""
+      street: "",
+      country: "",
+      state: "",
+      city: "",
+      zipcode: ""
     }
   });
 
@@ -64,7 +73,7 @@ const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
     const res = await apiRequest({
       method: "PATCH",
       url: process.env.USERS_URL,
-      route: "/api/v1/users/organization",
+      route: "/api/v1/users/organization?address=true",
       headers:{
         "Content-Type": "application/json"
       },
@@ -86,62 +95,74 @@ const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
 
   return (
     <div className="space-y-3">
-      <h5 className="text-xl font-semibold">Stpe 3: Organization Details</h5>
+      <h5 className="text-xl font-semibold">Stpe 4: Organization Address</h5>
       <p className="text-[17px] font-semibold">
         Explore the future and functionalities of our app
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
-          name="orgName"
+          name="street"
           control = {form.control}
           render = {({field})=>(
             <FormInput
             field={field}
-            title="Organization Name"
-            placeholder="Your organization name"
+            title="Street Name"
+            placeholder="Your Street name"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="description"
+          name="country"
           control = {form.control}
           render = {({field})=>(
             <FormInput
             field={field}
-            title="Description"
-            placeholder="Your last name"
+            title="Country"
+            placeholder="country"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="industry"
+          name="state"
           control = {form.control}
           render = {({field})=>(
             <FormInput
             field={field}
-            title="Industry"
-            placeholder="Industry"
+            title="State"
+            placeholder="state"
             showTitle={true}
             />
           )}
           />
           <FormField
-          name="website"
+          name="city"
           control = {form.control}
           render = {({field})=>(
             <FormInput
             field={field}
-            title="Website"
-            placeholder="Company website"
+            title="City"
+            placeholder="city"
+            showTitle={true}
+            />
+          )}
+          />
+          <FormField
+          name="zipcode"
+          control = {form.control}
+          render = {({field})=>(
+            <FormInput
+            field={field}
+            title="Zipcode"
+            placeholder="zipcode"
             showTitle={true}
             />
           )}
           />
           <Button type="submit" className="w-full mt-5">
-            {loading ? "Updating..." : "Update Details"}
+            {loading ? "Updating..." : "Update Address"}
           </Button>
           {error && <p className="text-sm text-red-500">{error}</p>}
         </form>
@@ -150,4 +171,4 @@ const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
   );
 };
 
-export default OrganizationDetails;
+export default OrganizationAddress;

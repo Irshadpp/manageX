@@ -11,12 +11,16 @@ export class UserService implements IUserService{
         return await newUser.save();
     }
 
+    async updateUser(userId: string, attrs: UserAttrs):Promise<UserDoc | null>{
+        return await User.findByIdAndUpdate(userId, {...attrs});
+    }
+
     async findByEmail(email: string): Promise<UserDoc | null>{
         const user = await User.findOne({email});
         return user;
     }
 
-    async verifyUserEmail(userId: string): Promise<void> {
-        await User.findByIdAndUpdate(userId, {isEmailVerified: true});
+    async verifyUserEmail(userId: string): Promise<UserDoc | null> {
+        return await User.findByIdAndUpdate(userId, {isEmailVerified: true});
     }
 }

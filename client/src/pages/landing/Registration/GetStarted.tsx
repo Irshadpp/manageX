@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import UserDetails from './UserDetails';
 import OrganizationDetails from './OrganizationDetails';
+import OrganizationAddress from './OrganizationAddress';
+import RegistrationComplete from './RegistrationComplete';
 
 const GetStarted = () => {
   const [currPage, setCurrPage] = useState(0);
@@ -39,8 +41,9 @@ const GetStarted = () => {
         )}
         {currPage === 1 &&  <UserDetails handleNext={handleNext}/>}
         {currPage === 2 &&  <OrganizationDetails handleNext={handleNext}/>}
-        {/* {currPage === 2 &&  <OrganizationDetails handleNext={handleNext}/>} */}
-        {currPage !== 0 &&  (
+        {currPage === 3 &&  <OrganizationAddress handleNext={handleNext}/>}
+        {currPage === 4 &&  <RegistrationComplete/>}
+        {currPage !== (0 || 4)&&   (
           <div className="">
         <Button className='bg-secondary' onClick={handleBack}>Back</Button>
         </div>

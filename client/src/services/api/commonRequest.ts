@@ -4,15 +4,16 @@ import axios from "axios";
 interface RequestProps{
     method: string;
     url?: string;
-    route: string;
+    route?: string;
     headers: {};
     data?: {};
     withCredential?: boolean;
 }
 
-export const apiRequest = async ({method, url, route, headers, data, withCredential}: RequestProps) : Promise<any> =>{
+export const apiRequest = async ({method, url, route, headers, data, withCredential = true}: RequestProps) : Promise<any> =>{
     const apiInstance = axios.create({
-        baseURL: url
+        baseURL: url,
+        withCredentials: withCredential
     })
 
     apiInstance.interceptors.response.use(
@@ -21,7 +22,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
         },
 
         (error) =>{
-            return error.response.data
+            return error.response?.data || error.message
         }
     )
 
@@ -36,7 +37,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
 
     let requestConfig: RequestProps = {
         method,
-        route,
+        url: route,
         data,
         headers,
         withCredential: true

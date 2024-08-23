@@ -80,7 +80,7 @@ const RegisterForm = () => {
         }
 
         console.log(res)
-        navigate("/verify-email");
+        navigate("/validate-email");
         setLoading(false)
       } catch (error) {
         setError("Something went wrong")
