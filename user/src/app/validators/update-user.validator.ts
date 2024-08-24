@@ -14,10 +14,6 @@ export const updateUserValidator = [
     .isLength({ min: 10, max: 15 })
     .withMessage("Please give valid phone"),
   body("dob")
-    .trim()
-    .isLength({ min: 10, max: 15 })
-    .withMessage("Please give valid phone"),
-  body("dob")
     .isDate()
     .withMessage("Please provide a valid date")
     .isBefore(new Date().toISOString())

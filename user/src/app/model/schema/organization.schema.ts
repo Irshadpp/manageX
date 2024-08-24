@@ -27,7 +27,7 @@ const orgSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    name: {
+    orgName: {
       type: String,
     },
     description: {

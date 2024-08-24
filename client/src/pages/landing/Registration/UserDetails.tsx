@@ -54,13 +54,12 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
-    console.log("helloooooo")
     try {
       setLoading(true);
 
     const res = await apiRequest({
       method: "PATCH",
-      url: process.env.USERS_URL,
+      url: import.meta.env.VITE_USERS_URL,
       route: "/api/v1/users",
       headers:{
         "Content-Type": "application/json"
@@ -76,6 +75,7 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
     handleNext();
     setLoading(false);
     } catch (error) {
+      console.log(error)
       setError("Something went wrong...");
       return setLoading(false);
     }

@@ -5,4 +5,5 @@ export interface IUserService{
     updateUser(userId: string, attrs: UserAttrs): Promise<UserDoc | null>;
     findByEmail(email: string): Promise<UserDoc | null>;
     verifyUserEmail(userId: string): Promise<UserDoc | null>;
+    findById(userId: string): Promise<UserDoc | null>;
 }

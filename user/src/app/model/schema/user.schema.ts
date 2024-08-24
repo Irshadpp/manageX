@@ -4,10 +4,10 @@ import { UserAttrs, UserDoc, UserModel } from "../user.model";
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    fName: {
       type: String,
     },
-    lastName: {
+    lName: {
       type: String,
     },
     email: {

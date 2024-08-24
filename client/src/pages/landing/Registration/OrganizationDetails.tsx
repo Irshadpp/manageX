@@ -63,8 +63,8 @@ const OrganizationDetails = ({ handleNext }: { handleNext: any }) => {
 
     const res = await apiRequest({
       method: "PATCH",
-      url: process.env.USERS_URL,
-      route: "/api/v1/users/organization",
+      url: import.meta.env.VITE_USERS_URL,
+      route: "/api/v1/organization",
       headers:{
         "Content-Type": "application/json"
       },

@@ -9,7 +9,7 @@ interface addressObject{
 
 export interface OrgAttrs{
     admin: string
-    name?: string;
+    orgName?: string;
     description?: string;
     industry?: string;
     website?: string;
@@ -22,7 +22,7 @@ export interface OrgAttrs{
 
 export interface OrgDoc extends mongoose.Document{
     admin: string
-    name: string;
+    orgName: string;
     description: string;
     industry: string;
     website: string;

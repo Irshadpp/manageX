@@ -1,7 +1,8 @@
-import { validateRequest } from "@ir-managex/common";
+import { requireAuth, validateRequest } from "@ir-managex/common";
 import express from "express";
 import { createUserValidator } from "../validators/create-user.validator";
-import { createUser, verifyEmail } from "../controllers/user.controller";
+import { createUser, updateUser, verifyEmail } from "../controllers/user.controller";
+import { updateUserValidator } from "../validators/update-user.validator";
 
 const router = express.Router();
 
@@ -15,6 +16,14 @@ const router = express.Router();
   router.get(
     "/verify-email",
     verifyEmail
+  );
+
+  router.patch(
+    "/",
+    updateUserValidator,
+    requireAuth,
+    updateUser
   )
+
   export {router as userRoutes}
 

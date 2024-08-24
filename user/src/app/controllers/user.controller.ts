@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user/user.service";
-import { BadRequestError, generateJwtAccessToken, generateJwtRefreshToken, JWTUserPayload, NotFoundError } from "@ir-managex/common";
+import {
+  BadRequestError,
+  generateJwtAccessToken,
+  generateJwtRefreshToken,
+  JWTUserPayload,
+  NotFoundError,
+} from "@ir-managex/common";
 import {
   generateEmailToken,
   verifyEamilToken,
@@ -62,29 +68,56 @@ export const verifyEmail = async (
 
     const user = await userService.verifyUserEmail(id);
 
-    if(!user){
+    if (!user) {
       throw new NotFoundError();
     }
 
-    const payload : JWTUserPayload = {
-      user: user.id,
+    const payload: JWTUserPayload = {
+      userId: user.id,
       role: user.role,
-      organization: user.organizationId
-    }
+      organization: user.organizationId,
+    };
 
-    const accessToken = generateJwtAccessToken(payload, process.env.JWT_ACCESS_SECRET!);
-    const refreshToken = generateJwtRefreshToken(payload, process.env.JWT_REFRESH_SECRET!);
+    const accessToken = generateJwtAccessToken(
+      payload,
+      process.env.JWT_ACCESS_SECRET!
+    );
+    const refreshToken = generateJwtRefreshToken(
+      payload,
+      process.env.JWT_REFRESH_SECRET!
+    );
 
-    res.status(200).json({ success: true, user, accessToken, refreshToken, message: "Signup successfull"});
+    res
+      .status(200)
+      .json({
+        success: true,
+        user,
+        accessToken,
+        refreshToken,
+        message: "Signup successfull",
+      });
   } catch (error) {
     next(error);
   }
 };
 
-const updateUser = async (req: Request, res: Response, next: NextFunction) =>{
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const data = req.body;
+    const { userId } = req.user as JWTUserPayload;
+    const checkUser = userService.findById(userId);
+    if (!checkUser) {
+      throw new NotFoundError();
+    }
+    const userData = req.body;
+    await userService.updateUser(userId, userData);
+    res
+      .status(200)
+      .json({ success: true, message: "User details updated successfully" });
   } catch (error) {
-    
+    console.log(error);
   }
-}
+};

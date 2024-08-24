@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { apiRequest } from "@/services/api/commonRequest";
 import FormInput from "@/components/custome/FormInput";
+import { deleteObject } from "@/utils/local-storage";
 
 const formSchema = z.object({
   street:z
@@ -72,8 +73,8 @@ const OrganizationAddress = ({ handleNext }: { handleNext: any }) => {
 
     const res = await apiRequest({
       method: "PATCH",
-      url: process.env.USERS_URL,
-      route: "/api/v1/users/organization?address=true",
+      url: import.meta.env.VITE_USERS_URL,
+      route: "/api/v1/organization?address=true",
       headers:{
         "Content-Type": "application/json"
       },
@@ -87,6 +88,7 @@ const OrganizationAddress = ({ handleNext }: { handleNext: any }) => {
 
     handleNext();
     setLoading(false);
+    deleteObject("userData");
     } catch (error) {
       setError("Something went wrong...");
       return setLoading(false);

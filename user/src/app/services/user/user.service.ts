@@ -20,6 +20,10 @@ export class UserService implements IUserService{
         return user;
     }
 
+    async findById(userId: string): Promise<UserDoc | null> {
+        return await User.findById(userId)
+    }
+
     async verifyUserEmail(userId: string): Promise<UserDoc | null> {
         return await User.findByIdAndUpdate(userId, {isEmailVerified: true});
     }

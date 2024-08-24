@@ -24,8 +24,7 @@ const VerifyEmail = () => {
           },
         });
         if (res.success) {
-          console.log(res, "---------------");
-          storeObject("userDate", {
+          storeObject("userData", {
             ...res.user,
             accessToken: res.accessToken,
             refreshToken: res.refreshToken
