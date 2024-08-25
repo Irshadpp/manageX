@@ -30,7 +30,8 @@ const VerifyEmail = () => {
           const userData = {
             user:{...res.user},
             accessToken: res.accessToken,
-            refreshToken: res.refreshToken
+            refreshToken: res.refreshToken,
+            isInitialSetup: true
           }
           storeObject("userData",userData );
           dispatch(setCredentials(userData));

@@ -10,7 +10,7 @@ const RegistrationComplete = () => {
         Congratulations! Your registration is complete.
       </p>
       <Button className="mt-4 w-full" asChild>
-      <Link to="/owner/dashboard">
+      <Link to="/owner-dashboard">
         Launch Application
       </Link>
       </Button>
