@@ -97,12 +97,12 @@ const Navbar: React.FC = () => {
 // Reusable NavLink Component
 const NavLink: React.FC<{ href: string; label?: string }> = ({ href, label }) => {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="block font-medium text-[#787575] hover:text-foreground dark:text-gray-400 dark:hover:text-white transition-colors px-4 py-2"
     >
       {label}
-    </a>
+    </Link>
   );
 };
 

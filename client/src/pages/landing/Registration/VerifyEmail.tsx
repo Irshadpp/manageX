@@ -5,12 +5,15 @@ import { EmailVerificationSkeleton } from "./EmailVerificationSkelton";
 import VerifiedEmail from "./VerifiedEmail";
 import VerifyError from "./VerifyError";
 import { getObject, storeObject } from "@/utils/local-storage";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/authSlice";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const verifyEmailToken = async () => {
@@ -24,11 +27,13 @@ const VerifyEmail = () => {
           },
         });
         if (res.success) {
-          storeObject("userData", {
+          const userData = {
             ...res.user,
             accessToken: res.accessToken,
             refreshToken: res.refreshToken
-          });
+          }
+          storeObject("userData",userData );
+          dispatch(setCredentials(userData));
         } else {
           setError(true);
         }
@@ -40,7 +45,7 @@ const VerifyEmail = () => {
     };
     verifyEmailToken();
     console.log(getObject("userData"));
-  }, [token]);
+  }, [token, dispatch]);
 
   return (
     <div className="flex h-screen items-center justify-center p-4">

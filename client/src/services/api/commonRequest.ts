@@ -27,7 +27,6 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
     )
 
     const userData: {accessToken: string, refreshToken: string} = getObject("userData");
-    console.log(userData,"==========")
 
     if(userData){
         headers = {
