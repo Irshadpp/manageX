@@ -67,7 +67,7 @@ const RegisterForm = () => {
         const res = await apiRequest({
           method: "POST",
           url: import.meta.env.VITE_USERS_URL,
-          route: "/api/v1/users/signup",
+          route: "/api/v1/auth/signup",
           data: {...values},
           headers: {
             "Content-Type": "application/json"
@@ -75,6 +75,7 @@ const RegisterForm = () => {
         })
         
         if(!res.success){
+          console.log(res)
           setError(res?.errors[0]?.message || "Something went");
           return setLoading(false)
         }
@@ -83,6 +84,7 @@ const RegisterForm = () => {
         navigate("/validate-email");
         setLoading(false)
       } catch (error) {
+        console.log(error)
         setError("Something went wrong")
         return setLoading(false)
       }

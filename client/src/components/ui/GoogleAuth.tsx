@@ -1,7 +1,8 @@
 import { GoogleLogin } from '@react-oauth/google'
 import React from 'react'
 
-const GoogleAuth = () => {
+const 
+GoogleAuth = () => {
   return (
     <div className='flex justify-center items-center pt-8'>
       <GoogleLogin

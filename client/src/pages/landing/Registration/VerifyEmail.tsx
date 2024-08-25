@@ -21,14 +21,14 @@ const VerifyEmail = () => {
         const res = await apiRequest({
           method: "GET",
           url: import.meta.env.VITE_USERS_URL,
-          route: `/api/v1/users/verify-email?token=${token}`,
+          route: `/api/v1/auth/verify-email?token=${token}`,
           headers: {
             "Content-Type": "application/json",
           },
         });
         if (res.success) {
           const userData = {
-            ...res.user,
+            user:{...res.user},
             accessToken: res.accessToken,
             refreshToken: res.refreshToken
           }

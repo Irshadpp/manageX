@@ -1,4 +1,6 @@
-import { getObject } from "@/utils/local-storage";
+import store from "@/store";
+import { clearCredentials, setCredentials } from "@/store/authSlice";
+import { getObject, storeObject } from "@/utils/local-storage";
 import axios from "axios";
 
 interface RequestProps{
@@ -16,24 +18,63 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
         withCredentials: withCredential
     })
 
+    apiInstance.interceptors.request.use((config)=>{
+        const userData = getObject("userData");
+        if(userData && userData.accessToken){
+            config.headers["Authorization"] = `Bearer ${userData.accessToken}`
+        }
+        return config;
+    })
+
     apiInstance.interceptors.response.use(
         (response) =>{
             return response.data;
         },
 
-        (error) =>{
-            return error.response?.data || error.message
+        async (error) =>{
+
+            const originalRequest = error.config;
+            const userData = getObject("userData");
+
+            //if error is due to accessToken expiration and havn't retried yet
+            if(error.response.status === 401 && !originalRequest._retry && userData){
+                originalRequest._retry = true;
+
+                try {
+                    const refreshResponse = await apiInstance.post("/api/v1/auth/refresh-token",{
+                        refreshToken: userData.refreshToken,
+                    });
+
+                    const {accessToken, refreshToken} = refreshResponse.data;
+
+                    const updatedUserData = {
+                        user: {...userData.user},
+                        accessToken,
+                        refreshToken
+                    }
+
+                    storeObject("userData", updatedUserData);
+                    store.dispatch(setCredentials(updatedUserData));
+
+                    originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+                    return apiInstance(originalRequest);    
+                } catch (error) {
+                    store.dispatch(clearCredentials());
+                    return Promise.reject(error)
+                }
+            }
+            return Promise.reject(error.response?.data || error.message)
         }
     )
 
-    const userData: {accessToken: string, refreshToken: string} = getObject("userData");
+    // const userData: {accessToken: string, refreshToken: string} = getObject("userData");
 
-    if(userData){
-        headers = {
-            ...headers,
-            Authorization: `Bearer ${userData.accessToken}`
-        }
-    }
+    // if(userData){
+    //     headers = {
+    //         ...headers,
+    //         Authorization: `Bearer ${userData.accessToken}`
+    //     }
+    // }
 
     let requestConfig: RequestProps = {
         method,

@@ -1,7 +1,7 @@
 import { requireAuth } from "@ir-managex/common";
 import express from "express";
 import { updateOrgValidator } from "../validators/update-organization-validator";
-import { updateOrg } from "../controllers/Organization.controller";
+import { updateOrg } from "../controllers/organization.controller";
 
 const router = express.Router();
 

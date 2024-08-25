@@ -22,7 +22,7 @@ const formSchema = z.object({
     .min(2, {
       message: "Email should be atleast 2 charecters",
     })
-    .max(20, {
+    .max(50, {
       message: "Email should be less than 20 charecters",
     }),
   password: z
@@ -53,20 +53,22 @@ const LoginForm = () => {
         setLoading(true);
         const res = await apiRequest({
           method: "POST",
-          url: import.meta.env.USERS_URL,
-          route: "/api/v1/users/login",
+          url: import.meta.env.VITE_USERS_URL,
+          route: "/api/v1/auth/login",
+          data: {...values},
           headers:{
             "Content-Type": "application/json"
           }
         });
 
         if(!res.success){
+          console.log(res);
           setError(res?.errors[0]?.message || "Login failed Please try again later");
           return setLoading(false);
         }
-
+        console.log(res)
         const userData = {
-          ...res.user,
+          user: {...res.user},
           accessToken: res.accessToken,
           refreshToken: res.refreshToken
         }
@@ -74,7 +76,7 @@ const LoginForm = () => {
         storeObject("userData", userData);
         dispatch(setCredentials(userData));
 
-        switch(userData.role){
+        switch(userData.user.role){
           case 'owner':
             navigate("/owner-dashboard");
             break;
@@ -126,7 +128,7 @@ const LoginForm = () => {
             <Button type="submit" className="w-full">
                 {loading ? "Loading..." : "Login"}
             </Button>
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && <p className="text-sm font-medium text-red-500">{error}</p>}
         </form>
     </Form>
   )
