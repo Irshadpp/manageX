@@ -11,6 +11,11 @@ export class UserService implements IUserService{
         return await newUser.save();
     }
 
+    async createUserWithGoogle(attrs: UserAttrs): Promise<UserDoc>{
+        const newUserWithGoogle = User.build(attrs);
+        return await newUserWithGoogle.save();
+    }
+
     async updateUser(userId: string, attrs: UserAttrs):Promise<UserDoc | null>{
         return await User.findByIdAndUpdate(userId, {...attrs});
     }

@@ -1,9 +1,10 @@
+import OwnerSideBar from '@/components/ui/sidebars/OwenerSideBar'
 import React from 'react'
 
 const OwnerDashboard = () => {
   return (
     <div>
-      owner OwnerDashboard;
+      fdsfdsfasdf
     </div>
   )
 }

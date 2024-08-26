@@ -39,16 +39,15 @@ const GetStarted = () => {
           <Button onClick={handleNext}>Next</Button>
           </>
         )}
-        {currPage === 1 &&  <UserDetails handleNext={handleNext}/>}
-        {currPage === 2 &&  <OrganizationDetails handleNext={handleNext}/>}
-        {currPage === 3 &&  <OrganizationAddress handleNext={handleNext}/>}
-        {currPage === 4 &&  <RegistrationComplete/>}
+        {currPage === 1 && <UserDetails handleNext={handleNext}/>}
+        {currPage === 2 && <OrganizationDetails handleNext={handleNext}/>}
+        {currPage === 3 && <OrganizationAddress handleNext={handleNext}/>}
+        {currPage === 4 && <RegistrationComplete/>}
         {currPage !== (0 || 4)&&   (
           <div className="">
         <Button className='bg-secondary' onClick={handleBack}>Back</Button>
         </div>
         )}
-        
         </div>
       </div>
     </div>

@@ -13,8 +13,6 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-
 const formSchema = z.object({
   email: z
     .string()
@@ -27,9 +25,6 @@ const formSchema = z.object({
     }),
   password: z
   .string()
-  .refine(value => passwordRegex.test(value),{
-    message: "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character"
-  }),
 });
 
 
@@ -92,6 +87,7 @@ const LoginForm = () => {
         setLoading(false);
 
       } catch (error) {
+        setLoading(false)
         console.log(error);
         setError("An error occured during login");
       }
@@ -107,6 +103,7 @@ const LoginForm = () => {
                 <FormInputWithIcon
                 field={field}
                 icon={<HiOutlineMail/>}
+                type="email"
                 placeholder="Your Email"
                 showTitle={false}
                 />

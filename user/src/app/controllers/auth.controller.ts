@@ -18,6 +18,9 @@ import { UserService } from "../services/user/user.service";
 import { OrgService } from "../services/organization/org.service";
 import Password from "../utils/password";
 import getRefreshToken from "../utils/jwt/get-refresh-token";
+import { GoogleTokenInfo } from "./types/google-token.type";
+import axios from "axios";
+import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 
 const userService = new UserService();
 const orgService = new OrgService();
@@ -39,7 +42,7 @@ export const createUser = async (
     if (existingUser) {
       if (!existingUser.isEmailVerified) {
         await handleVerificationEmail(existingUser.id, existingUser.email);
-        return res.status(202).send({success: true, ...existingUser});
+        return res.status(202).send({ success: true, ...existingUser });
       }
       throw new BadRequestError("Email is already exists");
     }
@@ -146,20 +149,24 @@ export const loginUser = async (
   }
 };
 
-export const newToken = async (req: Request, res: Response, next: NextFunction) => {
+export const newToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    console.log("--------------------new token")
+    console.log("--------------------new token");
     const refreshToken = getRefreshToken(req);
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     const user = verifyJwt(refreshToken, refreshSecret!) as JWTUserPayload;
-    if(!user){
+    if (!user) {
       throw new NotAuthorizedError();
     }
-    const payload : JWTUserPayload ={
+    const payload: JWTUserPayload = {
       userId: user.userId,
       role: user.role,
-      organization: user.organization
-    }
+      organization: user.organization,
+    };
     const accessSecret = process.env.JWT_ACCESS_SECRET;
     const newAccessToken = generateJwtAccessToken(payload, accessSecret!);
     const newRefreshToken = generateJwtRefreshToken(payload, refreshSecret!);
@@ -169,10 +176,70 @@ export const newToken = async (req: Request, res: Response, next: NextFunction) 
       accesToken: newAccessToken,
       refreshToken: newRefreshToken,
       success: true,
-    })
-
+    });
   } catch (error) {
     console.log(error);
-    throw new Error("error in new token")
+    throw new Error("error in new token");
+  }
+};
+
+export const googleLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token } = req.body;
+    const googleResponseData = await checkGoogleAuthUser(token);
+
+    const { email, given_name, family_name, name, picture } =
+      googleResponseData;
+
+    const existingUser = await userService.findByEmail(email);
+    let payload: JWTUserPayload;
+    let accessToken: string;
+    let refreshToken: string;
+    const accessSecret = process.env.JWT_ACCESS_SECRET;
+    const refreshSecret = process.env.JWT_REFRESH_SECRET;
+    if (existingUser) {
+      payload = {
+        userId: existingUser.id,
+        role: existingUser.role,
+        organization: existingUser.organizationId,
+      };
+      accessToken = generateJwtAccessToken(payload, accessSecret!);
+      refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
+    }else{
+      const userData = {
+        fName: given_name || name,
+        lName: family_name || name,
+        username: name,
+        email,
+        profileURL: picture,
+        isEmailVerified: true
+      } as UserAttrs;
+      const user = await userService.createUserWithGoogle(userData);
+      const org = await orgService.createOrg({ admin: user.id });
+      const organization = { organizationId: org.id } as UserAttrs;
+      await userService.updateUser(user.id, organization);
+  
+      payload = {
+        userId: user.id,
+        role: user.role,
+        organization: org.id,
+      };
+      accessToken = generateJwtAccessToken(payload, accessSecret!);
+      refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
+    }
+
+    res.status(200).json({
+      success: true,
+      user: payload,
+      accessToken,
+      refreshToken,
+      message: "google signin successfull",
+    });
+  } catch (error) {
+    next(error);
   }
 };
