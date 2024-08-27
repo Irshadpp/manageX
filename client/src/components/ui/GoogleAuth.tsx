@@ -44,16 +44,16 @@ GoogleAuth = () => {
 
         switch(userData.user.role){
           case 'owner':
-            navigate("/owner-dashboard");
+            navigate("/owner");
             break;
           case 'manager': 
-            navigate("/manager-dashboard");
+            navigate("/manager");
             break;
           case 'employee':
-            navigate("/employee-dahsboard");
+            navigate("/employee");
             break;
           case 'admin':
-            navigate("/admin-dashboard");
+            navigate("/admin");
         }      
       } catch (error) {
         console.log(error);

@@ -24,3 +24,32 @@ export const updateUser = async (
     console.log(error);
   }
 };
+
+export const fetchUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await userService.getUsersByRole();
+    res
+      .status(200)
+      .json({ success: true, users, message: "Fetched users successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchUserStatus = async (req: Request, res: Response,
+  next: NextFunction
+) => {
+  try {
+    const {userId} = req.params
+    const isActive = await userService.getStatusById(userId);
+    res
+      .status(200)
+      .json({ success: true, isActive , message: "Fetched user status successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};

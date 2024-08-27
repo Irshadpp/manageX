@@ -7,4 +7,5 @@ export interface IUserService{
     findByEmail(email: string): Promise<UserDoc | null>;
     verifyUserEmail(userId: string): Promise<UserDoc | null>;
     findById(userId: string): Promise<UserDoc | null>;
+    getUsersByRole(): Promise<any>;
 }

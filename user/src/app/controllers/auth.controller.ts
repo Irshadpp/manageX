@@ -18,8 +18,6 @@ import { UserService } from "../services/user/user.service";
 import { OrgService } from "../services/organization/org.service";
 import Password from "../utils/password";
 import getRefreshToken from "../utils/jwt/get-refresh-token";
-import { GoogleTokenInfo } from "./types/google-token.type";
-import axios from "axios";
 import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 
 const userService = new UserService();
@@ -114,9 +112,11 @@ export const loginUser = async (
   try {
     const { email, password } = req.body;
     const user = await userService.findByEmail(email);
-    console.log(user);
     if (!user) {
       throw new BadRequestError("Invalid email or password!");
+    }
+    if(!user.isActive){
+      throw new BadRequestError("Your account has been blocked. Please contact support.")
     }
     const matchPassword = await Password.compare(user.password, password);
     if (!matchPassword) {
@@ -155,11 +155,11 @@ export const newToken = async (
   next: NextFunction
 ) => {
   try {
-    console.log("--------------------new token");
     const refreshToken = getRefreshToken(req);
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     const user = verifyJwt(refreshToken, refreshSecret!) as JWTUserPayload;
     if (!user) {
+      console.log("--------------------new token");
       throw new NotAuthorizedError();
     }
     const payload: JWTUserPayload = {

@@ -1,7 +1,7 @@
-import React from 'react'
+import { apiRequest } from '@/services/api/commonRequest';
+import React, { useEffect } from 'react'
 
 const AdminDashboard = () => {
-  console.log("-------------")
   return (
     <div>
       Admindashboard;

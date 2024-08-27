@@ -9,7 +9,7 @@ const PublicRoute = () =>{
         return <Outlet/>
     }
 
-    return isAuthenticated ? <Navigate to={`/${user.role}`}/> :  <Outlet/>
+    return isAuthenticated ? <Navigate to={`/${user?.role}`}/> :  <Outlet/>
 }
 
 export default PublicRoute;
