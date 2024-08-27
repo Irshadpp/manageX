@@ -16,6 +16,7 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 const formSchema = z.object({
   username: z
     .string()
+    .trim()
     .min(2, {
       message: "Username should be at least 2 characters",
     })

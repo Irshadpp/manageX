@@ -1,16 +1,17 @@
 export const rbacConfig = {
     owner: [
         "/get-started",
-        "/owner-dashboard"        
+        "/owner"        
     ],
     manager: [
-        "/manager-dashboard"
+        "/manager"
     ],
     employee: [
-        "/employee-dashboard"
+        "/employee"
     ],
     admin: [
-        "/admin-dashboard"
+        "/admin",
+        "/organizations"
     ]
 } as const;
 

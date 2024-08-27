@@ -13,24 +13,27 @@ import { apiRequest } from "@/services/api/commonRequest";
 const formSchema = z.object({
   fName:z
   .string()
+  .trim()
   .min(2,{
-    message: "First name should be atleast two charecters"
+    message: "First name required"
   })
   .max(50,{
     message: "First name should be maximum 50 charecters"
   }),
   lName:z
   .string()
+  .trim()
   .min(2,{
-    message: "First name should be atleast two charecters"
+    message: "Last name required"
   })
   .max(50,{
     message: "First name should be maximum 50 charecters"
   }),
   phone:z
   .string()
+  .trim()
   .min(10,{
-    message: "Please give a valid phone number"
+    message: "Please give valid phone number"
   })
   .max(16,{
     message: "Please give a valid phone number"

@@ -10,14 +10,16 @@ import FormInput from "@/components/custome/FormInput";
 const formSchema = z.object({
   orgName:z
   .string()
+  .trim()
   .min(2,{
-    message: "Organization name must be atleast two charecters"
+    message: "Organization name required"
   })
   .max(50,{
     message: "Organization name must be maximum 50 charecters"
   }),
   description:z
   .string()
+  .trim()
   .min(1,{
     message: "Description required"
   })
@@ -26,6 +28,7 @@ const formSchema = z.object({
   }),
   industry:z
   .string()
+  .trim()
   .min(2,{
     message: "Please give a valid industry"
   })
@@ -34,6 +37,7 @@ const formSchema = z.object({
   }),
   website:z
   .string()
+  .trim()
   .min(2,{
     message: "Please give a valid website"
   })

@@ -15,6 +15,9 @@ import PublicRoute from "./components/custome/PublicRoute";
 import NotFound from "./pages/NotFound";
 import PrivateRouteWithRole from "./components/custome/PrivateRouteWithRole";
 import OwnerLayout from "./pages/owner/OwnerLayout";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Organizations from "./pages/admin/Organizations";
+import Users from "./pages/admin/Users";
 
 function App() {
   return (
@@ -33,21 +36,25 @@ function App() {
 
               <Route element={<PrivateRouteWithRole requiredRole="owner" />}>
                 <Route path="/get-started" element={<GetStarted />} />
-                <Route path="/owner-dashboard" element={<OwnerLayout />}>
+                <Route path="/owner" element={<OwnerLayout />}>
                   <Route index element={<OwnerDashboard />} />
                 </Route>
               </Route>
 
               <Route element={<PrivateRouteWithRole requiredRole="manager" />}>
-                <Route path="/manager-dashboard" element={<ManDashboard />} />
+                <Route path="/manager" element={<ManDashboard />} />
               </Route>
 
               <Route element={<PrivateRouteWithRole requiredRole="employee" />}>
-                <Route path="/employee-dashboard" element={<EmpDashboard />} />
+                <Route path="/employee" element={<EmpDashboard />} />
               </Route>
 
               <Route element={<PrivateRouteWithRole requiredRole="admin" />}>
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="organizations" element={<Organizations/>}/>
+                  <Route path="users" element={<Users/>}/>
+                </Route>
               </Route>
 
               <Route path="*" element={<NotFound />} />

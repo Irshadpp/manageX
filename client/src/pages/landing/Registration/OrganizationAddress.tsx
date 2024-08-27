@@ -11,14 +11,16 @@ import { deleteObject } from "@/utils/local-storage";
 const formSchema = z.object({
   street:z
   .string()
+  .trim()
   .min(2,{
-    message: "Street must be atleast two charecters"
+    message: "Street required"
   })
   .max(50,{
     message: "Street name must be maximum 50 charecters"
   }),
   country:z
   .string()
+  .trim()
   .min(2,{
     message: "country required"
   })
@@ -27,6 +29,7 @@ const formSchema = z.object({
   }),
   state:z
   .string()
+  .trim()
   .min(2,{
     message: "Please give a valid state"
   })
@@ -35,6 +38,7 @@ const formSchema = z.object({
   }),
   city:z
   .string()
+  .trim()
   .min(2,{
     message: "Please give a valid city"
   })
@@ -43,7 +47,8 @@ const formSchema = z.object({
   }),
   zipcode:z
   .string()
-  .min(2,{
+  .trim()
+  .min(4,{
     message: "Please give a valid zipcode"
   })
   .max(16,{

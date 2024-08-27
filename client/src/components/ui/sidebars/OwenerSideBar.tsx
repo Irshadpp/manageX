@@ -35,11 +35,11 @@ const OwnerSideBar = () => {
         </h1>
       </div>
       <div className="flex flex-col items-center gap-3 py-5">
-        <Link to="/owner-dashboard" className="hover-text text-xl">
+        <Link to="/owner" className="hover-text text-xl">
           <TooltipWrapper title="Dashboard">
             <div
               className={`p-1 rounded-xl hover:bg-popover ${
-                pathname === "/owner-dashboard" ? "bg-primary" : ""
+                pathname === "/owner" ? "bg-primary" : ""
               }`}
             >
               <AiFillDashboard className="m-1" />
