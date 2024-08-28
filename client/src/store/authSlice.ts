@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 interface User{
-    userId: string,
+    id: string,
     role: "owner" | "manager" | "employee" | "admin",
     organization: string
 }

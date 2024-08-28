@@ -31,89 +31,116 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { apiRequest } from "@/services/api/commonRequest"
 
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
+export type User = {
+  _id: string
   email: string
+  fName: string
+  isActive: boolean
+  org: string
+  phone: number
 }
 
-export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: "fName",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("fName")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-    cell: ({ row }) => (
-      <div className="captlize">{row.getValue("phone")}</div>
-    ),
-  },
-  {
-    accessorKey: "org",
-    header: "Organization",
-    cell: ({ row }) => (
-      <div className="captlize">{row.getValue("org")}</div>
-    ),
-  },
-  {
-    accessorKey: "isActive",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="captlize">{row.getValue("isActive") ? "Active" : "Blocked"}</div>
-    ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    header: "Action",
-    cell: ({ row }) => {
-      const payment = row.original
+ 
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Block User</DropdownMenuItem>
-            <DropdownMenuItem>Unblock User</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
-export function UsersTable({ data }: { data: any }) {
+export function UsersTable({ data, refresh }: { data: any, refresh: React.Dispatch<React.SetStateAction<boolean>>  }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
+
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorKey: "username",
+      header: "Username",
+      cell: ({ row }) => (
+        <>
+        <div className="capitalize">{row.getValue("username")}</div>
+        </>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    },
+    {
+      accessorKey: "phone",
+      header: "Phone",
+      cell: ({ row }) => (
+        <div className="captlize">{row.getValue("phone")}</div>
+      ),
+    },
+    {
+      accessorKey: "org",
+      header: "Organization",
+      cell: ({ row }) => (
+        <div className="captlize">{row.getValue("org")}</div>
+      ),
+    },
+    {
+      accessorKey: "isActive",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className="captlize">{row.getValue("isActive") ? "Active" : "Blocked"}</div>
+      ),
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      header: "Action",
+      cell: ({ row }) => {
+        const user = row.original
+        console.log(user._id)
+  
+        const handleBlockUser = async () =>{
+          const res = await apiRequest({
+            method: "PATCH",
+            url: import.meta.env.VITE_USERS_URL,
+            route: `/api/v1/users/block/${user._id}`,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+          if(res.success){
+            refresh(prev => !prev)
+            console.log("User block/unblock action successfully done");
+          }
+        }
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              {user.isActive ? 
+              <DropdownMenuItem onClick={handleBlockUser}>Block User</DropdownMenuItem> :
+              <DropdownMenuItem onClick={handleBlockUser}>Unblock User</DropdownMenuItem>
+              }
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ]
+
+  
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
@@ -135,7 +162,7 @@ export function UsersTable({ data }: { data: any }) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">

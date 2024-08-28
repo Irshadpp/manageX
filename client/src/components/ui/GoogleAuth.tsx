@@ -29,10 +29,8 @@ GoogleAuth = () => {
         });
 
         if(!res.success){
-          console.log(res);
           return setError(res?.errors[0]?.message || "Google signup failed Please try again later");
         }
-        console.log(res)
         const userData = {
           user: {...res.user},
           accessToken: res.accessToken,

@@ -10,13 +10,13 @@ export const updateUser = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.user as JWTUserPayload;
-    const checkUser = userService.findById(userId);
+    const { id } = req.user as JWTUserPayload;
+    const checkUser = userService.findById(id);
     if (!checkUser) {
       throw new NotFoundError();
     }
     const userData = req.body;
-    await userService.updateUser(userId, userData);
+    await userService.updateUser(id, userData);
     res
       .status(200)
       .json({ success: true, message: "User details updated successfully" });
@@ -44,8 +44,8 @@ export const fetchUserStatus = async (req: Request, res: Response,
   next: NextFunction
 ) => {
   try {
-    const {userId} = req.params
-    const isActive = await userService.getStatusById(userId);
+    const {id} = req.params
+    const isActive = await userService.getStatusById(id);
     res
       .status(200)
       .json({ success: true, isActive , message: "Fetched user status successfully" });
@@ -56,12 +56,12 @@ export const fetchUserStatus = async (req: Request, res: Response,
 
 export const blockUser = async (req: Request, res: Response, next: NextFunction) =>{
   try {
-    const {userId} = req.params;
-    const user = await userService.findById(userId);
+    const {id} = req.params;
+    const user = await userService.findById(id);
     if(!user){
       throw new NotFoundError();
     }
-    await userService.bockAndUnblock(userId);
+    await userService.bockAndUnblock(id);
     res.status(200).send({success:true})
   } catch (error) {
     console.log(error);

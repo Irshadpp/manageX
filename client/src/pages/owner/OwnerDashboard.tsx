@@ -1,6 +1,5 @@
-import OwnerSideBar from '@/components/ui/sidebars/OwenerSideBar'
 import { apiRequest } from '@/services/api/commonRequest';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 const OwnerDashboard = () => {
   useEffect(() => {
@@ -13,7 +12,6 @@ const OwnerDashboard = () => {
             "Content-Type": "application/json"
           }
         });
-        console.log(res)
       }
       fetchUsers()
   }, []);

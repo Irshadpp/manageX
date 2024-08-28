@@ -76,12 +76,10 @@ const RegisterForm = () => {
         })
         
         if(!res.success){
-          console.log(res)
           setError(res?.errors[0]?.message || "Something went");
           return setLoading(false)
         }
 
-        console.log(res)
         navigate("/validate-email");
         setLoading(false)
       } catch (error) {

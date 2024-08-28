@@ -23,8 +23,8 @@ import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 const userService = new UserService();
 const orgService = new OrgService();
 
-const handleVerificationEmail = async (userId: string, email: string) => {
-  const token = generateEmailToken(userId);
+const handleVerificationEmail = async (id: string, email: string) => {
+  const token = generateEmailToken(id);
   await sendVarificationEmail(email, token);
 };
 
@@ -78,7 +78,7 @@ export const verifyEmail = async (
     }
 
     const payload: JWTUserPayload = {
-      userId: user.id,
+      id: user.id,
       role: user.role,
       organization: user.organizationId,
     };
@@ -124,7 +124,7 @@ export const loginUser = async (
     }
 
     const payload: JWTUserPayload = {
-      userId: user.id,
+      id: user.id,
       role: user.role,
       organization: user.organizationId,
     };
@@ -163,7 +163,7 @@ export const newToken = async (
       throw new NotAuthorizedError();
     }
     const payload: JWTUserPayload = {
-      userId: user.userId,
+      id: user.id,
       role: user.role,
       organization: user.organization,
     };
@@ -203,7 +203,7 @@ export const googleLogin = async (
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     if (existingUser) {
       payload = {
-        userId: existingUser.id,
+        id: existingUser.id,
         role: existingUser.role,
         organization: existingUser.organizationId,
       };
@@ -224,7 +224,7 @@ export const googleLogin = async (
       await userService.updateUser(user.id, organization);
   
       payload = {
-        userId: user.id,
+        id: user.id,
         role: user.role,
         organization: org.id,
       };

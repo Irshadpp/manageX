@@ -15,8 +15,8 @@ export class UserService implements IUserService {
     return await newUserWithGoogle.save();
   }
 
-  async updateUser(userId: string, attrs: UserAttrs): Promise<UserDoc | null> {
-    return await User.findByIdAndUpdate(userId, { ...attrs });
+  async updateUser(id: string, attrs: UserAttrs): Promise<UserDoc | null> {
+    return await User.findByIdAndUpdate(id, { ...attrs });
   }
 
   async findByEmail(email: string): Promise<UserDoc | null> {
@@ -24,12 +24,12 @@ export class UserService implements IUserService {
     return user;
   }
 
-  async findById(userId: string): Promise<UserDoc | null> {
-    return await User.findById(userId);
+  async findById(id: string): Promise<UserDoc | null> {
+    return await User.findById(id);
   }
 
-  async verifyUserEmail(userId: string): Promise<UserDoc | null> {
-    return await User.findByIdAndUpdate(userId, { isEmailVerified: true });
+  async verifyUserEmail(id: string): Promise<UserDoc | null> {
+    return await User.findByIdAndUpdate(id, { isEmailVerified: true });
   }
 
   async getUsersByRole(): Promise<any> {
@@ -49,9 +49,7 @@ export class UserService implements IUserService {
             { $match: { role: "owner" } },
             {
               $project: {
-                _id: 0,
-                fName: 1,
-                lName: 1,
+                username: 1,
                 email: 1,
                 phone: 1,
                 isActive: 1,
@@ -63,9 +61,7 @@ export class UserService implements IUserService {
             { $match: { role: "manager" } },
             {
               $project: {
-                _id: 0,
-                fName: 1,
-                lName: 1,
+                username: 1,
                 email: 1,
                 phone: 1,
                 isActive: 1,
@@ -77,9 +73,7 @@ export class UserService implements IUserService {
             { $match: { role: "employee" } },
             {
               $project: {
-                _id: 0,
-                fName: 1,
-                lName: 1,
+                username: 1,
                 email: 1,
                 phone: 1,
                 isActive: 1,
@@ -92,17 +86,17 @@ export class UserService implements IUserService {
     ]);
   }
 
-  async getStatusById(userId: string): Promise<boolean | null> {
+  async getStatusById(id: string): Promise<boolean | null> {
     const user = await User.findOne(
-      { _id: userId },
+      { _id: id },
       { isActive: 1, _id: 0 }
     ).lean();
     return user ? user.isActive : null;
   }
 
-  async bockAndUnblock(userId: string) {
+  async bockAndUnblock(id: string) {
     await User.updateOne(
-      { _id: userId },
+      { _id: id },
       [{ $set: { isActive: { $not: "$isActive" } } }]
     );
   }

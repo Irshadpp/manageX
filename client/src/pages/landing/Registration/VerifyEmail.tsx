@@ -45,7 +45,6 @@ const VerifyEmail = () => {
       }
     };
     verifyEmailToken();
-    console.log(getObject("userData"));
   }, [token, dispatch]);
 
   return (

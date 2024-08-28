@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
   const { isAuthenticated, user, isBlocked, accessToken } = useSelector((state: RootState) => state.auth);
+  console.log(isAuthenticated, user, isBlocked, accessToken);
   const userRole = user?.role as Role;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
     const checkUserStatus = async () => {
       if (user && accessToken) {
         try {
-          const res = await fetchUserStatus(user.userId);
+          const res = await fetchUserStatus(user.id);
           if (!res.isActive) {
             dispatch(updateUserStatus({ isBlocked: true }));
             toast.error("Your account has been blocked. Please contact support.");

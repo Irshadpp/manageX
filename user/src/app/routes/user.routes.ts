@@ -19,13 +19,13 @@ const router = express.Router();
   )
 
   router.get(
-    "/status/:userId",
+    "/status/:id",
     requireAuth,
     fetchUserStatus
   )
 
   router.patch(
-    "/block/:userId",
+    "/block/:id",
     // requireAuth,
     blockUser
   )

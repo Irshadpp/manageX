@@ -57,11 +57,9 @@ const LoginForm = () => {
         });
 
         if(!res.success){
-          console.log(res);
           setError(res?.errors[0]?.message || "Login failed Please try again later");
           return setLoading(false);
         }
-        console.log(res)
         const userData = {
           user: {...res.user},
           accessToken: res.accessToken,

@@ -16,8 +16,7 @@ import { apiRequest } from "@/services/api/commonRequest";
 interface User {
   email: string;
   isActive: boolean;
-  fName: string;
-  lName?: string;
+  username: string;
   phone: number;
   org: string;
 }
@@ -30,11 +29,15 @@ interface UsersData {
 
 export function UsersTabs() {
   const [tab, setTab] = useState("owners");
+  const [refresh, setRefresh] = useState(false);
   const [usersData, setUsersData] = useState<UsersData>({
     owners: [],
     managers: [],
     employees: [],
   });
+
+  
+
   useEffect(()=>{
     const fetchUsers = async () =>{
       const res = await apiRequest({
@@ -50,7 +53,7 @@ export function UsersTabs() {
       }
     }
     fetchUsers()
-  },[])
+  },[refresh])
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -62,21 +65,21 @@ export function UsersTabs() {
       <TabsContent value="owners">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.owners} /> {/* Pass the filtered data to UsersTable */}
+            <UsersTable data={usersData.owners} refresh={setRefresh}/>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="managers">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.managers} />
+            <UsersTable data={usersData.managers} refresh={setRefresh}/>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="employees">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.employees} />
+            <UsersTable data={usersData.employees} refresh={setRefresh}/>
           </CardContent>
         </Card>
       </TabsContent>
