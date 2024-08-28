@@ -53,3 +53,17 @@ export const fetchUserStatus = async (req: Request, res: Response,
     console.log(error);
   }
 };
+
+export const blockUser = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const {userId} = req.params;
+    const user = await userService.findById(userId);
+    if(!user){
+      throw new NotFoundError();
+    }
+    await userService.bockAndUnblock(userId);
+    res.status(200).send({success:true})
+  } catch (error) {
+    console.log(error);
+  }
+}

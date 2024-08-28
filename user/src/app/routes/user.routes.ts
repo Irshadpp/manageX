@@ -1,6 +1,6 @@
 import { requireAuth, validateRequest } from "@ir-managex/common";
 import express from "express";
-import {fetchUsers, fetchUserStatus, updateUser} from "../controllers/user.controller";
+import {blockUser, fetchUsers, fetchUserStatus, updateUser} from "../controllers/user.controller";
 import { updateUserValidator } from "../validators/update-user.validator";
 
 const router = express.Router();
@@ -22,6 +22,12 @@ const router = express.Router();
     "/status/:userId",
     requireAuth,
     fetchUserStatus
+  )
+
+  router.patch(
+    "/block/:userId",
+    // requireAuth,
+    blockUser
   )
 
   export {router as userRoutes}
