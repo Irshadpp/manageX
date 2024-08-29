@@ -75,7 +75,8 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   useEffect(() => {
     if (!isAuthenticated || !user) {
       setLoading(false);
-      <Navigate to={redirectPath} replace />
+      console.log("-------------------------",redirectPath)
+      // <Navigate to={redirectPath} replace />
       return;
     }
 
@@ -83,7 +84,7 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
       toast.error("Your account has been blocked. Please contact support.");
       navigate(redirectPath, { state: { from: location } });
       setLoading(false);
-      <Navigate to={redirectPath} replace />
+      // <Navigate to={redirectPath} replace />
       return;
     }
 

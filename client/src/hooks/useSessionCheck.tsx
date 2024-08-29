@@ -16,8 +16,12 @@ const useSessionCheck = () =>{
                         "Content-Type":"application/json"
                     }
                 });
-                console.log(response);
-                const {user, accessToken} = response
+                const {user, accessToken} = response;
+                console.log(user);
+                if(!user.isActive){
+                    console.log("----------------------")
+                    return dispatch(clearCredentials());
+                }
                 dispatch(setCredentials({user, accessToken}));
                 dispatch(updateUserStatus({isBlocked: !user.isActive}));
 

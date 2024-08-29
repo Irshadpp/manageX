@@ -22,13 +22,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import logout from "@/services/auth/logout";
+import useLogout from "@/hooks/useLogout";
 
 const OwnerSideBar = () => {
   const { pathname } = useLocation();
+  const logout = useLogout();
   const handleLogout = async () =>{
-    await logout();
+    logout()
   }
-
   return (
     <div className="p-2 bg-card hidden md:block text-center h-screen">
       <div className="flex flex-col items-center gap-2 pt-4">

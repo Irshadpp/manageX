@@ -81,6 +81,7 @@ export const verifyEmail = async (
     const payload: JWTUserPayload = {
       id: user.id,
       role: user.role,
+      isActive: user.isActive,
       organization: user.organizationId,
     };
 
@@ -127,6 +128,7 @@ export const loginUser = async (
 
     const payload: JWTUserPayload = {
       id: user.id,
+      isActive: user.isActive,
       role: user.role,
       organization: user.organizationId,
     };
@@ -163,15 +165,19 @@ export const newToken = async (
   try {
     const refreshToken = req.cookies.refreshToken;
     console.log(refreshToken,"=================================");
-    if(!refreshToken) throw new NotAuthorizedError();
+    if(!refreshToken){
+      throw new NotAuthorizedError();
+    }
 
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     const user = verifyJwt(refreshToken, refreshSecret!) as JWTUserPayload;
-    console.log(user);
-    if (!user) throw new ForbiddenError();
+    if (!user){
+      throw new ForbiddenError();
+    } 
     const payload: JWTUserPayload = {
       id: user.id,
       role: user.role,
+      isActive: user.isActive,
       organization: user.organization,
     };
     const accessSecret = process.env.JWT_ACCESS_SECRET;
@@ -181,8 +187,8 @@ export const newToken = async (
 
     res.json({accessToken: newAccessToken});
   } catch (error) {
-    console.log(error);
-    throw new Error("error in new token");
+    console.log("Error in new token",error);
+    next(error)
   }
 };
 
@@ -208,6 +214,7 @@ export const googleLogin = async (
       payload = {
         id: existingUser.id,
         role: existingUser.role,
+        isActive: existingUser.isActive,
         organization: existingUser.organizationId,
       };
     }else{
@@ -227,6 +234,7 @@ export const googleLogin = async (
       payload = {
         id: user.id,
         role: user.role,
+        isActive: user.isActive,
         organization: org.id,
       };
     }

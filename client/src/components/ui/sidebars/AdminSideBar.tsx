@@ -25,7 +25,6 @@ const AdminSideBar = () => {
   const logout = useLogout();
   const handleLogout = async () =>{
     logout()
-    // await logout();
   }
 
   return (
