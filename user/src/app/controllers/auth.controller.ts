@@ -12,12 +12,13 @@ import {
   NotFoundError,
   NotAuthorizedError,
   verifyJwt,
+  setCookie,
+  ForbiddenError,
 } from "@ir-managex/common";
 import { UserAttrs } from "../model/user.model";
 import { UserService } from "../services/user/user.service";
 import { OrgService } from "../services/organization/org.service";
 import Password from "../utils/password";
-import getRefreshToken from "../utils/jwt/get-refresh-token";
 import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 
 const userService = new UserService();
@@ -92,11 +93,12 @@ export const verifyEmail = async (
       process.env.JWT_REFRESH_SECRET!
     );
 
+    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
+    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
+
     res.status(200).json({
       success: true,
       user,
-      accessToken,
-      refreshToken,
       message: "Signup successfull",
     });
   } catch (error) {
@@ -137,11 +139,14 @@ export const loginUser = async (
       payload,
       process.env.JWT_REFRESH_SECRET!
     );
+
+    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
+    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
+
     res.status(200).json({
       success: true,
       user: payload,
       accessToken,
-      refreshToken,
       message: `${user.role} Login successfull`,
     });
   } catch (error) {
@@ -154,14 +159,16 @@ export const newToken = async (
   res: Response,
   next: NextFunction
 ) => {
+  
   try {
-    const refreshToken = getRefreshToken(req);
+    const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken,"=================================");
+    if(!refreshToken) throw new NotAuthorizedError();
+
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     const user = verifyJwt(refreshToken, refreshSecret!) as JWTUserPayload;
-    if (!user) {
-      console.log("--------------------new token");
-      throw new NotAuthorizedError();
-    }
+    console.log(user);
+    if (!user) throw new ForbiddenError();
     const payload: JWTUserPayload = {
       id: user.id,
       role: user.role,
@@ -169,14 +176,10 @@ export const newToken = async (
     };
     const accessSecret = process.env.JWT_ACCESS_SECRET;
     const newAccessToken = generateJwtAccessToken(payload, accessSecret!);
-    const newRefreshToken = generateJwtRefreshToken(payload, refreshSecret!);
 
-    res.status(200).json({
-      user: payload,
-      accesToken: newAccessToken,
-      refreshToken: newRefreshToken,
-      success: true,
-    });
+    setCookie(res, 'accessToken', newAccessToken, {maxAge: 30 * 60 * 1000});
+
+    res.json({accessToken: newAccessToken});
   } catch (error) {
     console.log(error);
     throw new Error("error in new token");
@@ -207,8 +210,6 @@ export const googleLogin = async (
         role: existingUser.role,
         organization: existingUser.organizationId,
       };
-      accessToken = generateJwtAccessToken(payload, accessSecret!);
-      refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
     }else{
       const userData = {
         fName: given_name || name,
@@ -228,18 +229,43 @@ export const googleLogin = async (
         role: user.role,
         organization: org.id,
       };
-      accessToken = generateJwtAccessToken(payload, accessSecret!);
-      refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
     }
+    accessToken = generateJwtAccessToken(payload, accessSecret!);
+    refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
+
+    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
+    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
+
 
     res.status(200).json({
       success: true,
       user: payload,
       accessToken,
-      refreshToken,
       message: "google signin successfull",
     });
   } catch (error) {
     next(error);
   }
 };
+
+export const checkUser = async (req: Request, res: Response,
+  next: NextFunction
+) => {
+  try {
+    //@ts-ignore
+    const {id} = req.user
+    const user = await userService.getUserById(id);
+    const accessToken = req.cookies.accessToken
+    res
+      .status(200)
+      .json({ success: true, user, accessToken , message: "Fetched user status successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const logout = async (req:Request, res:Response, next:NextFunction) =>{
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+  res.status(200).send({ success: true, message: "Logged out successfully"});
+}

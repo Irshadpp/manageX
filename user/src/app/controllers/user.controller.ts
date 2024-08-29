@@ -40,20 +40,6 @@ export const fetchUsers = async (
   }
 };
 
-export const fetchUserStatus = async (req: Request, res: Response,
-  next: NextFunction
-) => {
-  try {
-    const {id} = req.params
-    const isActive = await userService.getStatusById(id);
-    res
-      .status(200)
-      .json({ success: true, isActive , message: "Fetched user status successfully" });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const blockUser = async (req: Request, res: Response, next: NextFunction) =>{
   try {
     const {id} = req.params;
@@ -61,7 +47,7 @@ export const blockUser = async (req: Request, res: Response, next: NextFunction)
     if(!user){
       throw new NotFoundError();
     }
-    await userService.bockAndUnblock(id);
+    await userService.blockAndUnblock(id);
     res.status(200).send({success:true})
   } catch (error) {
     console.log(error);

@@ -19,10 +19,6 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
     })
 
     apiInstance.interceptors.request.use((config)=>{
-        const userData = getObject("userData");
-        if(userData && userData.accessToken){
-            config.headers["Authorization"] = `Bearer ${userData.accessToken}`
-        }
         return config;
     })
 
@@ -34,33 +30,27 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
         async (error) =>{
 
             const originalRequest = error.config;
-            const userData = getObject("userData");
+            // const userData = getObject("userData");
 
             //if error is due to accessToken expiration and havn't retried yet
-            if(error.response.status === 401 && !originalRequest._retry && userData){
+            if(error.response.status === 401 && !originalRequest._retry){
                 originalRequest._retry = true;
 
                 try {
-                    const refreshResponse = await apiInstance.post("/api/v1/auth/refresh-token",{
-                        refreshToken: userData.refreshToken,
-                    });
+                    const refreshApiInstance = axios.create({
+                        baseURL: url,
+                        withCredentials: withCredential,
+                      });
+                    const refreshResponse = await refreshApiInstance.post("/api/v1/auth/refresh-token");
 
-                    const {accessToken, refreshToken} = refreshResponse.data;
+                    const {accessToken} = refreshResponse.data;
 
-                    const updatedUserData = {
-                        user: {...userData.user},
-                        accessToken,
-                        refreshToken
-                    }
+                    store.dispatch(setCredentials({user: store.getState().auth.user, accessToken}));
 
-                    storeObject("userData", updatedUserData);
-                    store.dispatch(setCredentials(updatedUserData));
-
-                    originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
                     return apiInstance(originalRequest);    
-                } catch (error) {
+                } catch (refreshError) {
                     store.dispatch(clearCredentials());
-                    return Promise.reject(error)
+                    return Promise.reject(refreshError)
                 }
             }
             return Promise.reject(error.response?.data || error.message)
@@ -79,6 +69,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
         const response = await apiInstance(requestConfig);
         return response;
     } catch (error) {
+        console.log(error)
         return error
     }
 }

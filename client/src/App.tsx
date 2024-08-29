@@ -18,11 +18,13 @@ import OwnerLayout from "./pages/owner/OwnerLayout";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Organizations from "./pages/admin/Organizations";
 import Users from "./pages/admin/Users";
+import { ToastProvider } from "./components/ui/toast";
 
 function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <ToastProvider>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <Router>
             <Routes>
@@ -61,6 +63,7 @@ function App() {
             </Routes>
           </Router>
         </GoogleOAuthProvider>
+        </ToastProvider>
       </ThemeProvider>
     </>
   );

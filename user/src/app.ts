@@ -3,6 +3,7 @@ import { json } from "body-parser";
 import { appRouter } from "./app/routes";
 import {errorHandler, NotFoundError} from "@ir-managex/common"
 import cors from 'cors'
+import cookieParser from "cookie-parser"
 
 const app = express();
 
@@ -15,7 +16,8 @@ const corsOptions = {
     credentials: true
 }
 
-app.use(cors(corsOptions))
+app.use(cookieParser());
+app.use(cors(corsOptions));
 
 app.use("/api/v1", appRouter);
 

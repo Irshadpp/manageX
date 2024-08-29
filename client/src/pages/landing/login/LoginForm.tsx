@@ -60,16 +60,11 @@ const LoginForm = () => {
           setError(res?.errors[0]?.message || "Login failed Please try again later");
           return setLoading(false);
         }
-        const userData = {
-          user: {...res.user},
-          accessToken: res.accessToken,
-          refreshToken: res.refreshToken
-        }
+        const {user, accessToken} = res
+        console.log(user,"-----------------", accessToken)
+        dispatch(setCredentials({user:user, accessToken}));
 
-        storeObject("userData", userData);
-        dispatch(setCredentials(userData));
-
-        switch(userData.user.role){
+        switch(user.role){
           case 'owner':
             navigate("/owner");
             break;

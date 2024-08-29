@@ -18,10 +18,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { logout } from "@/services/auth/logout";
+import useLogout from "@/hooks/useLogout";
 
 const AdminSideBar = () => {
   const { pathname } = useLocation();
+  const logout = useLogout();
+  const handleLogout = async () =>{
+    logout()
+    // await logout();
+  }
 
   return (
     <div className="p-2 bg-card hidden md:block text-center h-screen">
@@ -107,7 +112,7 @@ const AdminSideBar = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>No</AlertDialogCancel>
-              <AlertDialogAction onClick={logout}>Yes</AlertDialogAction>
+              <AlertDialogAction onClick={handleLogout}>Yes</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

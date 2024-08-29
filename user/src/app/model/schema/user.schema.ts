@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     toJSON: {
+      virtuals:true,
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
@@ -64,7 +65,6 @@ const userSchema = new mongoose.Schema(
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
-
 
 const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 

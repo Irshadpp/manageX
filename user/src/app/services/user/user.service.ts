@@ -86,15 +86,13 @@ export class UserService implements IUserService {
     ]);
   }
 
-  async getStatusById(id: string): Promise<boolean | null> {
-    const user = await User.findOne(
-      { _id: id },
-      { isActive: 1, _id: 0 }
-    ).lean();
-    return user ? user.isActive : null;
+  async getUserById(id: string): Promise<boolean | null> {
+    return await User.findOne(
+      { _id: id },{role: 1, isActive: 1, organizationId: 1}
+    )
   }
 
-  async bockAndUnblock(id: string) {
+  async blockAndUnblock(id: string) {
     await User.updateOne(
       { _id: id },
       [{ $set: { isActive: { $not: "$isActive" } } }]

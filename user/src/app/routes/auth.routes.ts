@@ -1,7 +1,7 @@
 import express from 'express';
 import { createUserValidator } from '../validators/create-user.validator';
-import { validateRequest } from '@ir-managex/common';
-import { createUser, googleLogin, loginUser, newToken, verifyEmail } from '../controllers/auth.controller';
+import { requireAuth, validateRequest } from '@ir-managex/common';
+import { checkUser, createUser, googleLogin, loginUser, logout, newToken, verifyEmail } from '../controllers/auth.controller';
 import { loginUserValidator } from '../validators/login-user-validator';
 
 const router = express.Router();
@@ -29,8 +29,19 @@ router.post(
   googleLogin
 )
 
+router.get(
+  "/check-user",
+  requireAuth,
+  checkUser
+)
+
 router.post("/refresh-token",
   newToken
+);
+
+router.post(
+  "/logout",
+  logout
 )
 
 export {router as authRouter}
