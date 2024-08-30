@@ -11,7 +11,7 @@ interface AuthState{
     accessToken: string | null;
     isInitialSetup: boolean;
     isAuthenticated: boolean;
-    isBlocked: boolean
+    // isBlocked: boolean
 }
 
 const initialState: AuthState = {
@@ -19,7 +19,7 @@ const initialState: AuthState = {
     accessToken: null,
     isInitialSetup: false,
     isAuthenticated: false,
-    isBlocked: false,
+    // isBlocked: false,
 }
 
 const authSlice = createSlice({
@@ -32,9 +32,9 @@ const authSlice = createSlice({
             state.isInitialSetup = action.payload.isInitialSetup || false;
             state.isAuthenticated = true;
         },
-        updateUserStatus: (state, action: PayloadAction<{ isBlocked: boolean }>)=>{
-            state.isBlocked = action.payload.isBlocked;
-        },
+        // updateUserStatus: (state, action: PayloadAction<{ isBlocked: boolean }>)=>{
+        //     state.isBlocked = action.payload.isBlocked;
+        // },
         clearCredentials: (state) =>{
             state.user = null;
             state.accessToken = null;
@@ -43,5 +43,5 @@ const authSlice = createSlice({
     }
 });
 
-export const { setCredentials, updateUserStatus,  clearCredentials} = authSlice.actions;
+export const { setCredentials,  clearCredentials} = authSlice.actions;
 export default authSlice.reducer;

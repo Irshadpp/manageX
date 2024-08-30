@@ -1,5 +1,5 @@
 import { apiRequest } from "@/services/api/commonRequest";
-import { clearCredentials, setCredentials, updateUserStatus } from "@/store/authSlice";
+import { clearCredentials, setCredentials } from "@/store/authSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux"
 
@@ -17,13 +17,11 @@ const useSessionCheck = () =>{
                     }
                 });
                 const {user, accessToken} = response;
-                console.log(user);
                 if(!user.isActive){
-                    console.log("----------------------")
                     return dispatch(clearCredentials());
                 }
                 dispatch(setCredentials({user, accessToken}));
-                dispatch(updateUserStatus({isBlocked: !user.isActive}));
+                // dispatch(updateUserStatus({isBlocked: !user.isActive}));
 
             } catch (error) {
                 console.log(error)
