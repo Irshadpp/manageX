@@ -11,7 +11,7 @@ app.use(json());
 
 const corsOptions = {
     origin: "http://localhost:5173",
-    method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
+    method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE',],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }

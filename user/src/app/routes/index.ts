@@ -11,5 +11,4 @@ router.use("/users", userRoutes);
 
 router.use("/organization", orgRouter);
 
-
 export {router as appRouter}
