@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { EMPTYPE, GENDER, Role } from "./enum";
+import { EmpType, Gender, Role } from "./enum";
 
 export interface Address{
     street: string;
@@ -20,8 +20,8 @@ export interface EmployeeAttrs {
   hiringData: Date;
   salary: number;
   designation: string;
-  employeeType: EMPTYPE;
-  gender: GENDER;
+  employeeType: EmpType;
+  gender: Gender;
   address: Address;
   terminationReason: string;
   isActive: boolean;
@@ -39,8 +39,8 @@ export interface EmployeeDoc extends mongoose.Document {
   hiringData: Date;
   salary: number;
   designation: string;
-  employeeType: EMPTYPE;
-  gender: GENDER;
+  employeeType: EmpType;
+  gender: Gender;
   address: Address;
   terminationReason: string;
   isActive: boolean;

@@ -4,13 +4,13 @@ export enum Role {
     EMPLOYEE = "employee"
 }
 
-export enum GENDER{
+export enum Gender{
     MALE = 'male',
     FEMAEL = 'female',
     OTHER = 'other'
 }
 
-export enum EMPTYPE{
+export enum EmpType{
     FULLTIME = 'full time',
     PARTTIME = 'part time',
     INTERN = 'intern',
