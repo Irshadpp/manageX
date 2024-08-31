@@ -20,6 +20,9 @@ import { UserService } from "../services/user/user.service";
 import { OrgService } from "../services/organization/org.service";
 import Password from "../utils/password";
 import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
+import { EmployeeCreatedPublisher } from "../events/publishers/employee-created-publisher";
+import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
+import { Role } from "../model/enum";
 
 const userService = new UserService();
 const orgService = new OrgService();
@@ -49,7 +52,10 @@ export const createUser = async (
     const user = await userService.createUser(req.body);
     const org = await orgService.createOrg({ admin: user.id });
     const organization = { organizationId: org.id } as UserAttrs;
-    await userService.updateUser(user.id, organization);
+    const updatedUser = await userService.updateUser(user.id, organization);
+
+    const eventData = EmployeeCreatedPublisher.mapToEventData(updatedUser!);
+    await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(eventData);
 
     await handleVerificationEmail(user.id, user.email);
 
@@ -229,7 +235,10 @@ export const googleLogin = async (
       const user = await userService.createUserWithGoogle(userData);
       const org = await orgService.createOrg({ admin: user.id });
       const organization = { organizationId: org.id } as UserAttrs;
-      await userService.updateUser(user.id, organization);
+      const updatedUser = await userService.updateUser(user.id, organization);
+
+      const eventData = EmployeeCreatedPublisher.mapToEventData(updatedUser!);
+      await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(eventData);
   
       payload = {
         id: user.id,
