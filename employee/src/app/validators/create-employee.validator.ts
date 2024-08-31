@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { EMPTYPE, GENDER, Role } from "../model/enum";
+import { EmpType, Gender, Role } from "../model/enum";
 
 export const createEmployeeValidator = [
   body("fName")
@@ -24,11 +24,11 @@ export const createEmployeeValidator = [
     .withMessage("Please give valid role"),
     body("employeeType")
       .trim()
-      .isIn(Object.values(EMPTYPE))
+      .isIn(Object.values(EmpType))
       .withMessage("Please give valid employee type"),
   body("gender")
     .trim()
-    .isIn(Object.values(GENDER))
+    .isIn(Object.values(Gender))
     .withMessage("Please give valid gender"),
     body("salary")
     .trim()

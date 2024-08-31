@@ -16,7 +16,7 @@ export class UserService implements IUserService {
   }
 
   async updateUser(id: string, attrs: UserAttrs): Promise<UserDoc | null> {
-    return await User.findByIdAndUpdate(id, { ...attrs });
+    return await User.findByIdAndUpdate(id, { ...attrs }, {new: true});
   }
 
   async findByEmail(email: string): Promise<UserDoc | null> {

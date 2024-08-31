@@ -10,20 +10,21 @@ export interface Address{
 }
 
 export interface EmployeeAttrs {
+  id: string,
   lName?: string;
   email: string;
   username: string;
-  phone: number;
+  phone?: number;
   role: Role;
-  profileURL: string;
-  dob: Date;
-  hiringData: Date;
-  salary: number;
-  designation: string;
-  employeeType: EmpType;
-  gender: Gender;
-  address: Address;
-  terminationReason: string;
+  profileURL?: string;
+  dob?: Date;
+  hiringData?: Date;
+  salary?: number;
+  designation?: string;
+  employeeType?: EmpType;
+  gender?: Gender;
+  address?: Address;
+  terminationReason?: string;
   isActive: boolean;
   organizationId: string;
 }

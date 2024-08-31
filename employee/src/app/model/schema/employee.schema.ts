@@ -94,7 +94,10 @@ const employeeSchema = new mongoose.Schema(
 );
 
 employeeSchema.statics.build = (attrs: EmployeeAttrs) => {
-  return new Employee(attrs);
+  return new Employee({
+    ...attrs,
+    _id: attrs.id,
+  });
 };
 
 const Employee = mongoose.model<EmployeeAttrs, employeeModel>(
