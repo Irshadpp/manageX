@@ -1,61 +1,55 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user/user.service";
-import { BadRequestError } from "@ir-managex/common";
-import {
-  generateEmailToken,
-  verifyEamilToken,
-} from "../utils/jwt/email-varification.jwt";
-import { sendVarificationEmail } from "../utils/node-mailer/send-verification-email";
+import { JWTUserPayload, NotFoundError } from "@ir-managex/common";
 
 const userService = new UserService();
 
-const handleVerificationEmail = async (userId: string, email: string) =>{
-    const token = generateEmailToken(userId);
-    await sendVarificationEmail(email, token);
-}
-
-export const createUser = async (
+export const updateUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { email } = req.body;
-    const existingUser = await userService.findByEmail(email);
-
-    if (existingUser) {
-      if (!existingUser.isEmailVerified) {
-        await handleVerificationEmail(existingUser.id, existingUser.email);
-        return res.status(202).send(existingUser);
-      }
-      throw new BadRequestError("Email is already exists");
+    const { id } = req.user as JWTUserPayload;
+    const checkUser = userService.findById(id);
+    if (!checkUser) {
+      throw new NotFoundError();
     }
-
-    const user = await userService.createUser(req.body);
-
-    await handleVerificationEmail(user.id, user.email);
-
-    res.status(201).send({success: true, user});
+    const userData = req.body;
+    await userService.updateUser(id, userData);
+    res
+      .status(200)
+      .json({ success: true, message: "User details updated successfully" });
   } catch (error) {
     console.log(error);
-    next(error);
   }
 };
 
-export const verifyEmail = async (
+export const fetchUsers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { token } = req.query;
-    if (!token) {
-      throw new BadRequestError("Token is missing");
-    }
-    const { id } = verifyEamilToken(token as string);
-    await userService.verifyUserEmail(id);
-    res.send("Email verified successfully");
+    const users = await userService.getUsersByRole();
+    res
+      .status(200)
+      .json({ success: true, users, message: "Fetched users successfully" });
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
+
+export const blockUser = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const {id} = req.params;
+    const user = await userService.findById(id);
+    if(!user){
+      throw new NotFoundError();
+    }
+    await userService.blockAndUnblock(id);
+    res.status(200).send({success:true})
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -1,15 +1,26 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import SignUpPage from "./pages/landing/signup"
-import Home from "./pages/landing/Home"
-import { ThemeProvider } from "./components/ui/ThemProvider"
-import { GoogleOAuthProvider } from "@react-oauth/google"
-import Login from "./pages/landing/Login"
-import VerifyEmail from "./pages/landing/VerifyEmail"
-import ValidateEmail from "./pages/landing/ValidateEmail"
-import GetStarted from "./pages/landing/GetStarted"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignUpPage from "./pages/landing/registration/signup";
+import Home from "./pages/landing/home/Home";
+import { ThemeProvider } from "./components/ui/ThemProvider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Login from "./pages/landing/login/Login";
+import ValidateEmail from "./pages/landing/registration/ValidateEmail";
+import VerifyEmail from "./pages/landing/registration/VerifyEmail";
+import GetStarted from "./pages/landing/registration/GetStarted";
+import OwnerDashboard from "./pages/owner/OwnerDashboard";
+import ManDashboard from "./pages/manager/ManDashboard";
+import EmpDashboard from "./pages/employee/EmpDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import PublicRoute from "./components/custome/PublicRoute";
+import NotFound from "./pages/NotFound";
+import PrivateRouteWithRole from "./components/custome/PrivateRouteWithRole";
+import OwnerLayout from "./pages/owner/OwnerLayout";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Organizations from "./pages/admin/Organizations";
+import Users from "./pages/admin/Users";
+import { ToastProvider } from "./components/ui/toast";
 
 function App() {
-
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -81,7 +92,7 @@ function App() {
      </GoogleOAuthProvider>
      </ThemeProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

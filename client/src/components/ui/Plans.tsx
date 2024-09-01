@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PlanCards from "@/pages/landing/PlanCards";
+import PlanCards from "@/pages/landing/home/PlanCards";
 
 export default function Plans() {
   return (

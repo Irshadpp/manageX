@@ -4,11 +4,11 @@
 
 @layer base {
   :root {
-    --background: 245, 71%, 98%;
+    --background: 245, 71%, 97%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
+    --popover: 0 0% 90%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 270 100% 50.2%; /* Electric Violet */
     --primary-foreground: 0 0% 100%;
@@ -16,6 +16,7 @@
     --secondary-foreground: 0 0% 100%;
     --muted: 275 30% 80%; /* Lightened Indigo */
     --muted-foreground: 275 20% 40%;
+    --icon: 245, 71%, 90%;
     --accent: 300 30% 75%; /* Misty Lilac */
     --accent-foreground: 270 100% 50%;
     --destructive: 0 84.2% 60.2%;
@@ -44,6 +45,7 @@
     --secondary-foreground: 0 0% 100%;
     --muted: 275 30% 25%;
     --muted-foreground: 275 20% 65%;
+    --icon: 245, 0%, 0%;
     --accent: 280 30% 20%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;

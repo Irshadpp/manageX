@@ -1,10 +1,10 @@
 import { BadRequestError } from "@ir-managex/common";
 import jwt, {JsonWebTokenError} from "jsonwebtoken";
 
-export const generateEmailToken = (userId: string): string =>{
+export const generateEmailToken = (id: string): string =>{
 
     const token = jwt.sign(
-        {id: userId},
+        {id: id},
         process.env.JWT_EMAIL_SECRET!,
         {expiresIn: '1h'}
     )

@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { Role } from "./role.enum";
+import { Role } from "./enum";
 
 export interface UserAttrs {
-  firstName?: string;
-  lastName?: string;
+  fName?: string;
+  lName?: string;
   email: string;
-  username?: string;
+  username: string;
   phone: number;
   password: string;
   role: Role;
@@ -13,14 +13,14 @@ export interface UserAttrs {
   profileURL: string;
   dob: Date;
   isActive: boolean;
-  organization: string;
+  organizationId: string;
 }
 
 export interface UserDoc extends mongoose.Document {
-  firstName?: string;
-  lastName?: string;
+  fName: string;
+  lName: string;
   email: string;
-  username?: string;
+  username: string;
   phone: number;
   password: string;
   role: Role;
@@ -28,7 +28,7 @@ export interface UserDoc extends mongoose.Document {
   profileURL: string;
   dob: Date;
   isActive: boolean;
-  organization: string;
+  organizationId: string;
 }
 
 export interface UserModel extends mongoose.Model<UserDoc>{

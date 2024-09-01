@@ -1,13 +1,13 @@
 import mongoose, { Schema } from "mongoose";
-import { Role } from "../role.enum";
+import { Role } from "../enum";
 import { UserAttrs, UserDoc, UserModel } from "../user.model";
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    fName: {
       type: String,
     },
-    lastName: {
+    lName: {
       type: String,
     },
     email: {
@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     role: {
       type: String,
@@ -51,10 +50,12 @@ const userSchema = new mongoose.Schema(
   },
   {
     toJSON: {
+      virtuals:true,
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.password;
+        delete ret.isEmailVerified;
         delete ret.__v;
       },
     },
