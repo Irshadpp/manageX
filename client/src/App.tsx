@@ -82,6 +82,20 @@ function App() {
           </GoogleOAuthProvider>
         </ToastProvider>
       </ThemeProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <GoogleOAuthProvider clientId="jdlfalskd">
+     <Router>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/signup" element={<SignUpPage/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/validate-email" element={<ValidateEmail/>}/>
+        <Route path="/verify-email" element={<VerifyEmail/>}/>
+        <Route path="/get-started" element={<GetStarted/>}/>
+      </Routes>
+     </Router>
+     </GoogleOAuthProvider>
+     </ThemeProvider>
     </>
   );
 }

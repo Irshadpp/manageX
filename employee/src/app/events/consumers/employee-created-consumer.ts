@@ -20,3 +20,4 @@ export class EmployeeCreatedConsumer extends Consumer<EmployeeCreatedEvent> {
     }
   }
 }
+

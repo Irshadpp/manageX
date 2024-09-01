@@ -42,3 +42,4 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
 };
 
 export default PrivateRouteWithRole;
+
