@@ -21,7 +21,7 @@ interface InputWithIconProps {
 
 const HiringDatePicker: React.FC<InputWithIconProps> = ({ field, title }) => {
   const isDateDisabled = (day: Date): boolean => {
-    return isBefore(day, addDays(new Date(), -1));
+    return isAfter(day, new Date());
   };
   return (
     <FormItem className="flex flex-col">

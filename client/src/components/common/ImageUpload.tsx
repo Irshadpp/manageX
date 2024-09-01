@@ -50,7 +50,7 @@ const ImageUpload = ({
 
   return (
     <div
-      className={`rounded-md bg-backgroundAccent py-10 mb-2 text-center flex flex-col items-center justify-center relative ${
+      className={`rounded-md bg-background py-6 mb-2 text-center flex flex-col items-center justify-center relative ${
         isDragging ? "opacity-70 border-blue-500" : " border-gray-200"
       }`}
       onDragOver={handleDragOver}
@@ -65,8 +65,8 @@ const ImageUpload = ({
       />
       {selectedFile ? (
         <div
-          className={`w-${size ?? "36"} h-${
-            size ?? "36"
+          className={`w-${size ?? "32"} h-${
+            size ?? "32"
           } rounded-full overflow-clip mx-auto`}
         >
           <img
@@ -79,8 +79,8 @@ const ImageUpload = ({
         </div>
       ) : (
         <div
-          className={`w-${size ?? "36"} h-${
-            size ?? "36"
+          className={`w-${size ?? "32"} h-${
+            size ?? "32"
           } rounded-full overflow-clip mx-auto`}
         >
           <img

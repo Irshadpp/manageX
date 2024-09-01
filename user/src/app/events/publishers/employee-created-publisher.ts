@@ -2,7 +2,7 @@ import { EmployeeCreatedEvent, Publisher, Queues } from "@ir-managex/common";
 import { UserDoc } from "../../model/user.model";
 
 export class EmployeeCreatedPublisher extends Publisher<EmployeeCreatedEvent> {
-  queue: Queues = Queues.EmployeeCreated;
+  queue: Queues.EmployeeCreated = Queues.EmployeeCreated;
 
   async publish(data: EmployeeCreatedEvent["data"]): Promise<void> {
     await super.publish(data);

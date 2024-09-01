@@ -18,6 +18,8 @@ export interface OrgAttrs{
     subscriptionStripeId?: string;
     isActive?: string;
     address?: addressObject;
+    members?: string[];
+    project?: string[];
 }
 
 export interface OrgDoc extends mongoose.Document{
@@ -26,13 +28,13 @@ export interface OrgDoc extends mongoose.Document{
     description: string;
     industry: string;
     website: string;
-    members: string[];
-    project: string[];
     subscriptionId: string;
     subscriptionType: string;
     subscriptionStripeId: string;
     isActive: string;
     address: addressObject;
+    members: string[];
+    project: string[];
 }
 
 export interface OrgModel extends mongoose.Model<OrgDoc>{

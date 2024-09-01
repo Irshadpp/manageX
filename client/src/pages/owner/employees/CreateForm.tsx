@@ -22,46 +22,18 @@ import {
 import ImageUpload from "@/components/common/ImageUpload";
 import { useState } from "react";
 import { uploadImage } from "@/utils/uploadImage";
-
-// const checkCredentials = async ({
-//   key,
-//   value,
-// }: {
-//   key: string;
-//   value: string;
-// }) => {
-//   const res = await actualCommonRequest({
-//     route: API_ROUTES.AUTH,
-//     method: "GET",
-//     url: `/api/auth/check-credintials?${key}=${value}`,
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   return res.user;
-// };
-
-const addressSchema = z.object({
-  street: z
-    .string()
-    .min(2, { message: "Street must be at least 2 characters." }),
-  state: z.string().min(2, { message: "State must be at least 2 characters." }),
-  city: z.string().min(2, { message: "City must be at least 2 characters." }),
-  country: z
-    .string()
-    .min(2, { message: "Country must be at least 2 characters." }),
-  zipCode: z.string(),
-});
+import { apiRequest } from "@/services/api/commonRequest";
+import { useNavigate } from "react-router-dom";
 
 const employeeSchema = z.object({
-  firstName: z
+  fName: z
     .string()
     .min(2, { message: "First name must be at least 2 characters." }),
-  lastName: z
+  lName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters." }),
   role: z.string().min(2, { message: "Please give a valid role." }),
-  phoneNumber: z
+  phone: z
     .string()
     .min(8, { message: "Phone Number must be at least 10 numbers." }),
   email: z
@@ -75,50 +47,77 @@ const employeeSchema = z.object({
     .string()
     .min(2, { message: "Please give valid employee type." }),
   salary: z.string(),
-  hiringDate: z.date(),
-  profileImageURL: z.string().optional(),
+  hiringDate: z
+    .date(),
+    // .refine((date) => date <= new Date(), {
+    //   message: "The hiring date cannot be in the future.",
+    // }),
+  profileURL: z.string().optional(),
   gender: z
     .string()
     .min(2, { message: "Please give valid gender." }),
-  address: addressSchema,
+    street: z
+    .string()
+    .min(2, { message: "Street must be at least 2 characters." }),
+  state: z.string().min(2, { message: "State must be at least 2 characters." }),
+  city: z.string().min(2, { message: "City must be at least 2 characters." }),
+  country: z
+    .string()
+    .min(2, { message: "Country must be at least 2 characters." }),
+  zipcode: z.string(),
 });
 
 const CreateForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>();
   const [error, setError] = useState("");
   const [ loading, setLoading ] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      fName: "",
+      lName: "",
       role: "",
-      phoneNumber: "",
+      phone: "",
       username: "",
       email: "",
       employeeType: "",
       gender: "",
       salary: "",
       hiringDate: new Date(),
-      address: {
         city: "",
         country: "",
         state: "",
         street: "",
-        zipCode: "",
-      },
+        zipcode: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof employeeSchema>) => {
+    setLoading(true);
     const profileImageURL = selectedFile && (await uploadImage(selectedFile));
     if (profileImageURL) {
-      values.profileImageURL = profileImageURL;
+      values.profileURL = profileImageURL;
     }
-    // await dispatch(createEmployee(values)).then(() => {
-    //   router.back();
-    // });
+    console.log(values)
+    const res = await apiRequest({
+      method: "POST",
+      url: import.meta.env.VITE_EMPLOYEE_URL,
+      route: "/api/v1/employee",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: {...values}
+    });
+
+    if(!res.success){
+      setError(res?.errors[0]?.message || "Employee creation failed");
+      return setLoading(false);
+    }
+
+    setLoading(false);
+    navigate("/owner/employees/list");
   };
 
   return (
@@ -164,7 +163,7 @@ const CreateForm = () => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-backgroundAccent">
+                      <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select Role" />
                       </SelectTrigger>
                     </FormControl>
@@ -189,13 +188,13 @@ const CreateForm = () => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-backgroundAccent">
+                      <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select Employee Type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="fulltime">Fulltime</SelectItem>
-                      <SelectItem value="partTime">Part Time</SelectItem>
+                      <SelectItem value="full time">Fulltime</SelectItem>
+                      <SelectItem value="part Time">Part Time</SelectItem>
                       <SelectItem value="intern">Intern</SelectItem>
                     </SelectContent>
                   </Select>
@@ -214,7 +213,7 @@ const CreateForm = () => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-backgroundAccent">
+                      <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
                     </FormControl>
@@ -233,7 +232,7 @@ const CreateForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <FormField
                 control={form.control}
-                name="firstName"
+                name="fName"
                 render={({ field }) => (
                   <FormInputCustom
                     placeholder="Enter First Name"
@@ -245,7 +244,7 @@ const CreateForm = () => {
               />
               <FormField
                 control={form.control}
-                name="lastName"
+                name="lName"
                 render={({ field }) => (
                   <FormInputCustom
                     placeholder="Enter Last Name"
@@ -258,7 +257,7 @@ const CreateForm = () => {
             </div>
             <FormField
               control={form.control}
-              name="phoneNumber"
+              name="phone"
               render={({ field }) => (
                 <FormInputCustom
                   placeholder="Enter Phone Number"
@@ -294,7 +293,7 @@ const CreateForm = () => {
             />
             <FormField
               control={form.control}
-              name="address.street"
+              name="street"
               render={({ field }) => (
                 <FormInputCustom
                   field={field}
@@ -307,7 +306,7 @@ const CreateForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <FormField
                 control={form.control}
-                name="address.city"
+                name="city"
                 render={({ field }) => (
                   <FormInputCustom
                     field={field}
@@ -319,7 +318,7 @@ const CreateForm = () => {
               />
               <FormField
                 control={form.control}
-                name="address.state"
+                name="state"
                 render={({ field }) => (
                   <FormInputCustom
                     field={field}
@@ -331,7 +330,7 @@ const CreateForm = () => {
               />
               <FormField
                 control={form.control}
-                name="address.country"
+                name="country"
                 render={({ field }) => (
                   <FormInputCustom
                     field={field}
@@ -344,11 +343,11 @@ const CreateForm = () => {
             </div>
             <FormField
               control={form.control}
-              name="address.zipCode"
+              name="zipcode"
               render={({ field }) => (
                 <FormInputCustom
                   field={field}
-                  placeholder="Enter your organization zipCode"
+                  placeholder="Enter your organization zipcode"
                   title="Zip Code"
                   showTitle={true}
                 />

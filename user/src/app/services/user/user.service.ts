@@ -5,8 +5,13 @@ import { User } from "../../model/schema/user.schema";
 
 export class UserService implements IUserService {
   async createUser(attrs: UserAttrs): Promise<UserDoc> {
-    const hashedPassword = await Password.toHash(attrs.password);
+    const hashedPassword = await Password.toHash(attrs.password!);
     const newUser = User.build({ ...attrs, password: hashedPassword });
+    return await newUser.save();
+  }
+
+  async createEmployeeUser(attrs: UserAttrs): Promise<UserDoc>{
+    const newUser = User.build(attrs);
     return await newUser.save();
   }
 

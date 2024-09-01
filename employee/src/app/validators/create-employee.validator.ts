@@ -61,11 +61,6 @@ export const createEmployeeValidator = [
     .isLength({ min: 10, max: 15 })
     .withMessage("Please give valid phone"),
   body("hiringDate")
-    .isDate()
-    .withMessage("Please provide a valid date"),
-  body("dob")
-    .isDate()
-    .withMessage("Please provide a valid date")
-    .isBefore(new Date().toISOString())
-    .withMessage("Date of birth must be in the past"),
+    // .isDate()
+    // .withMessage("Please provide a valid date"),
 ];

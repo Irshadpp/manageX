@@ -51,6 +51,8 @@ const orgSchema = new mongoose.Schema(
       type: String,
     },
     address: addressSchema,
+    members: [{type: Schema.Types.ObjectId}],
+    projects: [{type: Schema.Types.ObjectId}]
   },
   {
     toJSON: {

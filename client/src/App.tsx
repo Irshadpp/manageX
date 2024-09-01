@@ -1,12 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignUpPage from "./pages/landing/registration/signup";
 import Home from "./pages/landing/home/Home";
 import { ThemeProvider } from "./components/ui/ThemProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./pages/landing/login/Login";
-import ValidateEmail from "./pages/landing/registration/ValidateEmail";
-import VerifyEmail from "./pages/landing/registration/VerifyEmail";
-import GetStarted from "./pages/landing/registration/GetStarted";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
 import ManDashboard from "./pages/manager/ManDashboard";
 import EmpDashboard from "./pages/employee/EmpDashboard";
@@ -24,6 +20,10 @@ import EmployeeList from "./pages/owner/employees/EmployeeList";
 import CreateEmployee from "./pages/owner/employees/CreateEmployee";
 import LeaveRequests from "./pages/owner/employees/LeaveRequests";
 import ExEmployees from "./pages/owner/employees/ExEmployees";
+import ValidateEmail from "./pages/landing/Registration/ValidateEmail";
+import SignUpPage from "./pages/landing/Registration/signup";
+import VerifyEmail from "./pages/landing/Registration/VerifyEmail";
+import GetStarted from "./pages/landing/Registration/GetStarted";
 
 function App() {
   return (

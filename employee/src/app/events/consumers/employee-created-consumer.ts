@@ -5,7 +5,7 @@ import { EmployeeService } from "../../services/employee/employee.service";
 const employeeService = new EmployeeService();
 
 export class EmployeeCreatedConsumer extends Consumer<EmployeeCreatedEvent> {
-  queue: Queues = Queues.EmployeeCreated;
+  queue: Queues.EmployeeCreated = Queues.EmployeeCreated;
 
   async onMessage(data: EmployeeCreatedEvent["data"], msg: amqp.Message): Promise<void> {
     try {

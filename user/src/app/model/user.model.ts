@@ -2,21 +2,23 @@ import mongoose from "mongoose";
 import { Role } from "./enum";
 
 export interface UserAttrs {
+  id: string;
   fName?: string;
   lName?: string;
   email: string;
   username: string;
   phone: number;
-  password: string;
+  password?: string;
   role: Role;
-  isEmailVerified: boolean;
-  profileURL: string;
+  isEmailVerified?: boolean;
+  profileURL?: string;
   dob: Date;
   isActive: boolean;
   organizationId: string;
 }
 
 export interface UserDoc extends mongoose.Document {
+  id: string;
   fName: string;
   lName: string;
   email: string;

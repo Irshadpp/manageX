@@ -10,7 +10,8 @@ export interface Address{
 }
 
 export interface EmployeeAttrs {
-  id: string,
+  id: string;
+  fName?: string;
   lName?: string;
   email: string;
   username: string;
@@ -30,6 +31,8 @@ export interface EmployeeAttrs {
 }
 
 export interface EmployeeDoc extends mongoose.Document {
+  id: string;
+  fName?: string;
   lName?: string;
   email: string;
   username: string;
