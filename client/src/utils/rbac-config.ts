@@ -1,7 +1,8 @@
 export const rbacConfig = {
     owner: [
         "/get-started",
-        "/owner"
+        "/owner",
+        "/employees"
     ],
     manager: [
         "/manager"
