@@ -1,7 +1,6 @@
 import { Consumer, EmployeeCreatedEvent, Queues } from "@ir-managex/common";
 import amqp from "amqplib"
 import { EmployeeService } from "../../services/employee/employee.service";
-import { EmployeeAttrs } from "../../model/employee.model";
 
 const employeeService = new EmployeeService();
 

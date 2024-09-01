@@ -7,7 +7,7 @@ const OwnerLayout = () => {
   return (
     <div className="flex h-screen">
       <OwnerSideBar />
-      <div className="flex-grow p-4">
+      <div className="flex-grow">
         <Outlet/>
       </div>
     </div>

@@ -21,7 +21,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import logout from "@/services/auth/logout";
 import useLogout from "@/hooks/useLogout";
 
 const OwnerSideBar = () => {
