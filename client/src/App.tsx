@@ -12,6 +12,60 @@ function App() {
 
   return (
     <>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <ToastProvider>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <Router>
+              <Routes>
+                <Route element={<PublicRoute />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/signup" element={<SignUpPage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/validate-email" element={<ValidateEmail />} />
+                  <Route path="/verify-email" element={<VerifyEmail />} />
+                </Route>
+
+                <Route element={<PrivateRouteWithRole requiredRole="owner" />}>
+                  <Route path="/get-started" element={<GetStarted />} />
+                  <Route path="/owner" element={<OwnerLayout />}>
+                    <Route index element={<OwnerDashboard />} />
+
+                    <Route path="employees" element={<EmployeeSideMenu/>}>
+                      <Route index element={<EmployeeList/>}/>
+                      <Route path="list" element={<EmployeeList/>}/>
+                      <Route path="create" element={<CreateEmployee/>}/>
+                      <Route path="leave" element={<LeaveRequests/>}/>
+                      <Route path="ex-employee" element={<ExEmployees/>}/>
+                    </Route>
+                  </Route>
+                </Route>
+
+                <Route
+                  element={<PrivateRouteWithRole requiredRole="manager" />}
+                >
+                  <Route path="/manager" element={<ManDashboard />} />
+                </Route>
+
+                <Route
+                  element={<PrivateRouteWithRole requiredRole="employee" />}
+                >
+                  <Route path="/employee" element={<EmpDashboard />} />
+                </Route>
+
+                <Route element={<PrivateRouteWithRole requiredRole="admin" />}>
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="organizations" element={<Organizations />} />
+                    <Route path="users" element={<Users />} />
+                  </Route>
+                </Route>
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Router>
+          </GoogleOAuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
     <GoogleOAuthProvider clientId="jdlfalskd">
      <Router>
