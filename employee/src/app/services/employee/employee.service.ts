@@ -7,6 +7,12 @@ export class EmployeeService implements IEmployeeService{
         const newEmployee = Employee.build(attrs);
         return await newEmployee.save();
     }
+    async updateEmployee(empId: string, attrs: EmployeeAttrs): Promise<EmployeeDoc | null>{
+        return await Employee.findByIdAndUpdate(empId, {...attrs}, {new: true});
+    }
+    async findById(id: string):Promise<EmployeeDoc | null>{
+        return await Employee.findById(id);
+    }
     async findByEmail(email: string): Promise<EmployeeDoc | null> {
        return await Employee.findOne({ email });
       }

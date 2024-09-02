@@ -4,6 +4,7 @@ import { envChecker } from "./config/env-checker";
 import dotenv from "dotenv";
 import { rabbitmqWrapper } from "./config/rabbimq-wrapper";
 import { UserCreatedConsumer } from "./app/events/consumers/user-created-consumer";
+import { UserUpdatedConsumer } from "./app/events/consumers/user-updated-consuer";
 dotenv.config();
 
 const start = async () => {
@@ -11,6 +12,7 @@ const start = async () => {
     envChecker();
     await rabbitmqWrapper.connect();
     new UserCreatedConsumer(rabbitmqWrapper.channel).consume();
+    new UserUpdatedConsumer(rabbitmqWrapper.channel).consume();
 
     connectDB();
   } catch (error: any) {

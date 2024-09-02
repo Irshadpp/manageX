@@ -103,4 +103,12 @@ export class UserService implements IUserService {
       [{ $set: { isActive: { $not: "$isActive" } } }]
     );
   }
+  
+async updatePassword(id: string, password: string){
+  await User.findByIdAndUpdate(id,
+    {$set: {password}}
+  )
 }
+
+}
+

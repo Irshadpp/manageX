@@ -253,7 +253,6 @@ export const googleLogin = async (
     setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
     setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
 
-
     res.status(200).json({
       success: true,
       user: payload,
@@ -285,4 +284,15 @@ export const logout = async (req:Request, res:Response, next:NextFunction) =>{
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
   res.status(200).send({ success: true, message: "Logged out successfully"});
+}
+
+export const setPassword = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const {id} = req.user as JWTUserPayload;
+    const {password} = req.body;
+    await userService.updatePassword(id, password);
+  } catch (error) {
+    console.log(error)
+    next(error);
+  }
 }

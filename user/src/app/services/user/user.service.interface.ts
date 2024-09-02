@@ -9,4 +9,7 @@ export interface IUserService{
     verifyUserEmail(id: string): Promise<UserDoc | null>;
     findById(id: string): Promise<UserDoc | null>;
     getUsersByRole(): Promise<any>;
+    getUserById(id: string): Promise<boolean | null>;
+    blockAndUnblock(id: string): Promise<void>;
+    updatePassword(id: string, password: string): Promise<void>;
 }
