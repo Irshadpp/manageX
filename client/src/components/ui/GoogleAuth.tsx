@@ -33,11 +33,11 @@ GoogleAuth = () => {
         }
         const userData = {
           user: {...res.user},
-          accessToken: res.accessToken,
+          // accessToken: res.accessToken
           refreshToken: res.refreshToken
         }
 
-        storeObject("userData", userData);
+        // storeObject("userData", userData);
         dispatch(setCredentials(userData));
 
         switch(userData.user.role){

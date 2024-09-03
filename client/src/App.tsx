@@ -24,6 +24,7 @@ import ValidateEmail from "./pages/landing/Registration/ValidateEmail";
 import SignUpPage from "./pages/landing/Registration/signup";
 import VerifyEmail from "./pages/landing/Registration/VerifyEmail";
 import GetStarted from "./pages/landing/Registration/GetStarted";
+import VerifiedEmail from "./pages/landing/Registration/VerifiedEmail";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 </Route>
 
                 <Route element={<PrivateRouteWithRole requiredRole="owner" />}>
+                <Route path="/email-verified" element={<VerifiedEmail/>}/>
                   <Route path="/get-started" element={<GetStarted />} />
                   <Route path="/owner" element={<OwnerLayout />}>
                     <Route index element={<OwnerDashboard />} />
@@ -75,27 +77,12 @@ function App() {
                     <Route path="users" element={<Users />} />
                   </Route>
                 </Route>
-
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
           </GoogleOAuthProvider>
         </ToastProvider>
       </ThemeProvider>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-    <GoogleOAuthProvider clientId="jdlfalskd">
-     <Router>
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/signup" element={<SignUpPage/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/validate-email" element={<ValidateEmail/>}/>
-        <Route path="/verify-email" element={<VerifyEmail/>}/>
-        <Route path="/get-started" element={<GetStarted/>}/>
-      </Routes>
-     </Router>
-     </GoogleOAuthProvider>
-     </ThemeProvider>
     </>
   );
 }

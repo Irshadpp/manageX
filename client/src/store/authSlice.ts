@@ -1,4 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import { AppThunk } from ".";
+import { apiRequest } from "@/services/api/commonRequest";
+import { deleteObject, storeObject } from "@/utils/local-storage";
+import { Value } from "@radix-ui/react-select";
 
 interface User{
     id: string,
@@ -8,40 +12,62 @@ interface User{
 
 interface AuthState{
     user: User | null;
-    accessToken: string | null;
     isInitialSetup: boolean;
     isAuthenticated: boolean;
-    // isBlocked: boolean
 }
 
 const initialState: AuthState = {
     user: null,
-    accessToken: null,
     isInitialSetup: false,
     isAuthenticated: false,
-    // isBlocked: false,
 }
 
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers:{
-        setCredentials: (state, action: PayloadAction<{user: any, accessToken: string, isInitialSetup?: boolean}>) =>{
+        setCredentials: (state, action: PayloadAction<{user: any}>) =>{
             state.user = action.payload.user;
-            state.accessToken = action.payload.accessToken;
-            state.isInitialSetup = action.payload.isInitialSetup || false;
             state.isAuthenticated = true;
+            storeObject("userData", state.user)
         },
-        // updateUserStatus: (state, action: PayloadAction<{ isBlocked: boolean }>)=>{
-        //     state.isBlocked = action.payload.isBlocked;
-        // },
+        rehydrateAuthState: (state, action: PayloadAction<User | null>) => {
+            state.user = action.payload;
+            state.isAuthenticated = action.payload !== null;
+        },
+        updateIntitialSetup: (state,  action: PayloadAction<{value: boolean}>) =>{
+            console.log("-=-=-=-=-=-=-=-=-=-=--==-=");
+            state.isInitialSetup = action.payload.value;
+        },
         clearCredentials: (state) =>{
             state.user = null;
-            state.accessToken = null;
             state.isAuthenticated = false;
+            deleteObject("userData")
         }
     }
 });
 
-export const { setCredentials,  clearCredentials} = authSlice.actions;
+export const { setCredentials, rehydrateAuthState, updateIntitialSetup, clearCredentials} = authSlice.actions;
+
+export const checkAuthStatus = (): AppThunk => async (dispatch) =>{
+    try {
+        const response = await apiRequest({
+            method: "GET",
+            url: import.meta.env.VITE_USERS_URL,
+            route:`/api/v1/auth/check-user`,
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+        if(response.status === 200){
+            dispatch(setCredentials({user: response.user}));
+        }else{
+            dispatch(clearCredentials());
+        }
+    } catch (error) {
+        console.log(error)
+        dispatch(clearCredentials())
+    }
+}
+
 export default authSlice.reducer;

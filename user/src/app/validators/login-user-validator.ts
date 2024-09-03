@@ -9,13 +9,5 @@ export const loginUserValidator =  [
       .matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).*$/)
       .withMessage(
         "Password must include at least one uppercase letter, one number, and one symbol"
-      ),
-    body("confirmPassword")
-      .trim()
-      .custom((value, { req }) => {
-        if (value !== req.body.password) {
-          throw new Error("Passwords do not match");
-        }
-        return true;
-      })
+      )
     ]

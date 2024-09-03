@@ -118,6 +118,7 @@ export const loginUser = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("=========")
   try {
     const { email, password } = req.body;
     const user = await userService.findByEmail(email);

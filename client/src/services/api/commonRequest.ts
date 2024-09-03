@@ -30,9 +30,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
         async (error) =>{
 
             const originalRequest = error.config;
-            // const userData = getObject("userData");
 
-            //if error is due to accessToken expiration and havn't retried yet
             if(error.response.status === 401 && !originalRequest._retry){
                 originalRequest._retry = true;
 
@@ -43,9 +41,9 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
                       });
                     const refreshResponse = await refreshApiInstance.post("/api/v1/auth/refresh-token");
 
-                    const {accessToken} = refreshResponse.data;
+                    // const {accessToken} = refreshResponse.data;
 
-                    store.dispatch(setCredentials({user: store.getState().auth.user, accessToken}));
+                    store.dispatch(setCredentials({user: store.getState().auth.user}));
 
                     return apiInstance(originalRequest);    
                 } catch (refreshError) {

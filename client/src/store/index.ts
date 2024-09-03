@@ -1,5 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer, { setCredentials } from "./authSlice"
+import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
 import { getObject } from "@/utils/local-storage";
 
 const store = configureStore({
@@ -9,11 +9,18 @@ const store = configureStore({
 });
 
 const userData = getObject("userData");
-if(userData){
-    store.dispatch(setCredentials(userData));
+if (userData) {
+    store.dispatch(rehydrateAuthState(userData));
 }
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+ReturnType,
+RootState,
+unknown,
+Action<string>
+>;
 
 export default store;

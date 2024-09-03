@@ -7,6 +7,8 @@ import { z } from "zod";
 import { apiRequest } from "@/services/api/commonRequest";
 import FormInput from "@/components/custome/FormInput";
 import { deleteObject } from "@/utils/local-storage";
+import { useDispatch } from "react-redux";
+import { updateIntitialSetup } from "@/store/authSlice";
 
 const formSchema = z.object({
   street:z
@@ -60,6 +62,7 @@ const OrganizationAddress = ({ handleNext }: { handleNext: any }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,8 +95,8 @@ const OrganizationAddress = ({ handleNext }: { handleNext: any }) => {
     }
 
     handleNext();
+    dispatch(updateIntitialSetup({value: false}));
     setLoading(false);
-    deleteObject("userData");
     } catch (error) {
       setError("Something went wrong...");
       return setLoading(false);
