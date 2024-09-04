@@ -272,10 +272,9 @@ export const checkUser = async (req: Request, res: Response,
     //@ts-ignore
     const {id} = req.user
     const user = await userService.getUserById(id);
-    const accessToken = req.cookies.accessToken
     res
       .status(200)
-      .json({ success: true, user, accessToken , message: "Fetched user status successfully" });
+      .json({ success: true, user  , message: "Fetched user status successfully" });
   } catch (error) {
     console.log(error);
   }

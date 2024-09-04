@@ -30,3 +30,13 @@ export const updateOrg = async (
     console.log(error);
   }
 };
+
+export const fetchOrgs = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const orgsData = await orgService.getOrgsByPlan()
+    res.status(200).send({ success: true, orgsData});
+  } catch (error) {
+    console.log(error)
+    next(error);
+  }
+}

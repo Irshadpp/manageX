@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '@/store';
 import { checkAuthStatus } from '@/store/authSlice';
+import useSessionCheck from '@/hooks/useSessionCheck';
 
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
-
+  useSessionCheck();
   const { isAuthenticated, user, isInitialSetup } = useSelector((state: RootState) => state.auth);
   const userRole = user?.role as Role;
   const [loading, setLoading] = useState(true);

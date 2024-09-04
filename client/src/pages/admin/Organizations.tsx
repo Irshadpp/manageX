@@ -1,11 +1,9 @@
-import { OrganizationTable } from '@/components/custome/OrgnizationTable'
-import { Table } from '@/components/ui/table'
-import React from 'react'
+import OrganizationTabs from '@/components/custome/OrganizationTabs'
 
 const Organizations = () => {
   return (
     <div>
-      <OrganizationTable/>
+      <OrganizationTabs/>
     </div>
   )
 }

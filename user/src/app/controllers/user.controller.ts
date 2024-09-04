@@ -30,6 +30,7 @@ export const fetchUsers = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("-------------")
   try {
     const users = await userService.getUsersByRole();
     res

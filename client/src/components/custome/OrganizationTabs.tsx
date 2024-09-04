@@ -11,49 +11,55 @@ import {
 } from "@/components/ui/tabs";
 import { UsersTable } from "./UsersTable";
 import { apiRequest } from "@/services/api/commonRequest";
+import { OrganizationTable } from "./OrgnizationTable";
 
 
-interface User {
-  email: string;
-  isActive: boolean;
-  username: string;
-  phone: number;
-  org: string;
+interface Organization{
+    admin: string
+    email: string
+    phone: number
+    orgName: string
+    industry: string
+    createdAt: Date
+  }
+
+interface OrganizationsData {
+  free: Organization[];
+  pro: Organization[];
+  business: Organization[];
 }
 
-export interface UsersData {
-  owners: User[];
-  managers: User[];
-  employees: User[];
-}
+const OrganizationTabs = () => {
 
-export function UsersTabs() {
-  const [tab, setTab] = useState("owners");
-  const [refresh, setRefresh] = useState(false);
-  const [usersData, setUsersData] = useState<UsersData>({
-    owners: [],
-    managers: [],
-    employees: [],
+    const [tab, setTab] = useState("free");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [OrgsData, setOrgsData] = useState<OrganizationsData>({
+    free: [],
+    pro: [],
+    business: [],
   });
 
   
 
   useEffect(()=>{
-    const fetchUsers = async () =>{
+    const fetchOrganizations = async () =>{
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_USERS_URL,
-        route: "/api/v1/users",
+        url: import.meta.env.VITE_OrganizationS_URL,
+        route: "/api/v1/organizations",
         headers:{
           "Content-Type": "application/json"
         }
       });
-      if(res.success){
-        return setUsersData(res.users[0])
+      if(!res.success){
+        setError(res?.errors[0]?.message || "Something went wrong while fetching orgnizatinos details");
+        return setLoading(false);
       }
+        return setOrgsData(res.data)
     }
-    fetchUsers()
-  },[refresh])
+    fetchOrganizations()
+  },[]);
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -65,24 +71,26 @@ export function UsersTabs() {
       <TabsContent value="owners">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.owners} refresh={setRefresh}/>
+            <OrganizationTable data={OrgsData.free}/>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="managers">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.managers} refresh={setRefresh}/>
+            <OrganizationTable data={OrgsData.pro}/>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="employees">
         <Card>
           <CardContent>
-            <UsersTable data={usersData.employees} refresh={setRefresh}/>
+            <OrganizationTable data={OrgsData.business}/>
           </CardContent>
         </Card>
       </TabsContent>
     </Tabs>
-  );
+  )
 }
+
+export default OrganizationTabs;

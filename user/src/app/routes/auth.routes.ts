@@ -3,6 +3,7 @@ import { createUserValidator } from '../validators/create-user.validator';
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import { checkUser, createUser, googleLogin, loginUser, logout, newToken, setPassword, verifyEmail } from '../controllers/auth.controller';
 import { loginUserValidator } from '../validators/login-user-validator';
+import { isBlock } from "../middlewares/isBlocked";
 
 const router = express.Router();
 

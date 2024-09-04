@@ -31,4 +31,68 @@ export class OrgService implements IOrgService {
       { new: true, runValidators: true }
     );
   }
+  
+  async fetchOrgs(): Promise<any> {
+    return await Organization.find().populate({
+      path: 'admin',
+      select: 'fName email phone'
+    }).select('orgName industry');
+  }
+
+  async getOrgsByPlan(): Promise<any>{
+    return await Organization.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "admin",
+          foreignField: "_id",
+          as: "organization",
+        },
+      },
+      { $unwind: "$organization" },
+      {
+        $facet: {
+          free: [
+            { $match: { subscriptionType: "free" } },
+            {
+              $project: {
+                username: 1,
+                email: 1,
+                phone: 1,
+                industry: 1,
+                // createdAt: 1
+                org: "$organization.orgName",
+              },
+            },
+          ],
+          pro: [
+            { $match: { subscriptionType: "pro" } },
+            {
+              $project: {
+                username: 1,
+                email: 1,
+                phone: 1,
+                industry: 1,
+                // createdAt: 1
+                org: "$organization.orgName",
+              },
+            },
+          ],
+          business: [
+            { $match: { subscriptionType: "business" } },
+            {
+              $project: {
+                username: 1,
+                email: 1,
+                phone: 1,
+                industry: 1,
+                // createdAt: 1
+                org: "$organization.orgName",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+  }
 }

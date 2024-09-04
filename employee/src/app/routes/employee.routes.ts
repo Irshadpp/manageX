@@ -6,6 +6,8 @@ import { sendInvitationValidator } from '../validators/send-invitation.mail.vali
 
 const router = express.Router();
 
+// const isAuth = new requireAuth(Emplo)
+
 router.post('/',
     requireAuth,
     createEmployeeValidator,

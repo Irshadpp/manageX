@@ -42,7 +42,6 @@ export type User = {
   phone: number
 }
 
- 
 
 export function UsersTable({ data, refresh }: { data: any, refresh: React.Dispatch<React.SetStateAction<boolean>>  }) {
   const [sorting, setSorting] = React.useState<SortingState>([])

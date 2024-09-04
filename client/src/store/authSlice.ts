@@ -2,7 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 import { AppThunk } from ".";
 import { apiRequest } from "@/services/api/commonRequest";
 import { deleteObject, storeObject } from "@/utils/local-storage";
-import { Value } from "@radix-ui/react-select";
 
 interface User{
     id: string,
@@ -36,7 +35,6 @@ const authSlice = createSlice({
             state.isAuthenticated = action.payload !== null;
         },
         updateIntitialSetup: (state,  action: PayloadAction<{value: boolean}>) =>{
-            console.log("-=-=-=-=-=-=-=-=-=-=--==-=");
             state.isInitialSetup = action.payload.value;
         },
         clearCredentials: (state) =>{

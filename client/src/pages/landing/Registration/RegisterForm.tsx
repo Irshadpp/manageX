@@ -41,7 +41,7 @@ const formSchema = z.object({
     .string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Password doesn't match",
-  path: ["confirmPasword"],
+  path: ["confirmPassword"],
 });
 
 

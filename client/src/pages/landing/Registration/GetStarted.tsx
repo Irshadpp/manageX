@@ -43,11 +43,11 @@ const GetStarted = () => {
         {currPage === 2 && <OrganizationDetails handleNext={handleNext}/>}
         {currPage === 3 && <OrganizationAddress handleNext={handleNext}/>}
         {currPage === 4 && <RegistrationComplete/>}
-        {currPage !== (0 || 4)&&   (
+        {/* {currPage !== (0 || 4)&&   (
           <div className="">
         <Button className='bg-secondary' onClick={handleBack}>Back</Button>
         </div>
-        )}
+        )} */}
         </div>
       </div>
     </div>
