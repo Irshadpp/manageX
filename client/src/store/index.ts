@@ -1,11 +1,13 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
+import employeeReducer from "./employeeSlice"
 import { getObject } from "@/utils/local-storage";
 
 const store = configureStore({
     reducer:{
-        auth: authReducer
-    }
+        auth: authReducer,
+        employee: employeeReducer
+    },
 });
 
 const userData = getObject("userData");

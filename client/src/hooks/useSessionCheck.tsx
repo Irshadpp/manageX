@@ -17,12 +17,10 @@ const useSessionCheck = () =>{
                     }
                 });
                 const {user} = response;
-                console.log(user)
                 if(!user.isActive){
                     return dispatch(clearCredentials());
                 }
             } catch (error) {
-                console.log( "-----------",error)
                 dispatch(clearCredentials())
             }
         }

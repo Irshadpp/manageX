@@ -28,7 +28,6 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
     return <div>Loading...</div>;
   }
   
-  console.log("---------------------", isInitialSetup);
   if(isAuthenticated && isInitialSetup){
     return <Navigate to={"/email-verified"} replace/>
   }
