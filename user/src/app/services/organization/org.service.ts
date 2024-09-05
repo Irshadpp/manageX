@@ -15,7 +15,7 @@ export class OrgService implements IOrgService {
   async updateOrg(
     orgId: string,
     attrs: Partial<OrgAttrs>,
-    isAddress: boolean
+    isAddress?: boolean
   ): Promise<OrgDoc | null> {
     const updateFields: any = {};
     if (isAddress) {
@@ -23,11 +23,17 @@ export class OrgService implements IOrgService {
         updateFields[`address.${key}`] = value;
       }
     } else {
-      Object.assign(updateFields, attrs);
+      for(const [key, value] of Object.entries(attrs)){
+        if(Array.isArray(value)){
+          updateFields[`$addToSet`] = { [key]: {$each: value}};
+        }else{
+          updateFields[`$set`] = { [key]: value };
+        }
+      }
     }
     return await Organization.findByIdAndUpdate(
       orgId,
-      { $set: updateFields },
+      updateFields,
       { new: true, runValidators: true }
     );
   }
@@ -46,22 +52,22 @@ export class OrgService implements IOrgService {
           from: "users",
           localField: "admin",
           foreignField: "_id",
-          as: "organization",
+          as: "user",
         },
       },
-      { $unwind: "$organization" },
+      { $unwind: "$user" },
       {
         $facet: {
           free: [
-            { $match: { subscriptionType: "free" } },
+            { $match: { subscriptionType: "free", "user.role": {$ne: "admin"} } },
             {
               $project: {
-                username: 1,
-                email: 1,
-                phone: 1,
+                username: "$user.username",
+                email: "$user.email",
+                phone: "$user.phone",
                 industry: 1,
-                // createdAt: 1
-                org: "$organization.orgName",
+                createdAt: 1,
+                organization: "$orgName",
               },
             },
           ],
@@ -69,12 +75,12 @@ export class OrgService implements IOrgService {
             { $match: { subscriptionType: "pro" } },
             {
               $project: {
-                username: 1,
-                email: 1,
-                phone: 1,
+                username: "$user.username",
+                email: "$user.email",
+                phone: "$user.phone",
                 industry: 1,
-                // createdAt: 1
-                org: "$organization.orgName",
+                createdAt: 1,
+                organization: "$orgName",
               },
             },
           ],
@@ -82,12 +88,12 @@ export class OrgService implements IOrgService {
             { $match: { subscriptionType: "business" } },
             {
               $project: {
-                username: 1,
-                email: 1,
-                phone: 1,
+                username: "$user.username",
+                email: "$user.email",
+                phone: "$user.phone",
                 industry: 1,
-                // createdAt: 1
-                org: "$organization.orgName",
+                createdAt: 1,
+                organization: "$orgName",
               },
             },
           ],

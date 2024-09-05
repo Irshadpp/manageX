@@ -98,10 +98,10 @@ export function OrganizationTable({data}:{data: any}) {
 
  const columns: ColumnDef<Organization>[] = [
     {
-      accessorKey: "admin",
+      accessorKey: "username",
       header: "Owner",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("admin")}</div>
+        <div className="capitalize">{row.getValue("username")}</div>
       ),
     },
     {
@@ -130,22 +130,29 @@ export function OrganizationTable({data}:{data: any}) {
       accessorKey: "organization",
       header: "Organization",
       cell: ({ row }) => (
-        <div className="captlize">{row.getValue("phone")}</div>
+        <div className="captlize">{row.getValue("organization")}</div>
       ),
     },
     {
       accessorKey: "industry",
       header: "Industry",
       cell: ({ row }) => (
-        <div className="captlize">{row.getValue("phone")}</div>
+        <div className="captlize">{row.getValue("industry")}</div>
       ),
     },
     {
-      accessorKey: "registered date",
+      accessorKey: "createdAt",
       header: "Registerd Date",
-      cell: ({ row }) => (
-        <div className="captlize">{row.getValue("phone")}</div>
-      ),
+      cell: ({ row }) => {
+        const date = new Date(row.getValue("createdAt"));
+        const formattedDate = new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }).format(date);
+    
+        return <div className="capitalize">{formattedDate}</div>;
+      },
     },
   ]
 
@@ -257,10 +264,6 @@ export function OrganizationTable({data}:{data: any}) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

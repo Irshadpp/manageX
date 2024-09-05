@@ -1,7 +1,7 @@
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import express from 'express';
 import { createEmployeeValidator } from '../validators/create-employee.validator';
-import { createEmployee, sendInvitationMail, updateEmployee } from '../controllers/employee.controller';
+import { createEmployee, fetchEmployeesWithOrgId, sendInvitationMail, updateEmployee } from '../controllers/employee.controller';
 import { sendInvitationValidator } from '../validators/send-invitation.mail.validator';
 
 const router = express.Router();
@@ -27,6 +27,11 @@ router.post('/send-invitation',
     sendInvitationValidator,
     validateRequest,
     sendInvitationMail
+)
+
+router.get('/',
+    requireAuth,
+    fetchEmployeesWithOrgId
 )
 
 export {router as employeeRouter}

@@ -100,3 +100,14 @@ export const sendInvitationMail = async (req: Request, res: Response, next: Next
     next(error);
   }
 }
+
+export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const orgId = req.user?.organization;
+    if (!orgId) throw new NotFoundError();
+    const employees = await employeeService.findEmployeesWithOrgId(orgId);
+    res.status(200).json({success: true, message: "Fetched employees successfully", data: employees});
+  } catch (error) {
+    next(error);
+  }
+}

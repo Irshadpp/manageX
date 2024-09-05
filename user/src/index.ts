@@ -4,7 +4,7 @@ import { envChecker } from "./config/env-checker";
 import dotenv from "dotenv";
 import { rabbitmqWrapper } from "./config/rabbimq-wrapper";
 import { UserCreatedConsumer } from "./app/events/consumers/user-created-consumer";
-import { UserUpdatedConsumer } from "./app/events/consumers/user-updated-consuer";
+import { UserUpdatedConsumer } from "./app/events/consumers/user-updated-consumer";
 dotenv.config();
 
 const start = async () => {

@@ -22,4 +22,7 @@ export class EmployeeService implements IEmployeeService{
     async findByPhone(phone: number): Promise<EmployeeDoc | null> {
         return await Employee.findOne({phone});
     }
+    async findEmployeesWithOrgId(orgId: string): Promise<EmployeeDoc[]>{
+        return await Employee.find({organizationId: orgId});
+    }
 }

@@ -52,10 +52,12 @@ const orgSchema = new mongoose.Schema(
     },
     address: addressSchema,
     members: [{type: Schema.Types.ObjectId}],
-    projects: [{type: Schema.Types.ObjectId}]
-  },
+    projects: [{type: Schema.Types.ObjectId}],
+  }, 
   {
+    timestamps: true,
     toJSON: {
+      virtuals:true,
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;

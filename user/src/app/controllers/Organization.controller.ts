@@ -34,7 +34,7 @@ export const updateOrg = async (
 export const fetchOrgs = async (req: Request, res: Response, next: NextFunction) =>{
   try {
     const orgsData = await orgService.getOrgsByPlan()
-    res.status(200).send({ success: true, orgsData});
+    res.status(200).send({ success: true, data: orgsData});
   } catch (error) {
     console.log(error)
     next(error);

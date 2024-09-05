@@ -46,43 +46,45 @@ const OrganizationTabs = () => {
     const fetchOrganizations = async () =>{
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_OrganizationS_URL,
-        route: "/api/v1/organizations",
+        url: import.meta.env.VITE_USERS_URL,
+        route: "/api/v1/organization",
         headers:{
           "Content-Type": "application/json"
         }
       });
       if(!res.success){
+        console.log(res)
         setError(res?.errors[0]?.message || "Something went wrong while fetching orgnizatinos details");
         return setLoading(false);
       }
-        return setOrgsData(res.data)
+      console.log(res, "-------------")
+        return setOrgsData(res.data[0])
     }
     fetchOrganizations()
   },[]);
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
-      <TabsList className="flex w-[258px]">
-        <TabsTrigger value="owners">Owners</TabsTrigger>
-        <TabsTrigger value="managers">Managers</TabsTrigger>
-        <TabsTrigger value="employees">Employees</TabsTrigger>
+      <TabsList className="flex w-[200px]">
+        <TabsTrigger className="w-[70px]" value="free">Free</TabsTrigger>
+        <TabsTrigger className="w-[70px]" value="pro">Pro</TabsTrigger>
+        <TabsTrigger className="w-[70px]" value="business">business</TabsTrigger>
       </TabsList>
-      <TabsContent value="owners">
+      <TabsContent value="free">
         <Card>
           <CardContent>
             <OrganizationTable data={OrgsData.free}/>
           </CardContent>
         </Card>
       </TabsContent>
-      <TabsContent value="managers">
+      <TabsContent value="pro">
         <Card>
           <CardContent>
             <OrganizationTable data={OrgsData.pro}/>
           </CardContent>
         </Card>
       </TabsContent>
-      <TabsContent value="employees">
+      <TabsContent value="business">
         <Card>
           <CardContent>
             <OrganizationTable data={OrgsData.business}/>

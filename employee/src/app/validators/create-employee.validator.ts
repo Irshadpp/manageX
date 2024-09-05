@@ -61,6 +61,16 @@ export const createEmployeeValidator = [
     .isLength({ min: 10, max: 15 })
     .withMessage("Please give valid phone"),
   body("hiringDate")
-    // .isDate()
-    // .withMessage("Please provide a valid date"),
+    .isISO8601()
+    .withMessage("Please provide a valid ISO date")
+    .custom((value: Date) => {
+      const hiringDate = new Date(value);
+      const currentDate = new Date();
+      
+      if (hiringDate > currentDate) {
+        throw new Error("Hiring date cannot be in the future");
+      }
+      
+      return true;
+    })
 ];

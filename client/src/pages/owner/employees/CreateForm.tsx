@@ -48,10 +48,10 @@ const employeeSchema = z.object({
     .min(2, { message: "Please give valid employee type." }),
   salary: z.string(),
   hiringDate: z
-    .date(),
-    // .refine((date) => date <= new Date(), {
-    //   message: "The hiring date cannot be in the future.",
-    // }),
+    .date()
+    .refine((date) => date <= new Date(), {
+      message: "Hiring date cannot be in the future.",
+    }),
   profileURL: z.string().optional(),
   gender: z
     .string()
@@ -193,8 +193,8 @@ const CreateForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="full time">Fulltime</SelectItem>
-                      <SelectItem value="part Time">Part Time</SelectItem>
+                      <SelectItem value="full time">Full Time</SelectItem>
+                      <SelectItem value="part time">Part Time</SelectItem>
                       <SelectItem value="intern">Intern</SelectItem>
                     </SelectContent>
                   </Select>
