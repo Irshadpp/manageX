@@ -15,7 +15,7 @@ router.post('/',
     createEmployee
 )
 
-router.patch('/',
+router.patch('/:id',
     requireAuth,
     createEmployeeValidator,
     validateRequest,

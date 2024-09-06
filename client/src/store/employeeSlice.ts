@@ -10,7 +10,6 @@ const employeeSlice = createSlice({
             state.loading = true;
         },
         fetchEmployeesSuccess(state, action: PayloadAction<Employee[]>){
-            console.log(action.payload, "-=-=-=-=-=-=--=-=-=-=-=-=-=-=")
             state.employees = action.payload;
             state.loading = false;
             state.error = null;

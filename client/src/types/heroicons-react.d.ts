@@ -7,5 +7,10 @@ declare module '@heroicons/react/24/outline' {
   declare module '@headlessui/react';
   declare module '@heroicons/react/24/solid';
 
+  declare module 'redux-persist/lib/storage' {
+    const storage: any;
+    export default storage;
+  }
+  
 
   

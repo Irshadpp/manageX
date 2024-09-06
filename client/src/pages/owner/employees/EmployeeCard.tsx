@@ -3,13 +3,21 @@ import { HiOutlineMail } from "react-icons/hi";
 import UserAvatar from '/useravatar.png'
 import { useNavigate } from "react-router-dom";
 import { Employee } from "@/store/types/employee";
+import React from "react";
+import { EmployeeProfile } from "./EmployeeProfile";
 
-const EmployeeCard = ({ employee }: { employee: Employee }) => {
+interface EmployeeCardProps{
+    employee: Employee
+}
+
+
+const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(({ employee }) => {
   const navigate = useNavigate();
+
   return (
     <div
       className="bg-accent p-5 rounded-lg cursor-pointer hover:opacity-80"
-    //   onClick={() => router.push(`employee/${employee._id}`)}
+      onClick={() => navigate(`/owner/employees/${employee.id}`)}
     >
       <div className="text-center py-5">
         <div className="w-32 h-32 mx-auto rounded-full overflow-clip">
@@ -44,6 +52,6 @@ const EmployeeCard = ({ employee }: { employee: Employee }) => {
       </div>
     </div>
   );
-};
+});
 
 export default EmployeeCard;

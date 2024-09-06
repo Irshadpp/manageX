@@ -25,6 +25,7 @@ import SignUpPage from "./pages/landing/Registration/signup";
 import VerifyEmail from "./pages/landing/Registration/VerifyEmail";
 import GetStarted from "./pages/landing/Registration/GetStarted";
 import VerifiedEmail from "./pages/landing/Registration/VerifiedEmail";
+import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
                     <Route path="employees" element={<EmployeeSideMenu/>}>
                       <Route index element={<EmployeeList/>}/>
                       <Route path="list" element={<EmployeeList/>}/>
+                      <Route path=":id" element={<EmployeeProfile/>}/>
                       <Route path="create" element={<CreateEmployee/>}/>
                       <Route path="leave" element={<LeaveRequests/>}/>
                       <Route path="ex-employee" element={<ExEmployees/>}/>

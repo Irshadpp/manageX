@@ -9,9 +9,16 @@ export interface Employee {
     phone: string;
     gender: string;
     employeeType: string;
-    hiringData: Date;
+    hiringDate: Date;
     salary: number;
     organizationId: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      country: string;
+      zipcode: string;
+    }
     // tasks: Task[];
     // attendanceLogs: AttendanceLog[];
   }
