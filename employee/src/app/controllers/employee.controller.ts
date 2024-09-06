@@ -32,9 +32,19 @@ export const createEmployee = async (
     const existingEmpWithPhone = await employeeService.findByPhone(phone);
     if (existingEmpWithPhone) throw new BadRequestError("Phone already exists");
 
+    const {street, city, state, country, zipcode} = req.body; 
+    const addressObj = {
+      street,
+      city,
+      state,
+      country,
+      zipcode
+    }
+
     const employee = {
         ...req.body,
-        organizationId: orgId
+        organizationId: orgId,
+        address: addressObj
     }
 
     const employeeData = await employeeService.createEmployee(employee);
@@ -54,7 +64,8 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     const orgId = req.user?.organization;
     if (!orgId) throw new NotFoundError();
 
-    const { email, username, phone, id } = req.body;
+    const {id} = req.params;
+    const { email, username, phone } = req.body;
 
     const currEmployee = await employeeService.findById(id);
   if(!currEmployee) throw new NotFoundError();
@@ -72,11 +83,21 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     const existingEmpWithPhone = await employeeService.findByPhone(phone);
     if (existingEmpWithPhone && currEmployee.phone != phone) throw new BadRequestError("Phone already exists");
 
+    const {street, city, state, country, zipcode} = req.body; 
+    const addressObj = {
+      street,
+      city,
+      state,
+      country,
+      zipcode
+    }
+    
     const employee = {
         ...req.body,
-        organizationId: orgId
+        organizationId: orgId,
+        address: addressObj
     }
-
+    
     const employeeData = await employeeService.updateEmployee(id, employee);
 
     const eventData = UserUpdatedPublisher.moveToEventData(employeeData!);

@@ -4,7 +4,7 @@ import { IEmployeeService } from "./employee.service.interface";
 
 export class EmployeeService implements IEmployeeService{
     async createEmployee(attrs: EmployeeAttrs): Promise<EmployeeDoc> {
-        const newEmployee = Employee.build(attrs);
+        const newEmployee = Employee.build({...attrs});
         return await newEmployee.save();
     }
     async updateEmployee(empId: string, attrs: EmployeeAttrs): Promise<EmployeeDoc | null>{

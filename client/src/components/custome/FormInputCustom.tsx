@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import {
   FormControl,
@@ -15,6 +14,7 @@ interface InputProps {
   title?: string;
   type?: string;
   showTitle: boolean;
+  disabled?: boolean
 }
 
 const FormInputCustom: React.FC<InputProps> = ({
@@ -23,6 +23,7 @@ const FormInputCustom: React.FC<InputProps> = ({
   title,
   type,
   showTitle,
+  disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(type === "password");
 
@@ -37,6 +38,7 @@ const FormInputCustom: React.FC<InputProps> = ({
               type === "password" ? (!showPassword ? "text" : "password") : type
             }
             {...field}
+            disabled={disabled}
             className="bg-background"
           />
           {type === "password" && (
