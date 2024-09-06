@@ -26,7 +26,7 @@ const useLogout = () => {
           });
         }
         store.dispatch(clearCredentials());
-    
+
         // window.location.href = "/login";
       } catch (error) {
         console.error("Logout failed:", error);

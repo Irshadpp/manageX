@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import UserAvatar from '/useravatar.png'
 import EditForm from "./EditForm";
+import EmployeeSettings from "./EmployeeSettings";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export const EmployeeProfile = () => {
   return (
 
     <Tabs defaultValue="tasks" className="relative">
-      <div className="p-6 bg-background shadow-md rounded-lg">
+      <div className="py-6 bg-background shadow-md rounded-lg">
         <div className="flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-24 h-24 rounded-full overflow-hidden">
@@ -76,7 +77,7 @@ export const EmployeeProfile = () => {
           <div className="p-4 bg-white shadow-md rounded-lg">Attendance Content Here</div>
         </TabsContent>
         <TabsContent value="settings">
-          <div className="p-4 bg-white shadow-md rounded-lg">Settings Content Here</div>
+          <EmployeeSettings id={employee.id} email={employee.email}/>
         </TabsContent>
       </div>
     </Tabs>

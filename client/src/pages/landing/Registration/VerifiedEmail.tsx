@@ -8,6 +8,7 @@ import { RootState } from "@/store";
 
 const VerifiedEmail = () => {
   const {user} = useSelector((state: RootState) => state.auth)
+  console.log(user);
   return (
     <>
      <div className="flex h-screen items-center justify-center p-4">
@@ -26,11 +27,11 @@ const VerifiedEmail = () => {
       <p className="text-[17px] font-semibold text-foreground">
         Your Email has been successfully Verified <br />
         Welcome to the <Managex /> App
-      </p>
+      </p> 
       <Button asChild>
-        <Link to={ user?.role === 'owner' ? "/get-started" : "/set-password"}>Complete Registration</Link>
-      </Button>
-        </div>
+        <Link to={ user?.role === 'owner' ? "/owner/get-started" : "/employee/set-password"}>Complete Registration</Link>
+      </Button> 
+         </div>
       </div>
     </div>
     </>

@@ -16,7 +16,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(({ employee }) => {
 
   return (
     <div
-      className="bg-accent p-5 rounded-lg cursor-pointer hover:opacity-80"
+      className="shadow-md bg-accent p-5 rounded-lg cursor-pointer hover:opacity-80"
       onClick={() => navigate(`/owner/employees/${employee.id}`)}
     >
       <div className="text-center py-5">
