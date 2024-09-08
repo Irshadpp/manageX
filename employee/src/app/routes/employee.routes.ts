@@ -3,6 +3,7 @@ import express from 'express';
 import { createEmployeeValidator } from '../validators/create-employee.validator';
 import { createEmployee, fetchEmployeesWithOrgId, sendInvitationMail, updateEmployee } from '../controllers/employee.controller';
 import { sendInvitationValidator } from '../validators/send-invitation.mail.validator';
+import { updateEmployeeValidator } from '../validators/update-employee.validator';
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.post('/',
 
 router.patch('/:id',
     requireAuth,
-    createEmployeeValidator,
+    updateEmployeeValidator,
     validateRequest,
     updateEmployee
 )

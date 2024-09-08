@@ -23,6 +23,6 @@ export class EmployeeService implements IEmployeeService{
         return await Employee.findOne({phone});
     }
     async findEmployeesWithOrgId(orgId: string): Promise<EmployeeDoc[]>{
-        return await Employee.find({organizationId: orgId});
+        return await Employee.find({organizationId: orgId, hiringData: {$exists: true}});
     }
 }

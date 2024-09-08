@@ -1,38 +1,44 @@
 import { rbacConfig, Role } from '@/utils/rbac-config';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { RootState } from '@/store';
-import { checkAuthStatus } from '@/store/authSlice';
+// import { checkAuthStatus } from '@/store/authSlice';
 import useSessionCheck from '@/hooks/useSessionCheck';
+import VerifiedEmail from '@/pages/landing/Registration/VerifiedEmail';
 
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
   useSessionCheck();
   const { isAuthenticated, user, isInitialSetup } = useSelector((state: RootState) => state.auth);
   const userRole = user?.role as Role;
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch<any>();
+  const naviate = useNavigate();
+  // const [loading, setLoading] = useState(true);
+  // const dispatch = useDispatch<any>();
+  console.log("isInitialSetup===========", isInitialSetup)
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      if (!isAuthenticated) {
-        await dispatch(checkAuthStatus());
-      }
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const checkAuthentication = async () => {
+  //     if (!isAuthenticated) {
+  //       await dispatch(checkAuthStatus());
+  //     }
+  //   };
+  
 
-    checkAuthentication();
-  }, [dispatch, isAuthenticated]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  //   // checkAuthentication();
+  // }, [dispatch, isAuthenticated]);
+  // setLoading(false);
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   
   if(isAuthenticated && isInitialSetup){
-    return <Navigate to={"/email-verified"} replace/>
+    console.log("Redirecting to /email-verified");
+    return <Outlet/>
+    return <Navigate to={"/email-verified"}/>
   }
 
   if (!isAuthenticated || userRole !== requiredRole) {
+    console.log("Not authenticated, redirecting to login");
     return <Navigate to={redirectPath} replace/>;
   }
 

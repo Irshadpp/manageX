@@ -30,7 +30,7 @@ const OwnerSideBar = () => {
     logout()
   }
   return (
-    <div className="p-2 bg-card hidden md:block text-center h-screen">
+    <div className="p-2 bg-card hidden md:block text-center min-h-screen">
       <div className="flex flex-col items-center gap-2 pt-4">
         <img src={Logo} alt="logo" width={35} height={35} />
         <h1 className="font-bold text-xs">

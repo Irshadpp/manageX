@@ -97,11 +97,11 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
       gender: employee?.gender || "",
       salary: employee?.salary || 0,
       hiringDate: employee?.hiringDate ? new Date(employee.hiringDate) : new Date(),
-        city: employee?.address.city || "",
-        country: employee?.address.country || "",
-        state: employee?.address.state || "",
-        street: employee?.address.street || "",
-        zipcode: employee?.address.zipcode || "",
+        city: employee?.address?.city || "",
+        country: employee?.address?.country || "",
+        state: employee?.address?.state || "",
+        street: employee?.address?.street || "",
+        zipcode: employee?.address?.zipcode || "",
     },
   });
 

@@ -1,4 +1,4 @@
-import { JWTUserPayload, NotFoundError } from "@ir-managex/common";
+import { BadRequestError, JWTUserPayload, NotFoundError } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { OrgService } from "../services/organization/org.service";
 
@@ -16,6 +16,14 @@ export const updateOrg = async (
       throw new NotFoundError();
     }
     const orgData = req.body;
+    
+    if(orgData?.orgName){
+      const existingOrg = await orgService.fetchOrgWithName(orgData.orgName);
+      if(existingOrg){
+        throw new BadRequestError("Organization already exists")
+      }
+    }
+
     const checkAddressQuery = req.query.address;
     const isAddress: boolean = checkAddressQuery ? true : false;
     const updatedOrg = await orgService.updateOrg(

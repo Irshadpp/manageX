@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 const EmptyList = () => {
   return (
@@ -16,7 +17,9 @@ const EmptyList = () => {
       <p className="text-sm text-muted-foreground">
         Please create an employee.
       </p>
+      <Link to="/owner/employees/create">
       <Button className="mt-4">Create Employee</Button>
+      </Link>
     </div>
   </div>
     </>

@@ -31,7 +31,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
 
             const originalRequest = error.config;
 
-            if(error.response.status === 401 && !originalRequest._retry){
+            if(error?.response?.status === 401 && !originalRequest._retry){
                 originalRequest._retry = true;
 
                 try {

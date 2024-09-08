@@ -1,9 +1,11 @@
 import { apiRequest } from "@/services/api/commonRequest";
-import { clearCredentials } from "@/store/authSlice";
+import { RootState } from "@/store";
+import { clearCredentials, setCredentials } from "@/store/authSlice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 const useSessionCheck = () =>{
+    const {isInitialSetup} = useSelector((state: RootState)=> state.auth)
     const dispatch = useDispatch<any>();
     useEffect(()=>{
         const checkSession = async () =>{
@@ -20,6 +22,9 @@ const useSessionCheck = () =>{
                 if(!user.isActive){
                     return dispatch(clearCredentials());
                 }
+                if(!isInitialSetup){
+                    dispatch(setCredentials({user}));
+                }
             } catch (error) {
                 dispatch(clearCredentials())
             }
@@ -29,3 +34,4 @@ const useSessionCheck = () =>{
 }
 
 export default useSessionCheck;
+

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeCard from './EmployeeCard';
 import { SkeletonEmployeeCard } from './skeletons/SkeletonEmployeeCard';
+import EmptyList from './EmptyList';
 
 const EmployeeList = () => {
 
@@ -13,36 +14,25 @@ const EmployeeList = () => {
     dispatch(fetchEmployees());
   },[dispatch]);
 
-  const employeeCards = useMemo(()=>{
-    return employees.map(employee => <EmployeeCard key={employee.id} employee={employee}/>)
-  },[employees]);
 
   if(loading){
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-        {[...Array(employees.length || 8)].map((_, i) => (
+        {[...Array(employees?.length || 8)].map((_, i) => (
           <SkeletonEmployeeCard key={i} />
         ))}
       </div>
     );
   }
-
-  if(error){
-    return <h1>{error}</h1>
+  if(!employees || employees.length <= 0){
+    return <EmptyList/>
   }
 
+
   return (
-    <>
-    {employees ? (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-        {employeeCards}
+        {employees.map(employee => <EmployeeCard key={employee.id} employee={employee}/>)}
       </div>
-    ) : (
-      <div>
-        <h1>employee weren't created yet</h1>
-      </div>
-    )}
-    </>
   )
 }
 
