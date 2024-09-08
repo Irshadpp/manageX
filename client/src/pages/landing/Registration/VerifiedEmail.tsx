@@ -29,7 +29,7 @@ const VerifiedEmail = () => {
         Welcome to the <Managex /> App
       </p> 
       <Button asChild>
-        <Link to={ user?.role === 'owner' ? "/get-started" : "/employee/set-password"}>Complete Registration</Link>
+        <Link to={ user?.role === 'owner' ? "/get-started" : "/set-password"}>Complete Registration</Link>
       </Button> 
          </div>
       </div>

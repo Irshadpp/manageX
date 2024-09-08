@@ -40,7 +40,7 @@ export interface EmployeeDoc extends mongoose.Document {
   role: Role;
   profileURL: string;
   dob: Date;
-  hiringData: Date;
+  hiringDate: Date;
   salary: number;
   designation: string;
   employeeType: EmpType;

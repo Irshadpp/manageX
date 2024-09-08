@@ -14,8 +14,6 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   const naviate = useNavigate();
   // const [loading, setLoading] = useState(true);
   // const dispatch = useDispatch<any>();
-  console.log("isInitialSetup===========", isInitialSetup)
-
   // useEffect(() => {
   //   const checkAuthentication = async () => {
   //     if (!isAuthenticated) {
@@ -32,10 +30,11 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   // }
   
   if(isAuthenticated && isInitialSetup){
-    console.log("Redirecting to /email-verified");
+    console.log("==============", isInitialSetup, userRole)
     return <Outlet/>
-    return <Navigate to={"/email-verified"}/>
   }
+
+  console.log("0-0-0-0-0-0-00--0-00-0-0--0000-0-0--00-0-0-0-0-0-")
 
   if (!isAuthenticated || userRole !== requiredRole) {
     console.log("Not authenticated, redirecting to login");

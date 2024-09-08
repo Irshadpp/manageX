@@ -105,8 +105,9 @@ export class UserService implements IUserService {
   }
   
 async updatePassword(id: string, password: string){
+  const hashedPassword = await Password.toHash(password);
   await User.findByIdAndUpdate(id,
-    {$set: {password}}
+    {$set: {password: hashedPassword}}
   )
 }
 

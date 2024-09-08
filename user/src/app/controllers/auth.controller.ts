@@ -294,6 +294,7 @@ export const setPassword = async (req: Request, res: Response, next: NextFunctio
     const {id} = req.user as JWTUserPayload;
     const {password} = req.body;
     await userService.updatePassword(id, password);
+    res.status(200).json({success: true, message: "Password created successfully"});
   } catch (error) {
     console.log(error)
     next(error);
