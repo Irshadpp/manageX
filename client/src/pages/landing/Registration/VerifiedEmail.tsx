@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const VerifiedEmail = () => {
+  console.log("--------=-=-=----=-=--= verified email component rendered");
   const {user} = useSelector((state: RootState) => state.auth)
-  console.log(user);
   return (
     <>
      <div className="flex h-screen items-center justify-center p-4">
@@ -29,7 +29,7 @@ const VerifiedEmail = () => {
         Welcome to the <Managex /> App
       </p> 
       <Button asChild>
-        <Link to={ user?.role === 'owner' ? "/owner/get-started" : "/employee/set-password"}>Complete Registration</Link>
+        <Link to={ user?.role === 'owner' ? "/get-started" : "/employee/set-password"}>Complete Registration</Link>
       </Button> 
          </div>
       </div>

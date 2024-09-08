@@ -38,11 +38,8 @@ export class OrgService implements IOrgService {
     );
   }
   
-  async fetchOrgs(): Promise<any> {
-    return await Organization.find().populate({
-      path: 'admin',
-      select: 'fName email phone'
-    }).select('orgName industry');
+  async fetchOrgWithName(orgName: string): Promise<any> {
+    return await Organization.findOne({orgName: {$regex: orgName, $options: "i"}});
   }
 
   async getOrgsByPlan(): Promise<any>{

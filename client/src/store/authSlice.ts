@@ -47,25 +47,25 @@ const authSlice = createSlice({
 
 export const { setCredentials, rehydrateAuthState, updateIntitialSetup, clearCredentials} = authSlice.actions;
 
-export const checkAuthStatus = (): AppThunk => async (dispatch) =>{
-    try {
-        const response = await apiRequest({
-            method: "GET",
-            url: import.meta.env.VITE_USERS_URL,
-            route:`/api/v1/auth/check-user`,
-            headers:{
-                "Content-Type":"application/json"
-            }
-        });
-        if(response.status === 200){
-            dispatch(setCredentials({user: response.user}));
-        }else{
-            dispatch(clearCredentials());
-        }
-    } catch (error) {
-        console.log(error)
-        dispatch(clearCredentials())
-    }
-}
+// export const checkAuthStatus = (): AppThunk => async (dispatch) =>{
+//     try {
+//         const response = await apiRequest({
+//             method: "GET",
+//             url: import.meta.env.VITE_USERS_URL,
+//             route:`/api/v1/auth/check-user`,
+//             headers:{
+//                 "Content-Type":"application/json"
+//             }
+//         });
+//         if(response.status === 200){
+//             dispatch(setCredentials({user: response.user}));
+//         }else{
+//             dispatch(clearCredentials());
+//         }
+//     } catch (error) {
+//         console.log(error)
+//         dispatch(clearCredentials())
+//     }
+// }
 
 export default authSlice.reducer;

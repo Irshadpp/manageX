@@ -1,6 +1,7 @@
 export const rbacConfig = {
     owner: [
         "/get-started",
+        "/email-verified",  
         "/owner",
         "/employees"
     ],

@@ -125,6 +125,9 @@ export const loginUser = async (
     if (!user) {
       throw new BadRequestError("Invalid email or password!");
     }
+    if(!user.isEmailVerified){
+      throw new BadRequestError("Please verify your email!");
+    }
     if(!user.isActive){
       throw new BadRequestError("Your account has been blocked. Please contact support.")
     }

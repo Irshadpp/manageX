@@ -70,8 +70,8 @@ function App() {
                   element={<PrivateRouteWithRole requiredRole="employee" />}
                 >
                   <Route path="/email-verified" element={<VerifiedEmail/>}/>
+                  <Route path="/set-password" element={<SetPassword/>}/>
                   <Route path="/employee" element={<EmpDashboard />} />
-                  <Route path="set-password" element={<SetPassword/>}/>
                   
                 </Route>
 
