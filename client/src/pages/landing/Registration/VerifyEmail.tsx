@@ -62,7 +62,6 @@ const VerifyEmail = () => {
   ) : (
     <>
     <Navigate to={"/email-verified"}/>
-      {console.log("Rendering VerifiedEmail component")}
     </>
   )}
         </div>

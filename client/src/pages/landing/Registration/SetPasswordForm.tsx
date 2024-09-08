@@ -49,8 +49,8 @@ const SetPasswordForm = () => {
         setLoading(true);
         const res = await apiRequest({
           method: "PATCH",
-          url: import.meta.env.VITE_EMPLOYEE_URL,
-          route: `/api/v1/employee/${userId}`,
+          url: import.meta.env.VITE_USERS_URL,
+          route: `/api/v1/auth/set-password`,
           data: {...values},
           headers:{
             "Content-Type": "application/json"
@@ -61,6 +61,7 @@ const SetPasswordForm = () => {
           setError(res?.errors[0]?.message || "set password failed");
           return setLoading(false);
         }
+        console.log(res?.message);
         setLoading(false);
         logout();
         navigate("/login");
@@ -73,7 +74,7 @@ const SetPasswordForm = () => {
 
   return (
     <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
+        <form className="space-y-4 w-80" onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
             control={form.control}
             name="password"

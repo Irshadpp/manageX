@@ -27,6 +27,8 @@ import GetStarted from "./pages/landing/Registration/GetStarted";
 import VerifiedEmail from "./pages/landing/Registration/VerifiedEmail";
 import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 import SetPassword from "./pages/landing/Registration/SetPassword";
+import EmployeeSideBar from "./components/ui/sidebars/EmployeeSideBar";
+import EmpLayout from "./pages/employee/EmpLayout";
 
 function App() {
   return (
@@ -67,11 +69,11 @@ function App() {
                 </Route>
 
                 <Route
-                  element={<PrivateRouteWithRole requiredRole="employee" />}
-                >
+                  element={<PrivateRouteWithRole requiredRole="employee" />}>
                   <Route path="/email-verified" element={<VerifiedEmail/>}/>
                   <Route path="/set-password" element={<SetPassword/>}/>
-                  <Route path="/employee" element={<EmpDashboard />} />
+                  <Route path="/employee" element={<EmpLayout/>} />
+                  <Route index element={<EmpDashboard/>}/>
                   
                 </Route>
 
