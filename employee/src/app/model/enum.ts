@@ -15,3 +15,11 @@ export enum EmpType{
     PARTTIME = 'part time',
     INTERN = 'intern',
 }
+
+export enum AttendaceStatus{
+    PRESENT = "present",
+    ABSENT = "absent",
+    LATE = "late",
+    HALFDAY = "halfDay",
+    ONLEAVE = "onLeave"
+}
