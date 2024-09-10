@@ -6,6 +6,10 @@ import { AttendancePolicy } from "../../model/schema/attendance-policy.schema";
 import { IAttendancePolicyService } from "./attendance-policy.interface";
 
 export class AttendancePolicyService implements IAttendancePolicyService {
+    async createAttendancePolicy(attrs: AttendancePolicyAttrs){
+        const newAttendancePolicy = AttendancePolicy.build(attrs);
+        return await newAttendancePolicy.save();
+    }
   async getAttendancePolicyByOrgId(
     orgId: string
   ): Promise<AttendacePolicyDoc | null> {
