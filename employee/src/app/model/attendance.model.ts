@@ -1,22 +1,26 @@
 import mongoose from "mongoose";
-import { AttendaceStatus } from "./enum";
+import { AttendanceStatus } from "./enum";
 
 export interface AttendanceAttrs{
-    employeeId: string;
-    checkIn: Date | null;
-    checkout: Date | null;
-    date: Date;
-    status: AttendaceStatus;
+    employeeId?: string;
+    organizationId?: string;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
+    date?: Date;
+    status: AttendanceStatus;
+    workingHours?: number;
     remarks?: string;
 }
 
 export interface AttendanceDoc extends mongoose.Document{
     id: string;
     employeeId: string;
+    organizationId: string; 
     checkIn: Date | null;
-    checkout: Date | null;
+    checkOut: Date | null;
     date: Date;
-    status: AttendaceStatus;
+    status: AttendanceStatus;
+    workingHours?: number;
     remarks?: string;
 }
 

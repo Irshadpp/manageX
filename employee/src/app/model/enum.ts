@@ -16,10 +16,22 @@ export enum EmpType{
     INTERN = 'intern',
 }
 
-export enum AttendaceStatus{
+export enum AttendanceStatus{
     PRESENT = "present",
     ABSENT = "absent",
     LATE = "late",
     HALFDAY = "halfDay",
     ONLEAVE = "onLeave"
+}
+
+export enum LeaveType{
+    CASUAL = "casual",
+    SICK = "sick",
+    VECATION = "vecation"
+}
+
+export enum LeaveStatus{
+    PENDING = "pending",
+    APPROVED = "approved",
+    REJECTED = "rejected",
 }

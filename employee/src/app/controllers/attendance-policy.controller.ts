@@ -6,7 +6,7 @@ const attendancePolicyService = new AttendancePolicyService()
 
 export const fetchAttendancePolicy = async (req: Request, res: Response, next: NextFunction) =>{
     try {
-        const {organizationId} = req.query;
+        const {organizationId} = req.params;
         if(!organizationId){
             throw new BadRequestError("Organization Id is required")
         }
@@ -24,7 +24,7 @@ export const fetchAttendancePolicy = async (req: Request, res: Response, next: N
 
 export const updateAttendancePolicy = async (req: Request, res: Response, next: NextFunction) =>{
     try {
-        const {organizationId} = req.query;
+        const {organizationId} = req.params;
         if(!organizationId){
             throw new BadRequestError("Organization Id is required")
         }

@@ -1,7 +1,7 @@
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 
 import { PiUserListBold } from "react-icons/pi";
-import { MdGroupAdd } from "react-icons/md";
+import { MdGroupAdd, MdOutlinePolicy } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { BsPersonRolodex } from "react-icons/bs";
 
@@ -67,6 +67,13 @@ export function EmployeeSideMenu() {
                 Leave Requests
               </NavLink>
               <NavLink
+                to="/owner/employees/attendance-policy"
+                className={({ isActive }) => getNavLinkClassName(isActive)}
+              >
+                <MdOutlinePolicy className="h-5 w-4"/>
+                Attendance Policy
+              </NavLink>
+              <NavLink
                 to="/owner/employees/ex-employee"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
@@ -120,6 +127,13 @@ export function EmployeeSideMenu() {
                 >
                   <IoCreateOutline className="h-5 w-5" />
                   Leave Requests
+                </NavLink>
+                <NavLink
+                  to="/owner/employees/attendance-policy"
+                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                >
+                  <MdOutlinePolicy className="h-5 w-5" />
+                  Attendance Policy
                 </NavLink>
                 <NavLink
                   to="/owner/employees/ex-employee"

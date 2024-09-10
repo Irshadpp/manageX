@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import { AttendaceStatus } from "./enum";
+import { AttendanceStatus } from "./enum";
 
 export interface AttendancePolicyAttrs{
   organizationId: string;
-    officeStartTime: string;
-    lateThreshold: string;
-    fullDayThreshold: number;
-    leavePolicy: {
+    officeStartTime?: string;
+    lateThreshold?: string;
+    fullDayThreshold?: number;
+    halfDayThreshold?: number;
+    leavePolicy?: {
     vecationLeaves: number,    
     sickLeaves: number,   
     casualLeaves: number,    
@@ -18,6 +19,7 @@ export interface AttendacePolicyDoc extends mongoose.Document{
     organizationId: string;
     officeStartTime: string;
     lateThreshold: string;
+    halfDayThreshold: number;
     fullDayThreshold: number;
     leavePolicy: {
     vecationLeaves: number,    

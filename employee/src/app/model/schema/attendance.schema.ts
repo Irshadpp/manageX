@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { AttendaceStatus } from "../enum";
+import { AttendanceStatus } from "../enum";
 import { AttendanceModel, AttendanceAttrs } from "../attendance.model";
 
 const attendanceSchema = new mongoose.Schema({
@@ -12,7 +12,7 @@ const attendanceSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
-    checkout: {
+    checkOut: {
         type: Date,
         defaul: null
     },
@@ -21,8 +21,8 @@ const attendanceSchema = new mongoose.Schema({
         required: true
     },
     status:{
-        type: AttendaceStatus,
-        default: AttendaceStatus.PRESENT
+        type: AttendanceStatus,
+        default: AttendanceStatus.PRESENT
     },
     remarks: {
         type: String
