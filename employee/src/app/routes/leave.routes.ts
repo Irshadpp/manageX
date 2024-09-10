@@ -18,3 +18,5 @@ router.patch(
     requireAuth,
     updateLeaveStatus
 )
+
+export { router as leaveRouter}

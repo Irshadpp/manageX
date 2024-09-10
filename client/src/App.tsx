@@ -29,6 +29,7 @@ import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 import SetPassword from "./pages/landing/Registration/SetPassword";
 import EmployeeSideBar from "./components/ui/sidebars/EmployeeSideBar";
 import EmpLayout from "./pages/employee/EmpLayout";
+import AttendancePolicy from "./pages/owner/employees/AttendancePolicy";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
                       <Route path=":id" element={<EmployeeProfile/>}/>
                       <Route path="create" element={<CreateEmployee/>}/>
                       <Route path="leave" element={<LeaveRequests/>}/>
+                      <Route path="policy" element={<AttendancePolicy/>}/>
                       <Route path="ex-employee" element={<ExEmployees/>}/>
                     </Route>
                   </Route>
