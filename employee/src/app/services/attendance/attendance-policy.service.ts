@@ -13,7 +13,7 @@ export class AttendancePolicyService implements IAttendancePolicyService {
   async getAttendancePolicyByOrgId(
     orgId: string
   ): Promise<AttendacePolicyDoc | null> {
-    return await AttendancePolicy.findById(orgId);
+    return await AttendancePolicy.findOne({organizationId: orgId});
   }
   async updateAttendancePolicy(
     orgId: string,

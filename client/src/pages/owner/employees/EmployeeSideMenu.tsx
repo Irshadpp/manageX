@@ -67,7 +67,7 @@ export function EmployeeSideMenu() {
                 Leave Requests
               </NavLink>
               <NavLink
-                to="/owner/employees/attendance-policy"
+                to="/owner/employees/policy"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <MdOutlinePolicy className="h-5 w-4"/>
@@ -129,7 +129,7 @@ export function EmployeeSideMenu() {
                   Leave Requests
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/attendance-policy"
+                  to="/owner/employees/policy"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <MdOutlinePolicy className="h-5 w-5" />
