@@ -6,7 +6,6 @@ export interface AttendanceAttrs{
     organizationId?: string;
     checkIn?: Date | null;
     checkOut?: Date | null;
-    date?: Date;
     status: AttendanceStatus;
     workingHours?: number;
     remarks?: string;
@@ -18,7 +17,6 @@ export interface AttendanceDoc extends mongoose.Document{
     organizationId: string; 
     checkIn: Date | null;
     checkOut: Date | null;
-    date: Date;
     status: AttendanceStatus;
     workingHours?: number;
     remarks?: string;

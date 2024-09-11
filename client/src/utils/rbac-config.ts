@@ -12,6 +12,7 @@ export const rbacConfig = {
         "/email-verified",
         "/set-password",
         "/employee",
+        "/attendance"
     ],
     admin: [
         "/admin",

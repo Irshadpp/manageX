@@ -8,75 +8,252 @@ import { BadRequestError } from "@ir-managex/common";
 const attendancePolicyService = new AttendancePolicyService()
 const attendanceService = new AttendanceService();
 
-export const markAttendance = async (req: Request, res: Response, next: NextFunction) =>{
-     const { employeeId, organizationId, checkIn, checkOut } = req.body;
-    const attendancePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organizationId);
-    if(!attendancePolicy){
-        throw new Error("Attendance policy not not found")
-    }
 
-        const currentDate = new Date(checkIn).toISOString().split('T')[0];
-        const existingAttendance = await attendanceService.findAttendance(employeeId, organizationId, currentDate)
+// export const markAttendance = async (req: Request, res: Response, next: NextFunction) => {
+//     const { type, remarks } = req.body;
+//     const { id, organization } = req.user!;
+//     const attendancePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organization);
+    
+//     if (!attendancePolicy) {
+//         return next(new Error("Attendance policy not found"));
+//     }
+    
+//      const currentUtcDate = new Date();
+    // const istOffset = 5.5 * 60 * 60 * 1000; // 5 hours 30 minutes in milliseconds
+    // const istDate = new Date(currentUtcDate.getTime() + istOffset);
+    // const currentDateString = istDate.toISOString().split('T')[0];
+//     const existingAttendance = await attendanceService.findAttendance(id, organization, currentDateString);
+    
+//     const [officeStartHours, officeStartMinutes] = attendancePolicy.officeStartTime.split(':').map(Number);
+//     const fullDayHours = attendancePolicy.fullDayThreshold
+    
+//     const officeStartTime = new Date();
+//     officeStartTime.setHours(officeStartHours, officeStartMinutes, 0, 0);
+//     officeStartTime.setMinutes(officeStartTime.getMinutes() - officeStartTime.getTimezoneOffset());
+    
+//     const thresholdDate = new Date(officeStartTime);
+//     thresholdDate.setHours(officeStartHours + fullDayHours);
+
+//     if (type === "checkIn") {
+//         if (existingAttendance) {
+//             return next(new BadRequestError("Already checked in."));
+//         }
         
-        if (existingAttendance) {
-          if (checkOut) {
-            const checkOutDate = new Date(checkOut);
-            const workingHours = (checkOutDate.getTime() - existingAttendance.checkIn!.getTime()) / (1000 * 60 * 60);
+//         if (localDate > thresholdDate) {
+//             return next(new BadRequestError("Cannot check in after the office time"));
+//         }
+        
+//         const status = localDate > officeStartTime
+//         ? AttendanceStatus.LATE
+//         : AttendanceStatus.PRESENT;
+        
+//         await attendanceService.createAttendance({
+//             employeeId: id,
+//             organizationId: organization,
+//             checkIn: localDate,
+//             status,
+//             remarks,
+//         });
+        
+//         return res.status(200).json({ success: true, message: "Check-in recorded successfully" });
+        
+//     } else if (type === "checkOut") {
+//         if (!existingAttendance) {
+//             return next(new BadRequestError("No check-in record found. Please check in first."));
+//         }
+//         if (existingAttendance.checkOut) {
+//             return next(new BadRequestError("Already checked out. Cannot check out again."));
+//         }
+        
+//         const checkOutDate = localDate;
+//         const workingHours = (checkOutDate.getTime() - existingAttendance.checkIn!.getTime()) / (1000 * 60 * 60);
+        
+//         const status = workingHours < attendancePolicy.halfDayThreshold
+//         ? AttendanceStatus.HALFDAY
+//         : AttendanceStatus.PRESENT;
+        
+//         const updatedAttendance = await attendanceService.updateAttendance(existingAttendance.id, {
+//             checkOut: checkOutDate,
+//             workingHours,
+//             status,
+//             remarks,
+//         });
+        
+//         return res.status(200).json({ success: true, message: "Check-out recorded successfully", updatedAttendance });
+//     }
     
-            let status = AttendanceStatus.PRESENT;
-    
-            if (workingHours < attendancePolicy.halfDayThreshold) {
-              status = AttendanceStatus.HALFDAY;
-            } else if (workingHours >= attendancePolicy.fullDayThreshold) {
-              status = AttendanceStatus.PRESENT;
-            }
-    
-            const attendanceData = {
-                workingHours,
-                checkOut,
-                status,
-            }
-            const updatedAttendance = await attendanceService.updateAttendance(existingAttendance.id, attendanceData)
-    
-            return updatedAttendance;
-          } else {
-            throw new BadRequestError("Cannot check in again without checking out. Please check out first.");
-          }
-        } else {
-          if (checkOut) {
-            throw new BadRequestError("Please checkin first");
-          }
-    
-          const checkInDate = new Date(checkIn);
-          let status = AttendanceStatus.PRESENT;
+//     return next(new BadRequestError("Invalid type. Must be either 'checkIn' or 'checkOut'."));
+// };
 
-          const [officeStartHours, officeStartMinutes] = attendancePolicy.officeStartTime.split(':').map(Number);
-          const [lateHours, lateMinutes] = attendancePolicy.lateThreshold.split(':').map(Number);
-      
-          const officeStartDate = new Date();
-          officeStartDate.setHours(officeStartHours, officeStartMinutes, 0, 0); 
-      
-          const lateDate = new Date();
-          lateDate.setHours(lateHours, lateMinutes, 0, 0); 
-      
-          if (checkInDate.getTime() > officeStartDate.getTime() && checkInDate.getTime() > lateDate.getTime()) {
-              status = AttendanceStatus.LATE;
-          }
-          
-          await attendanceService.createAttendance({
-            employeeId,
-            organizationId,
-            checkIn:checkInDate,
-            status
-          })
-    
-         res.status(200).json({
-            success: true,
-            message: "Attendance updated successfully",
-         });
-        }
-}
+
 
 export const getAttendanceLogs = async (req: Request, res: Response, next: NextFunction) =>{
-
+    try {
+        const {owner} = req.query;
+        let employeeId;
+        if(owner){
+            employeeId = req.body.employeeId
+        }else{
+            employeeId = req.user!.id
+        }
+        const {organization} = req.user!
+        const attendanceData = await attendanceService.getAttendanceData(employeeId, organization);
+        console.log(attendanceData, "-=--===========")
+        res.status(200).json({
+            success:true,
+            message:"Attendance data fetched successfully",
+            data: attendanceData
+        })
+    } catch (error) {
+        next(error);
+    }
 }
+
+
+
+export const markAttendance = async (req: Request, res: Response, next: NextFunction) => {
+    const { type, remarks } = req.body;
+    const { id, organization } = req.user!;
+    const attendancePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organization);
+
+    if (!attendancePolicy) {
+        return next(new Error("Attendance policy not found"));
+    }
+
+    // Get the current time in UTC and manually adjust it to IST (UTC+05:30)
+    const currentUtcDate = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // 5 hours 30 minutes in milliseconds
+    const istDate = new Date(currentUtcDate.getTime() + istOffset);
+    const currentDateString = istDate.toISOString().split('T')[0];
+
+    const existingAttendance = await attendanceService.findAttendance(id, organization, currentDateString);
+
+    if (type === "checkIn") {
+        if (existingAttendance) {
+            return next(new BadRequestError("Already checked in."));
+        }
+
+        const checkInDate = istDate;
+
+        const [officeStartHours, officeStartMinutes] = attendancePolicy.officeStartTime.split(':').map(Number);
+        const [lateHours, lateMinutes] = attendancePolicy.lateThreshold.split(':').map(Number);
+
+        const officeStartTime = new Date();
+        officeStartTime.setHours(officeStartHours, officeStartMinutes, 0, 0);
+
+        const lateTime = new Date();
+        lateTime.setHours(lateHours, lateMinutes, 0, 0);
+
+        const status = checkInDate > officeStartTime && checkInDate > lateTime
+            ? AttendanceStatus.LATE
+            : AttendanceStatus.PRESENT;
+
+        await attendanceService.createAttendance({
+            employeeId: id,
+            organizationId: organization,
+            checkIn: checkInDate,
+            status,
+            remarks,
+        });
+
+        return res.status(200).json({ success: true, message: "Check-in recorded successfully" });
+
+    } else if (type === "checkOut") {
+        if (!existingAttendance) {
+            return next(new BadRequestError("No check-in record found. Please check in first."));
+        }
+        if (existingAttendance.checkOut) {
+            return next(new BadRequestError("Already checked out. Cannot check out again."));
+        }
+
+        const checkOutDate = istDate;
+        const workingHours = (checkOutDate.getTime() - existingAttendance.checkIn!.getTime()) / (1000 * 60 * 60);
+
+        const status = workingHours < attendancePolicy.halfDayThreshold
+            ? AttendanceStatus.HALFDAY
+            : AttendanceStatus.PRESENT;
+
+        const updatedAttendance = await attendanceService.updateAttendance(existingAttendance.id, {
+            checkOut: checkOutDate,
+            workingHours,
+            status,
+            remarks,
+        });
+
+        return res.status(200).json({ success: true, message: "Check-out recorded successfully", updatedAttendance });
+    }
+
+    return next(new BadRequestError("Invalid type. Must be either 'checkIn' or 'checkOut'."));
+};
+
+
+
+
+        // export const markAttendance = async (req: Request, res: Response, next: NextFunction) => {
+        //     const { type, remarks } = req.body;
+        //     const {id, organization} = req.user!
+        //     const attendancePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organization);
+        
+        //     if (!attendancePolicy) {
+        //         return next(new Error("Attendance policy not found"));
+        //     }
+        
+        //     const currentDate = new Date().toISOString().split('T')[0];
+        //     const existingAttendance = await attendanceService.findAttendance(id, organization, currentDate);
+        
+        //     if (type === "checkIn") {
+        //         if (existingAttendance) {
+        //             return next(new BadRequestError("Already checked in."));
+        //         }
+        
+        //         const checkInDate = new Date();
+        //         const [officeStartHours, officeStartMinutes] = attendancePolicy.officeStartTime.split(':').map(Number);
+        //         const [lateHours, lateMinutes] = attendancePolicy.lateThreshold.split(':').map(Number);
+        
+        //         const officeStartTime = new Date();
+        //         officeStartTime.setHours(officeStartHours, officeStartMinutes, 0, 0);
+        
+        //         const lateTime = new Date();
+        //         lateTime.setHours(lateHours, lateMinutes, 0, 0);
+        
+        //         const status = checkInDate > officeStartTime && checkInDate > lateTime
+        //             ? AttendanceStatus.LATE
+        //             : AttendanceStatus.PRESENT;
+        
+        //         await attendanceService.createAttendance({
+        //             employeeId: id,
+        //             organizationId: organization,
+        //             checkIn: checkInDate,
+        //             status,
+        //             remarks,
+        //         });
+        
+        //         return res.status(200).json({ success: true, message: "Check-in recorded successfully" });
+        
+        //     } else if (type === "checkOut") {
+        //         if (!existingAttendance) {
+        //             return next(new BadRequestError("No check-in record found. Please check in first."));
+        //         }
+        //         if (existingAttendance.checkOut) {
+        //             return next(new BadRequestError("Already checked out. Cannot check out again."));
+        //         }
+        
+        //         const checkOutDate = new Date();
+        //         const workingHours = (checkOutDate.getTime() - existingAttendance.checkIn!.getTime()) / (1000 * 60 * 60);
+        
+        //         const status = workingHours < attendancePolicy.halfDayThreshold
+        //             ? AttendanceStatus.HALFDAY
+        //             : AttendanceStatus.PRESENT;
+        
+        //         const updatedAttendance = await attendanceService.updateAttendance(existingAttendance.id, {
+        //             checkOut: checkOutDate,
+        //             workingHours,
+        //             status,
+        //             remarks,
+        //         });
+        
+        //         return res.status(200).json({ success: true, message: "Check-out recorded successfully", updatedAttendance });
+        //     }
+        
+        //     return next(new BadRequestError("Invalid type. Must be either 'checkIn' or 'checkOut'."));
+        // };

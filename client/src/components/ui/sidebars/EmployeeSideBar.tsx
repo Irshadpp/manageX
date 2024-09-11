@@ -2,10 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import Managex from "../Managex";
 import Logo from "/logo.png";
 import { TooltipWrapper } from "@/components/custome/TooltipWrapper";
-import { AiFillDashboard } from "react-icons/ai";
+import { AiFillDashboard, AiOutlineCalendar } from "react-icons/ai";
 import { GrProjects } from "react-icons/gr";
-import { FaTasks, FaMoneyCheckAlt, FaCreditCard } from "react-icons/fa";
-import { FaUsersGear, FaUsersRectangle } from "react-icons/fa6";
+import { FaTasks } from "react-icons/fa";
 import { IoMdChatbubbles } from "react-icons/io";
 import { PiVideoConferenceFill } from "react-icons/pi";
 import { IoSettings } from "react-icons/io5";
@@ -68,6 +67,17 @@ const EmployeeSideBar = () => {
               }`}
             >
               <FaTasks className="m-1" />
+            </div>
+          </TooltipWrapper>
+        </Link>
+        <Link to="/employee/attendance" className="hover-text text-xl">
+          <TooltipWrapper title="Attendance">
+            <div
+              className={`p-1 rounded-xl hover:bg-popover ${
+                pathname === "/employee/attendance" ? "bg-primary" : ""
+              }`}
+            >
+              <AiOutlineCalendar className="m-1 text-2xl" />
             </div>
           </TooltipWrapper>
         </Link>
