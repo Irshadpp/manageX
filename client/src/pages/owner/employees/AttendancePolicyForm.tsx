@@ -64,7 +64,7 @@ const AttendancePolicyForm: React.FC<EditableAttendancePolicyFormProps> = ({
     const res = await apiRequest({
       method: "PATCH",
       url: import.meta.env.VITE_EMPLOYEE_URL,
-      route: `/api/v1/employee/attendance-policy/${policy.id}`,
+      route: `/api/v1/attendance-policy/${policy.id}`,
       headers: {
         "Content-Type": "application/json",
       },

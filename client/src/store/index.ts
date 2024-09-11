@@ -1,6 +1,7 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
 import employeeReducer from "./employeeSlice"
+import attendanceReducer from "./attendanceSlice"
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    employee: employeeReducer
+    employee: employeeReducer,
+    attendance: attendanceReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -24,7 +26,6 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
           serializableCheck: {
-            // Ignore redux-persist actions
             ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
           },
         }),

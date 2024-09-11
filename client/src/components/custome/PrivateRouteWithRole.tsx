@@ -8,6 +8,7 @@ import useSessionCheck from '@/hooks/useSessionCheck';
 import VerifiedEmail from '@/pages/landing/Registration/VerifiedEmail';
 
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
+  console.log("----------============-----------")
   useSessionCheck();
   const { isAuthenticated, user, isInitialSetup } = useSelector((state: RootState) => state.auth);
   const userRole = user?.role as Role;
@@ -28,25 +29,25 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
-  
   if(isAuthenticated && isInitialSetup){
     console.log("==============", isInitialSetup, userRole)
     return <Outlet/>
   }
 
-  console.log("0-0-0-0-0-0-00--0-00-0-0--0000-0-0--00-0-0-0-0-0-")
-
   if (!isAuthenticated || userRole !== requiredRole) {
     console.log("Not authenticated, redirecting to login");
     return <Navigate to={redirectPath} replace/>;
   }
-
+  
   const allowedRoutes = Array.from(rbacConfig[userRole]) as string[];
   const currPath = window.location.pathname.split(`/${userRole}`)[1];
+  console.log(allowedRoutes, userRole,"----------",currPath)
+  console.log(currPath)
   if (allowedRoutes.includes(currPath) || allowedRoutes.includes(`/${userRole}`)) {
     return <Outlet />;
   }
 
+  console.log("=-================")
   return <Navigate to="*" replace/>;
 };
 

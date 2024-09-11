@@ -15,7 +15,7 @@ const AttendancePolicy = () => {
             const res = await apiRequest({
                 method: "GET",
                 url: import.meta.env.VITE_EMPLOYEE_URL,
-                route: `/api/v1/employee/attendance-policy/${user!.organization}`,
+                route: `/api/v1/attendance-policy/${user!.organization}`,
                 headers:{
                     "Content-Type": "application/json"
                 }
@@ -36,6 +36,7 @@ const AttendancePolicy = () => {
     }
   return (
     <div>
+        <h1 className=''></h1>
       <AttendancePolicyForm policy={policy as AttendancePolicyType}/>
     </div>
   )

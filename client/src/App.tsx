@@ -30,6 +30,9 @@ import SetPassword from "./pages/landing/Registration/SetPassword";
 import EmployeeSideBar from "./components/ui/sidebars/EmployeeSideBar";
 import EmpLayout from "./pages/employee/EmpLayout";
 import AttendancePolicy from "./pages/owner/employees/AttendancePolicy";
+import { AttendanceSideMenu } from "./pages/employee/attendance/AttendanceSideMenu";
+import Attendance from "./pages/employee/attendance/Attendance";
+import Leaves from "./pages/employee/attendance/Leaves";
 
 function App() {
   return (
@@ -48,18 +51,18 @@ function App() {
                 </Route>
 
                 <Route element={<PrivateRouteWithRole requiredRole="owner" />}>
-                <Route path="/email-verified" element={<VerifiedEmail/>}/>
+                  <Route path="/email-verified" element={<VerifiedEmail />} />
                   <Route path="/get-started" element={<GetStarted />} />
                   <Route path="/owner" element={<OwnerLayout />}>
                     <Route index element={<OwnerDashboard />} />
-                    <Route path="employees" element={<EmployeeSideMenu/>}>
-                      <Route index element={<EmployeeList/>}/>
-                      <Route path="list" element={<EmployeeList/>}/>
-                      <Route path=":id" element={<EmployeeProfile/>}/>
-                      <Route path="create" element={<CreateEmployee/>}/>
-                      <Route path="leave" element={<LeaveRequests/>}/>
-                      <Route path="policy" element={<AttendancePolicy/>}/>
-                      <Route path="ex-employee" element={<ExEmployees/>}/>
+                    <Route path="employees" element={<EmployeeSideMenu />}>
+                      <Route index element={<EmployeeList />} />
+                      <Route path="list" element={<EmployeeList />} />
+                      <Route path=":id" element={<EmployeeProfile />} />
+                      <Route path="create" element={<CreateEmployee />} />
+                      <Route path="leave" element={<LeaveRequests />} />
+                      <Route path="policy" element={<AttendancePolicy />} />
+                      <Route path="ex-employee" element={<ExEmployees />} />
                     </Route>
                   </Route>
                 </Route>
@@ -71,12 +74,19 @@ function App() {
                 </Route>
 
                 <Route
-                  element={<PrivateRouteWithRole requiredRole="employee" />}>
-                  <Route path="/email-verified" element={<VerifiedEmail/>}/>
-                  <Route path="/set-password" element={<SetPassword/>}/>
-                  <Route path="/employee" element={<EmpLayout/>} />
-                  <Route index element={<EmpDashboard/>}/>
-                  
+                  element={<PrivateRouteWithRole requiredRole="employee" />}
+                >
+                  <Route path="/email-verified" element={<VerifiedEmail />} />
+                  <Route path="/set-password" element={<SetPassword />} />
+
+                  <Route path="/employee" element={<EmpLayout />}>
+                    <Route index element={<EmpDashboard />} />
+                    <Route path="attendance" element={<AttendanceSideMenu />}>
+                      <Route index element={<Attendance />} />
+                      <Route path="logs" element={<Attendance />} />
+                      <Route path="leaves" element={<Leaves />} />
+                    </Route>
+                  </Route>
                 </Route>
 
                 <Route element={<PrivateRouteWithRole requiredRole="admin" />}>

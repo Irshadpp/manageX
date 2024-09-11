@@ -1,9 +1,10 @@
 import React from 'react'
+import AttendanceDialog from './attendance/AttendanceDialog'
 
 const EmpDashboard = () => {
   return (
     <div>
-      employee EmpDashboard;
+      <AttendanceDialog/>
     </div>
   )
 }

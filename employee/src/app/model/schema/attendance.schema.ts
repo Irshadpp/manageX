@@ -8,6 +8,11 @@ const attendanceSchema = new mongoose.Schema({
         ref: "Employee",
         required: true
     },
+    organizationId:{
+        type: Schema.Types.ObjectId,
+        ref: "Organization",
+        required: true
+    },
     checkIn:{
         type: Date,
         default: null,
@@ -16,12 +21,9 @@ const attendanceSchema = new mongoose.Schema({
         type: Date,
         defaul: null
     },
-    date: {
-        type: Date,
-        required: true
-    },
     status:{
-        type: AttendanceStatus,
+        type: String,
+        enum: AttendanceStatus,
         default: AttendanceStatus.PRESENT
     },
     remarks: {
