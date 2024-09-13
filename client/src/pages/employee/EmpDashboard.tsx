@@ -4,7 +4,7 @@ import AttendanceDialog from './attendance/AttendanceDialog'
 const EmpDashboard = () => {
   return (
     <div>
-      <AttendanceDialog/>
+      Dashboard
     </div>
   )
 }

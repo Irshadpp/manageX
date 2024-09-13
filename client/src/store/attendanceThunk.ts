@@ -9,13 +9,14 @@ import {
   createAttendanceFailure,
 } from "./attendanceSlice";
 
-export const fetchAttendance = () => async (dispatch: AppDispatch) => {
+export const fetchAttendance = (employeeId?: string) => async (dispatch: AppDispatch) => {
   dispatch(fetchAttendanceRequest());
   try {
+    const empId = employeeId ? `?empId=${employeeId}` : "";
     const response: any = await apiRequest({
       method: "GET",
       url: import.meta.env.VITE_EMPLOYEE_URL,
-      route: "/api/v1/attendance",
+      route: `/api/v1/attendance${empId}`,
       headers: {
         "Content-type": "application/json"
       }
@@ -32,7 +33,7 @@ export const createAttendance = (attendance: any) => async (dispatch: AppDispatc
     const response: any = await apiRequest({
       method: "POST",
       url: import.meta.env.VITE_EMPLOYEE_URL,
-      route: "/api/v1/attendance",
+      route: `/api/v1/attendance`,
       data: attendance,
       headers: {
         "Content-type": "application/json"
@@ -46,5 +47,6 @@ export const createAttendance = (attendance: any) => async (dispatch: AppDispatc
     }
   } catch (error: any) {
     dispatch(createAttendanceFailure(error.message || "Something went wrong"));
+    return Promise.reject(error.message); 
   }
 };

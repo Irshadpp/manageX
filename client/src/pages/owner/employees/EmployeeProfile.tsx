@@ -1,12 +1,12 @@
-import React from "react";
 import { FaUser, FaTasks, FaClock, FaCog, FaList } from "react-icons/fa";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import UserAvatar from '/useravatar.png'
 import EditForm from "./EditForm";
 import EmployeeSettings from "./EmployeeSettings";
+import EmployeeAttendance from "./EmployeeAttendance";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
@@ -74,7 +74,7 @@ export const EmployeeProfile = () => {
           <EditForm employee={employee} />
         </TabsContent>
         <TabsContent value="attendance">
-          <div className="p-4 bg-white shadow-md rounded-lg">Attendance Content Here</div>
+          <EmployeeAttendance attendanceLogs={employee.attendanceLogs}/>
         </TabsContent>
         <TabsContent value="settings">
           <EmployeeSettings id={employee.id} email={employee.email}/>

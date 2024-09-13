@@ -1,18 +1,6 @@
 import { body } from 'express-validator';
 
 export const applyLeaveValidator = [
-  body('employeeId')
-    .notEmpty()
-    .withMessage('Employee ID is required')
-    .isMongoId()
-    .withMessage('Invalid Employee ID format'),
-
-  body('organizationId')
-    .notEmpty()
-    .withMessage('Organization ID is required')
-    .isMongoId()
-    .withMessage('Invalid Organization ID format'),
-
   body('leaveType')
     .notEmpty()
     .withMessage('Leave type is required')

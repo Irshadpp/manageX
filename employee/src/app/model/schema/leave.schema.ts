@@ -30,6 +30,7 @@ const leaveSchema = new mongoose.Schema(
     },
     {
       toJSON: {
+        timestamps: true,
         virtuals: true,
         transform(doc, ret) {
           ret.id = ret._id;
