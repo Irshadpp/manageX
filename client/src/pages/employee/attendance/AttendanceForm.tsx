@@ -12,7 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
+import store, { AppDispatch, RootState } from "@/store";
 import { Button } from "@/components/ui/button";
 import { createAttendance } from "@/store/attendanceThunk";
 import { Attendance } from "@/store/attendanceSlice";
@@ -40,9 +40,11 @@ export default function AttendanceForm({ setModalOpen }: PropsTypes) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const result = await dispatch(createAttendance(values as Attendance));
+    await dispatch(createAttendance(values as Attendance));
 
-    if (!error) {
+    const attendanceState = store.getState().attendance;
+  
+    if (!attendanceState.error) {
       setModalOpen(false);
     }
   }

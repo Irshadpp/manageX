@@ -7,7 +7,7 @@ export interface LeaveAttrs {
     leaveType: LeaveType;
     startDate: Date;
     endDate: Date;
-    reason?: string;
+    reason: string;
     status: LeaveStatus;
   }
   
@@ -18,8 +18,9 @@ export interface LeaveDoc extends mongoose.Document {
     leaveType: LeaveType;
     startDate: Date;
     endDate: Date;
-    reason?: string;
+    reason: string;
     status: LeaveStatus;
+    createdAt: Date;
   }
   
 export interface LeaveModel extends mongoose.Model<LeaveDoc> {

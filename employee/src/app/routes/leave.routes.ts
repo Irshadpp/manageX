@@ -1,12 +1,12 @@
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import express from 'express';
-import { applyLeave, updateLeaveStatus } from '../controllers/leave.controller';
+import { applyLeave, fetchLeaveApplicatons, fetchLeaveApplicatonsForOwner, updateLeaveStatus } from '../controllers/leave.controller';
 import { applyLeaveValidator } from '../validators/apply-leave.validator';
 
 const router = express.Router();
 
 router.post(
-    "/apply",
+    "/",
     requireAuth,
     applyLeaveValidator,
     validateRequest,
@@ -17,6 +17,19 @@ router.patch(
     "/status/:leaveId",
     requireAuth,
     updateLeaveStatus
+);
+
+router.get(
+    "/",
+    requireAuth,
+    fetchLeaveApplicatons
 )
+
+router.get(
+    "/requests",
+    requireAuth,
+    fetchLeaveApplicatonsForOwner
+)
+
 
 export { router as leaveRouter}

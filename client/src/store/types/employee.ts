@@ -1,3 +1,12 @@
+export interface AttendanceLog{
+  id: string;
+  status: string;
+  remarks: string;
+  date: string;
+  checkIn: string;
+  checkOut: string;
+}
+
 export interface Employee {
     id: string;
     fName: string;
@@ -19,8 +28,8 @@ export interface Employee {
       country: string;
       zipcode: string;
     }
-    // tasks: Task[];
-    // attendanceLogs: AttendanceLog[];
+    attendanceLogs: AttendanceLog[];
+    // tasks: Tasks[]
   }
   
   export interface EmployeeState {

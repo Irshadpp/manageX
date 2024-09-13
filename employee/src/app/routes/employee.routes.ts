@@ -7,8 +7,6 @@ import { updateEmployeeValidator } from '../validators/update-employee.validator
 
 const router = express.Router();
 
-// const isAuth = new requireAuth(Emplo)
-
 router.post('/',
     requireAuth,
     createEmployeeValidator,
@@ -34,5 +32,4 @@ router.get('/',
     requireAuth,
     fetchEmployeesWithOrgId
 )
-
 export {router as employeeRouter}

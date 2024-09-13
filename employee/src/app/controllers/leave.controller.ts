@@ -2,15 +2,17 @@ import { NextFunction, Request, Response } from "express";
 import { AttendancePolicyService } from "../services/attendance/attendance-policy.service";
 import { BadRequestError } from "@ir-managex/common";
 import { LeaveService } from "../services/leave/leave.service";
+import { LeaveAttrs } from "../model/leave.model";
 
 const attendancePolicyService = new AttendancePolicyService();
 const leaveService = new LeaveService();
 
 export const applyLeave = async (req: Request, res: Response, next: NextFunction) =>{
     try {
-        const {organizationId, leaveType, startDate, endDate} = req.body;
+        const { leaveType, startDate, endDate, reason} = req.body;
+        const {id, organization} = req.user!
 
-    const policy = await attendancePolicyService.getAttendancePolicyByOrgId(organizationId);
+    const policy = await attendancePolicyService.getAttendancePolicyByOrgId(organization);
     if(!policy){
         throw new Error("Attendance policy not found");
     }
@@ -22,7 +24,14 @@ export const applyLeave = async (req: Request, res: Response, next: NextFunction
         throw new BadRequestError(`Insufficient ${leaveType} leave balance`)
     }
 
-    const leave = await leaveService.createLeave(req.body);
+    const leave = await leaveService.createLeave({
+        startDate,
+        endDate,
+        leaveType,
+        reason,
+        employeeId: id,
+        organizationId: organization
+    } as LeaveAttrs);
 
     res.status(201).json({
         success: true,
@@ -52,4 +61,26 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
     } catch (error) {
         next(error)
     }
+}
+
+export const fetchLeaveApplicatons = async (req: Request, res: Response, next: NextFunction) =>{
+    const {id} = req.user!
+    const applications = await leaveService.fetchApplicationsByEmpId(id);
+    console.log(applications)
+    res.status(200).send({
+        success: true,
+        message: "Leave data fethed successfully",
+        data: applications
+    })
+}
+
+export const fetchLeaveApplicatonsForOwner = async (req: Request, res: Response, next: NextFunction) =>{
+    const {organization} = req.user!
+    const applications = await leaveService.fetchApplicationsByOrg(organization);
+    console.log(applications)
+    res.status(200).send({
+        success: true,
+        message: "Leave applications fethed successfully",
+        data: applications
+    })
 }

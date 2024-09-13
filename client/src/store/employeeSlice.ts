@@ -18,8 +18,7 @@ const employeeSlice = createSlice({
         fetchEmployeeFailure(state, action: PayloadAction<string>){
             state.loading = false;
             state.error = action.payload;
-        }
-
+        },
     }
 });
 
