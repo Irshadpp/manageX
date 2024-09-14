@@ -100,7 +100,6 @@ export const getAttendanceLogs = async (req: Request, res: Response, next: NextF
         }
         const {organization} = req.user!
         const attendanceData = await attendanceService.getAttendanceData(employeeId, organization);
-        console.log(attendanceData, "-=--===========")
         res.status(200).json({
             success:true,
             message:"Attendance data fetched successfully",

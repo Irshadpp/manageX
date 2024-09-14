@@ -100,7 +100,6 @@ const CreateForm = () => {
     if (profileImageURL) {
       values.profileURL = profileImageURL;
     }
-    console.log(values)
     const res = await apiRequest({
       method: "POST",
       url: import.meta.env.VITE_EMPLOYEE_URL,

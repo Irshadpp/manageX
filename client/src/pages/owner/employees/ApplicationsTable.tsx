@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -9,58 +9,57 @@ const ApplicationsTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchLeaveApplications = async () => {
-      setLoading(true);
-      try {
-        const response = await apiRequest({
-          method: 'GET',
-          url: import.meta.env.VITE_EMPLOYEE_URL,
-          route: "/api/v1/leave/requests",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log(response)
-        if (response.errors && response.errors.length > 0) {
-          setError(response.errors[0].message);
-        } else {
-          setLeaveApplications(response.data);
-        }
-      } catch (error: any) {
-        setError(error.message || 'Something went wrong');
-      } finally {
-        setLoading(false);
+  
+  const fetchLeaveApplications = useCallback(async () => {
+    setLoading(true);
+    try {
+      console.log("calling api......................")
+      const response = await apiRequest({
+        method: 'GET',
+        url: import.meta.env.VITE_EMPLOYEE_URL,
+        route: "/api/v1/leave/requests",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.errors && response.errors.length > 0) {
+        setError(response.errors[0].message);
+      } else {
+        setLeaveApplications(response.data);
       }
-    };
+    } catch (error: any) {
+      setError(error.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+    useEffect(() => {
     fetchLeaveApplications();
 }, []);
 
-const handleAction = (id: string, action: 'approved' | 'rejected') => {
-    // const updateStatus = async () => {
-    //     try {
-    //       const response = await apiRequest({
-    //         method: 'PATCH',
-    //         url: import.meta.env.VITE_EMPLOYEE_URL,
-    //         route: `/api/v1/leave/status/${id}`,
-    //         data:{status: action},
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //       });
-    //       console.log(response)
-    //       if (response.errors && response.errors.length > 0) {
-    //         setError(response.errors[0].message);
-    //       } else {
-    //         setLeaveApplications(response.data);
-    //       }
-    //     } catch (error: any) {
-    //       setError(error.message || 'Something went wrong');
-    //     } finally {
-    //     }
-    //   };
-    //   updateStatus();
+const handleAction = async (id: string, action: 'approved' | 'rejected') => {
+  try {
+    const response = await apiRequest({
+      method: 'PATCH',
+      url: import.meta.env.VITE_EMPLOYEE_URL,
+      route: `/api/v1/leave/status/${id}`,
+      data: { status: action },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response);
+    if (response.errors && response.errors.length > 0) {
+      setError(response.errors[0].message);
+    } else {
+      setLeaveApplications((prev) =>
+        prev.map((app) => (app.id === id ? { ...app, status: action } : app))
+      );
+    }
+  } catch (error: any) {
+    setError(error.message || 'Something went wrong');
+  }
 };
 
   return (
@@ -86,9 +85,9 @@ const handleAction = (id: string, action: 'approved' | 'rejected') => {
                 <TableCell>{new Date(application.appliedOn).toLocaleDateString()}</TableCell>
                 <TableCell>{new Date(application.startDate).toLocaleDateString()}</TableCell>
                 <TableCell>{new Date(application.endDate).toLocaleDateString()}</TableCell>
-                <TableCell>{application.leaveType}</TableCell>
+                <TableCell className='capitalize'>{application.leaveType}</TableCell>
                 <TableCell>{application.reason}</TableCell>
-                <TableCell>{application.status}</TableCell>
+                <TableCell className='capitalize'>{application.status}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -111,7 +111,6 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
     if (profileImageURL) {
       values.profileURL = profileImageURL;
     }
-    console.log(values)
     const res = await apiRequest({
       method: "PATCH",
       url: import.meta.env.VITE_EMPLOYEE_URL,

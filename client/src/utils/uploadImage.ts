@@ -12,7 +12,6 @@ export const uploadImage = async (selectedFile: any) =>{
     try {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/image/upload`,
             formData);
-        console.log(res.data.secure_url);
         return res.data.secure_url  
     } catch (error) {
         console.log(error);

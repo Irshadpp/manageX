@@ -53,11 +53,9 @@ const OrganizationTabs = () => {
         }
       });
       if(!res.success){
-        console.log(res)
         setError(res?.errors[0]?.message || "Something went wrong while fetching orgnizatinos details");
         return setLoading(false);
       }
-      console.log(res, "-------------")
         return setOrgsData(res.data[0])
     }
     fetchOrganizations()
