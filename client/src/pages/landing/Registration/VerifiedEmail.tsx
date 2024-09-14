@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const VerifiedEmail = () => {
-  console.log("--------=-=-=----=-=--= verified email component rendered");
   const {user} = useSelector((state: RootState) => state.auth)
   return (
     <>

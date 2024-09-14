@@ -30,7 +30,6 @@ const leaveSchema = new mongoose.Schema(
     },
     {
       toJSON: {
-        timestamps: true,
         virtuals: true,
         transform(doc, ret) {
           ret.id = ret._id;
@@ -40,6 +39,19 @@ const leaveSchema = new mongoose.Schema(
       },
     }
   );
+
+  function addIdToAggregation(schema: mongoose.Schema) {
+    schema.pre('aggregate', function () {
+      this.pipeline().push({
+        $addFields: { id: "$_id" },
+      });
+      this.pipeline().push({
+        $project: { _id: 0, __v: 0 },
+      });
+    });
+  }
+
+  leaveSchema.plugin(addIdToAggregation);
   
   leaveSchema.statics.build = (attrs: LeaveAttrs) => {
     return new Leave(attrs);

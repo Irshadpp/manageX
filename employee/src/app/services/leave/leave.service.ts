@@ -11,7 +11,7 @@ export class LeaveService implements ILeaveService{
     }
 
     async updateLeaveStatus(leaveId: string, status: LeaveStatus): Promise<LeaveDoc | null> {
-        return await Leave.findById(leaveId,
+        return await Leave.findByIdAndUpdate(leaveId,
             {$set: {status}},
             {new: true}
         )

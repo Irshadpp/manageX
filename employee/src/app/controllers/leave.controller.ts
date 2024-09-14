@@ -47,8 +47,8 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
     try {
         const {leaveId} = req.params;
         const {status} = req.body;
-        
-        if(leaveId || status){
+        console.log(req.body, leaveId);
+        if(!leaveId || !status){
             throw new BadRequestError("status or leaveId is missing");
         }
 
@@ -66,7 +66,6 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
 export const fetchLeaveApplicatons = async (req: Request, res: Response, next: NextFunction) =>{
     const {id} = req.user!
     const applications = await leaveService.fetchApplicationsByEmpId(id);
-    console.log(applications)
     res.status(200).send({
         success: true,
         message: "Leave data fethed successfully",
@@ -77,7 +76,6 @@ export const fetchLeaveApplicatons = async (req: Request, res: Response, next: N
 export const fetchLeaveApplicatonsForOwner = async (req: Request, res: Response, next: NextFunction) =>{
     const {organization} = req.user!
     const applications = await leaveService.fetchApplicationsByOrg(organization);
-    console.log(applications)
     res.status(200).send({
         success: true,
         message: "Leave applications fethed successfully",

@@ -32,7 +32,6 @@ const VerifyEmail = () => {
           }
           dispatch(updateIntitialSetup({value: true}));
           dispatch(setCredentials({user: res.user}));
-          console.log("Verification successful", res.user);
         } else {
           setError(true);
         }
@@ -52,12 +51,10 @@ const VerifyEmail = () => {
         {loading ? (
           <>
           <EmailVerificationSkeleton />
-          {console.log("Rendering skeleton component")}
           </>
   ) : error ? (
     <>
       <VerifyError />
-      {console.log("Rendering VerifyError component")}
     </>
   ) : (
     <>

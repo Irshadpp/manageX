@@ -61,7 +61,6 @@ const SetPasswordForm = () => {
           setError(res?.errors[0]?.message || "set password failed");
           return setLoading(false);
         }
-        console.log(res?.message);
         setLoading(false);
         logout();
         navigate("/login");

@@ -101,7 +101,6 @@ export function UsersTable({ data, refresh }: { data: any, refresh: React.Dispat
       header: "Action",
       cell: ({ row }) => {
         const user = row.original
-        console.log(user._id)
   
         const handleBlockUser = async () =>{
           const res = await apiRequest({
@@ -114,7 +113,6 @@ export function UsersTable({ data, refresh }: { data: any, refresh: React.Dispat
           });
           if(res.success){
             refresh(prev => !prev)
-            console.log("User block/unblock action successfully done");
           }
         }
   

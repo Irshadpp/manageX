@@ -22,7 +22,6 @@ const Leaves: React.FC = () => {
             'Content-Type': 'application/json',
           },
         });
-        console.log(response)
         if (response.errors && response.errors.length > 0) {
           setError(response.errors[0].message);
         } else {
