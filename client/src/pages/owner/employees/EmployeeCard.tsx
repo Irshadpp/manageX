@@ -4,7 +4,6 @@ import UserAvatar from '/useravatar.png'
 import { useNavigate } from "react-router-dom";
 import { Employee } from "@/store/types/employee";
 import React from "react";
-import { EmployeeProfile } from "./EmployeeProfile";
 
 interface EmployeeCardProps{
     employee: Employee

@@ -1,4 +1,3 @@
-import React from 'react'
 import ApplicationsTable from './ApplicationsTable'
 
 const LeaveRequests = () => {
