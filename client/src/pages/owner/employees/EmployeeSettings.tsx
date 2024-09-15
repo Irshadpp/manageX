@@ -1,5 +1,5 @@
 import Managex from '@/components/ui/Managex'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,

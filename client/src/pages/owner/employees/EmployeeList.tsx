@@ -1,6 +1,6 @@
 import { RootState } from '@/store';
 import { fetchEmployees } from '@/store/employeeThunks';
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeCard from './EmployeeCard';
 import { SkeletonEmployeeCard } from './skeletons/SkeletonEmployeeCard';

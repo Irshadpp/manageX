@@ -1,4 +1,3 @@
-import React from "react";
 import OwnerSideBar from "@/components/ui/sidebars/OwenerSideBar";
 import { Outlet } from "react-router-dom";
 
