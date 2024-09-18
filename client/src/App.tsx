@@ -33,6 +33,7 @@ import AttendancePolicy from "./pages/owner/employees/AttendancePolicy";
 import { AttendanceSideMenu } from "./pages/employee/attendance/AttendanceSideMenu";
 import Attendance from "./pages/employee/attendance/Attendance";
 import Leaves from "./pages/employee/attendance/Leaves";
+import CreateProject from "./pages/owner/project/CreateProject";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
                       <Route path="policy" element={<AttendancePolicy />} />
                       <Route path="ex-employee" element={<ExEmployees />} />
                     </Route>
+                    <Route path="/owner/projects" element={<CreateProject/>}/>
                   </Route>
                 </Route>
 

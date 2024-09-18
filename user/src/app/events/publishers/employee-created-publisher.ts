@@ -5,24 +5,22 @@ export class EmployeeCreatedPublisher extends Publisher<EmployeeCreatedEvent> {
   queue: Queues.EmployeeCreated = Queues.EmployeeCreated;
 
   async publish(data: EmployeeCreatedEvent["data"]): Promise<void> {
-    console.log("publishing message...........................!")
     await super.publish(data);
   }
 
-  static mapToEventData(updatedUser: UserDoc): EmployeeCreatedEvent["data"] {
-    console.log(updatedUser.email,"--------------------")
+  static mapToEventData(createdUser: UserDoc): EmployeeCreatedEvent["data"] {
     return {
-      id: updatedUser.id,
-      fName: updatedUser.fName,
-      lName: updatedUser.lName,
-      email: updatedUser.email,
-      username: updatedUser.username,
-      phone: updatedUser.phone,
-      role: updatedUser.role,
-      profileURL: updatedUser.profileURL,
-      dob: updatedUser.dob,
-      isActive: updatedUser.isActive,
-      organizationId: updatedUser.organizationId,
+      id: createdUser.id,
+      fName: createdUser.fName,
+      lName: createdUser.lName,
+      email: createdUser.email,
+      username: createdUser.username,
+      phone: createdUser.phone,
+      role: createdUser.role,
+      profileURL: createdUser.profileURL,
+      dob: createdUser.dob,
+      isActive: createdUser.isActive,
+      organizationId: createdUser.organizationId,
     };
   }
 }
