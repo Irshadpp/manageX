@@ -1,5 +1,5 @@
 import { User } from "../../model/schema/user.schema";
-import { UserAttrs } from "../../model/user.model";
+import { UserAttrs, UserDoc } from "../../model/user.model";
 import { IUserService } from "./user.service.interface";
 
 export class UserService implements IUserService{
@@ -7,4 +7,8 @@ export class UserService implements IUserService{
         const newUser = User.build(attrs);
         return await newUser.save();
     }
+
+    async updateUser(id: string, attrs: UserAttrs): Promise<UserDoc | null> {
+        return await User.findByIdAndUpdate(id, { ...attrs }, {new: true});
+      }
 }
