@@ -15,6 +15,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { MembersTable } from "./MembersTable";
 import { ManagerList } from "./ManagerList";
 import DatePickerWithLimit from "@/components/project/DatePickerWithLimit";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { createProject } from "@/store/projectThunk";
+import { Project } from "@/store/types/project";
 
 const projectSchema = z.object({
   name: z.string().min(2, { message: "Please give a valid name" }),
@@ -26,10 +30,9 @@ const projectSchema = z.object({
 });
 
 const CreateForm = () => {
-//   const dispatch = useAppDispatch();
-//   const router = useRouter();
 
-//   const { loading, error } = useAppSelector((state) => state.project);
+    const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.project);
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -44,10 +47,7 @@ const CreateForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
-    // const res = await dispatch(createProject(values));
-    // if (createProject.fulfilled.match(res)) {
-    //   router.back();
-    // }
+    await dispatch(createProject(values as Project));
   };
 
   return (
@@ -90,7 +90,7 @@ const CreateForm = () => {
             />
             <MembersTable />
           </div>
-          <div>
+          <div className="mt-5">
             <FormField
               control={form.control}
               name="startDate"
@@ -121,10 +121,10 @@ const CreateForm = () => {
           </div>
         </div>
 
-        {/* <Button type="submit" className="" disabled={loading}>
+        <Button type="submit" className="" disabled={loading}>
           {loading ? "Loading..." : "Create Project"}
         </Button>
-        {error && <p className="text-sm text-red-500">{error}</p>} */}
+        {error && <p className="text-sm text-red-500">{error}</p>}
       </form>
     </Form>
   );

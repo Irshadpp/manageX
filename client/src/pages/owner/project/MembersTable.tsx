@@ -3,17 +3,9 @@ import { useState } from "react";
 import UserAvatar from '/useravatar.png';
 import MemberAddButton from "./MemberAddButton";
 
-interface MemberType {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  phoneNumber: number;
-  profileImageURL: string;
-}
 
 export function MembersTable() {
-  const [members, setMembers] = useState<MemberType[]>([]);
+  const [members, setMembers] = useState<any[]>([]);
 
   return (
     <div className="w-full text-sm mt-5">
@@ -34,14 +26,14 @@ export function MembersTable() {
                 <div className="flex gap-3 items-center">
                   <div className="w-7 h-7 rounded-full overflow-clip">
                     <img
-                      src={member.profileImageURL || UserAvatar}
+                      src={member.profileURL || UserAvatar}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       width={100}
                       height={100}
                     />
                   </div>
-                  {member.firstName} {member.lastName}
+                  {member.fName} {member.lName}
                 </div>
               </td>
               <td className="border-t border-background p-3">{member.email}</td>

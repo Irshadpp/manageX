@@ -50,7 +50,7 @@ const OwnerSideBar = () => {
           </TooltipWrapper>
         </Link>
         <Link to="/owner/projects" className="hover-text text-xl">
-          <TooltipWrapper title="Dashboard">
+          <TooltipWrapper title="Projects">
             <div
               className={`p-1 rounded-xl hover:bg-popover ${
                 pathname === "/owner/projects" ? "bg-primary" : ""

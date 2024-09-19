@@ -10,8 +10,6 @@ export interface ProjectAttrs{
     members: string[];
     tasks: string[];
     manager: string;
-    client: string;
-    deal: string;
     organizationId: string;
 }
 
@@ -25,8 +23,6 @@ export interface ProjectDoc extends mongoose.Document{
     members: string[];
     tasks: string[];
     manager: string;
-    client: string;
-    deal: string;
     organizationId: string;
     createdAt: Date;
 }

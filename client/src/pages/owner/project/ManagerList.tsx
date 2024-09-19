@@ -1,3 +1,4 @@
+import React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
@@ -17,96 +18,97 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 interface Manager {
   value: string;
   label: string;
-  profileImageURL: string;
+  profileURL: string;
 }
+
+
 export function ManagerList({ field }: { field: any }) {
   const [managers, setManagers] = useState<Manager[]>([]);
   const { setValue } = useFormContext();
 
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.PROJECT_URL,
-        route: "/api/v1/project",
+        url: import.meta.env.VITE_PROJECT_URL,
+        route: "/api/v1/users/members?role=manager",
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+      console.log(res)
       if (res.success) {
         const managers = res.data;
         const transformedManagers = managers.map((manager: any) => ({
           value: manager.id,
           label: `${manager.fName} ${manager.lName}`,
-          profileImageURL: manager.profileURL || "",
+          profileURL: manager.profileURL || "",
         }));
-
         setManagers(transformedManagers);
       }
     };
-    loadData();
+    fetchData();
   }, []);
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <FormControl>
-          <Button
-            variant="outline"
-            role="combobox"
-            className={cn(
-              "w-full justify-between bg-backgroundAccent",
-              !field.value && "text-muted-foreground"
-            )}
-          >
-            {field.value
-              ? managers.find((manager) => manager.value === field.value)?.label
-              : "Select manager"}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </FormControl>
-      </PopoverTrigger>
-      <PopoverContent className="w-80 p-0">
-        <Command>
-          <CommandInput placeholder="Search Manager..." />
-          <CommandEmpty>No Manager found.</CommandEmpty>
-          <CommandGroup>
-            <ScrollArea className="h-52 w-full rounded-md">
-              {managers.map((manager) => (
-                <CommandItem
-                  key={manager.value}
-                  value={manager.value}
-                  onSelect={() => {
-                    setValue("manager", manager.value);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      manager.value === field.value
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                  <div className="flex gap-2">
-                    <div className="w-5 h-5 rounded-full overflow-clip">
-                      <img
-                        src={manager.profileImageURL || UserAvatar}
-                        alt="Profile"
-                        className="w-full h-full object-cover"
-                        width={100}
-                        height={100}
-                      />
-                    </div>
-                    {manager.label}
+    <PopoverTrigger asChild>
+      <FormControl>
+        <Button
+          variant="outline"
+          role="combobox"
+          className={cn(
+            "w-full justify-between bg-backgroundAccent",
+            !field.value && "text-muted-foreground"
+          )}
+        >
+          {field.value
+            ? managers.find((manager) => manager.value === field.value)?.label
+            : "Select manager"}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </FormControl>
+    </PopoverTrigger>
+    <PopoverContent className="w-80 p-0">
+      <Command>
+        <CommandInput placeholder="Search Manager..." />
+        <CommandEmpty>No Manager found.</CommandEmpty>
+        <CommandGroup>
+          <ScrollArea className="h-52 w-full rounded-md">
+            {managers.map((manager) => (
+              <CommandItem
+                key={manager.value}
+                value={manager.value}
+                onSelect={() => {
+                  setValue("manager", manager.value);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    manager.value === field.value
+                      ? "opacity-100"
+                      : "opacity-0"
+                  )}
+                />
+                <div className="flex gap-2">
+                  <div className="w-5 h-5 rounded-full overflow-clip">
+                    <img
+                      src={manager.profileURL || UserAvatar}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                      width={100}
+                      height={100}
+                    />
                   </div>
-                </CommandItem>
-              ))}
-            </ScrollArea>
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                  {manager.label}
+                </div>
+              </CommandItem>
+            ))}
+          </ScrollArea>
+        </CommandGroup>
+      </Command>
+    </PopoverContent>
+  </Popover>
   );
 }

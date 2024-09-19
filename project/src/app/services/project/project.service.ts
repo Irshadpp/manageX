@@ -13,6 +13,12 @@ export class ProjectService implements IProjectService{
     }
 
     async fetchProjectsByOrgId(organizationId: string): Promise<ProjectDoc[] | null> {
-        return await Project.find({organizationId});
+        return await Project.find({organizationId})
+        .populate({
+            path: "members",
+        })
+        .populate({
+            path: "manager"
+        })
     }
 }

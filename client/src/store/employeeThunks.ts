@@ -14,6 +14,7 @@ export const fetchEmployees = () => async (dispatch: AppDispatch) =>{
                 "Content-type": "application/json"
             }
         });
+        console.log(response.data)
         dispatch(fetchEmployeesSuccess(response.data));
     } catch (error: any) {
         console.error("Fetch employees error:", error);

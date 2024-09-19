@@ -27,14 +27,13 @@ export default function MembersList({
       setLoading(true);
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.PROJECT_URL,
-        route: "/api/v1/project/members",
+        url: import.meta.env.VITE_PROJECT_URL,
+        route: "/api/v1/users/members?role=employee",
         headers:{
             "Content-Type":"application/json"
         }
       });
       setLoading(false);
-
       if (res.success) {
         const membersWithSelection =
           res.data.map((member: any) => ({
@@ -49,7 +48,7 @@ export default function MembersList({
 
   const handleCheckboxChange = (id: string) => {
     const updatedMembers = membersList.map((member) =>
-      member._id === id ? { ...member, selected: !member.selected } : member
+      member.id === id ? { ...member, selected: !member.selected } : member
     );
     setMembersList(updatedMembers);
   };
@@ -59,7 +58,7 @@ export default function MembersList({
 
     const selectedMembersId = selectedMembers.map((member) => {
       let mem = member.selected;
-      return mem && member._id;
+      return mem && member.id;
     });
 
     setValue("members", selectedMembersId);
@@ -67,7 +66,6 @@ export default function MembersList({
     setMembers(selectedMembers);
     setIsModalOpen(false);
   };
-
   return (
     <div>
       <InputWithIcon icon={<FiSearch />} placeholder="Search..." />
@@ -77,7 +75,7 @@ export default function MembersList({
         ) : (
           membersList.map((member, index: number) => (
             <label
-              htmlFor={`member_${member._id}`}
+              htmlFor={`member_${member.id}`}
               className="cursor-pointer"
               key={index}
             >
@@ -86,9 +84,9 @@ export default function MembersList({
                 className="flex items-center space-x-4 p-2 hover:bg-backgroundAccent active:opacity-80"
               >
                 <Checkbox
-                  id={`member_${member._id}`}
+                  id={`member_${member.id}`}
                   checked={member.selected}
-                  onCheckedChange={() => handleCheckboxChange(member._id)}
+                  onCheckedChange={() => handleCheckboxChange(member.id)}
                 />
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full overflow-clip">
