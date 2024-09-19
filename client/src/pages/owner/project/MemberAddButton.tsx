@@ -10,7 +10,6 @@ import MembersList from "./MembersList";
 
 const MemberAddButton = ({ setMembers }: { setMembers: any }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <>
       <div

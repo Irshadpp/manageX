@@ -1,7 +1,8 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
 import employeeReducer from "./employeeSlice"
-import attendanceReducer from "./attendanceSlice"
+import attendanceReducer from "./attendanceSlice";
+import projectReducer from "./projectSlice";
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
@@ -16,7 +17,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     employee: employeeReducer,
-    attendance: attendanceReducer
+    attendance: attendanceReducer,
+    project: projectReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

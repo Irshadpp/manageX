@@ -34,6 +34,8 @@ import { AttendanceSideMenu } from "./pages/employee/attendance/AttendanceSideMe
 import Attendance from "./pages/employee/attendance/Attendance";
 import Leaves from "./pages/employee/attendance/Leaves";
 import CreateProject from "./pages/owner/project/CreateProject";
+import ProjectList from "./pages/owner/project/ProjectList";
+import Project from "./pages/owner/project/Project";
 
 function App() {
   return (
@@ -65,7 +67,9 @@ function App() {
                       <Route path="policy" element={<AttendancePolicy />} />
                       <Route path="ex-employee" element={<ExEmployees />} />
                     </Route>
-                    <Route path="/owner/projects" element={<CreateProject/>}/>
+                    <Route path="/owner/projects" element={<ProjectList/>}/>
+                    <Route path="/owner/projects/create" element={<CreateProject/>}/>
+                    <Route path="/owner/projects/:id" element={<Project/>}/>
                   </Route>
                 </Route>
 

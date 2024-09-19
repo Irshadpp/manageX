@@ -26,12 +26,6 @@ const projectSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    client: {
-        type: Schema.Types.ObjectId
-    },
-    deal: {
-        type: Schema.Types.ObjectId
-    },
     organizationId: {
         type: Schema.Types.ObjectId
     }
