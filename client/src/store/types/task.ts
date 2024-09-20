@@ -1,7 +1,18 @@
-import mongoose from "mongoose";
-import { DurationType, Priority, ProjectStatus } from "./enum";
+import { ProjectStatus } from "./project";
 
-interface SubTask{
+enum Priority{
+    LOW = "low",
+    MEDIUM = "medium",
+    HIGH = "high",
+}
+
+enum DurationType{
+    MINUTES = "minutes",
+    HOURS = "hours",
+    DAY = "day"
+}
+
+export interface SubTask{
     title: string;
     status: ProjectStatus;
     duration: {
@@ -26,23 +37,9 @@ interface Attachments{
     attachments: string[];
 }
 
-export interface TaskAttrs{
-    title: string;
-    description: string;
-    projectId: string;
-    organizationId: string;
-    startDate: Date;
-    dueDate: Date;
-    status: ProjectStatus;
-    priority: Priority;
-    assignee: string;
-    subTasks: SubTask;
-    attachments: Attachments;
-    notes: Notes;
-}
-
-export interface TaskDoc extends mongoose.Document{
+export interface Task{
     id: string;
+    title?: string;
     description: string;
     projectId: string;
     organizationId: string;
@@ -56,6 +53,8 @@ export interface TaskDoc extends mongoose.Document{
     notes: Notes;
 }
 
-export interface TaskModel extends mongoose.Model<TaskDoc>{
-    build(attrs: TaskAttrs) : TaskDoc;
-}
+export interface TaskState {
+    taskData: Task[];
+    loading: boolean;
+    error: string | null;
+  }

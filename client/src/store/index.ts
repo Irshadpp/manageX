@@ -3,6 +3,7 @@ import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
 import employeeReducer from "./employeeSlice"
 import attendanceReducer from "./attendanceSlice";
 import projectReducer from "./projectSlice";
+import taskReducer from "./taskSlice";
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     employee: employeeReducer,
     attendance: attendanceReducer,
-    project: projectReducer
+    project: projectReducer,
+    task: taskReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -14,15 +14,15 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "@/services/api/commonRequest";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 
-interface Manager {
+interface Employee {
   value: string;
   label: string;
   profileURL: string;
 }
 
 
-export function ManagerList({ field }: { field: any }) {
-  const [managers, setManagers] = useState<Manager[]>([]);
+export function EmployeeList({ field }: { field: any }) {
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const { setValue } = useFormContext();
 
   useEffect(() => {
@@ -30,20 +30,20 @@ export function ManagerList({ field }: { field: any }) {
       const res = await apiRequest({
         method: "GET",
         url: import.meta.env.VITE_PROJECT_URL,
-        route: "/api/v1/users/members?role=manager",
+        route: "/api/v1/users/members?role=employee",
         headers: {
           "Content-Type": "application/json",
         },
       });
       console.log(res)
       if (res.success) {
-        const managers = res.data;
-        const transformedManagers = managers.map((manager: any) => ({
-          value: manager.id,
-          label: `${manager.fName} ${manager.lName}`,
-          profileURL: manager.profileURL || "",
+        const employees = res.data;
+        const transformedEmployees = employees.map((employee: any) => ({
+          value: employee.id,
+          label: `${employee.fName} ${employee.lName}`,
+          profileURL: employee.profileURL || "",
         }));
-        setManagers(transformedManagers);
+        setEmployees(transformedEmployees);
       }
     };
     fetchData();
@@ -62,30 +62,30 @@ export function ManagerList({ field }: { field: any }) {
           )}
         >
           {field.value
-            ? managers.find((manager) => manager.value === field.value)?.label
-            : "Select manager"}
+            ? employees.find((employee) => employee.value === field.value)?.label
+            : "Select employee"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </FormControl>
     </PopoverTrigger>
     <PopoverContent className="w-80 p-0">
       <Command>
-        <CommandInput placeholder="Search Manager..." />
-        <CommandEmpty>No Manager found.</CommandEmpty>
+        <CommandInput placeholder="Search Employee..." />
+        <CommandEmpty>No Employee found.</CommandEmpty>
         <CommandGroup>
           <ScrollArea className="h-52 w-full rounded-md">
-            {managers.map((manager) => (
+            {employees.map((employee) => (
               <CommandItem
-                key={manager.value}
-                value={manager.value}
+                key={employee.value}
+                value={employee.value}
                 onSelect={() => {
-                  setValue("manager", manager.value);
+                  setValue("employee", employee.value);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    manager.value === field.value
+                    employee.value === field.value
                       ? "opacity-100"
                       : "opacity-0"
                   )}
@@ -93,14 +93,14 @@ export function ManagerList({ field }: { field: any }) {
                 <div className="flex gap-2">
                   <div className="w-5 h-5 rounded-full overflow-clip">
                     <img
-                      src={manager.profileURL || UserAvatar}
+                      src={employee.profileURL || UserAvatar}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       width={100}
                       height={100}
                     />
                   </div>
-                  {manager.label}
+                  {employee.label}
                 </div>
               </CommandItem>
             ))}

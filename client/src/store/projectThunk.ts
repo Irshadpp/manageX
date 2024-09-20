@@ -1,6 +1,6 @@
 import { apiRequest } from "@/services/api/commonRequest";
 import { AppDispatch } from ".";
-import { createProjectFailure, createProjectRequest, createProjectSuccess, fetchProjectFailure, fetchProjectRequest, fetchProjectSuccess } from "./projectSlice";
+import { createProjectFailure, createProjectRequest, createProjectSuccess, fetchProjectFailure, fetchProjectRequest, fetchProjectSuccess, updateProjectFailure, updateProjectRequest, updateProjectSuccess } from "./projectSlice";
 
 export const fetchProject = () => async (dispatch: AppDispatch) => {
   dispatch(fetchProjectRequest());
@@ -44,7 +44,7 @@ export const createProject = (project: any) => async (dispatch: AppDispatch) => 
 };
 
 export const updateProject = (project: any, id: string) => async (dispatch: AppDispatch) => {
-    dispatch(createProjectRequest());
+    dispatch(updateProjectRequest());
     try {
       const response: any = await apiRequest({
         method: "PATCH",
@@ -57,12 +57,12 @@ export const updateProject = (project: any, id: string) => async (dispatch: AppD
       });
       if (response.errors && response.errors.length > 0) {
         const errorMessage = response.errors[0].message;
-        dispatch(createProjectFailure(errorMessage));
+        dispatch(updateProjectFailure(errorMessage));
       } else {
-        dispatch(createProjectSuccess(response.data));
+        dispatch(updateProjectSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(createProjectFailure(error.message || "Something went wrong"));
+      dispatch(updateProjectFailure(error.message || "Something went wrong"));
       return Promise.reject(error.message); 
     }
   };
