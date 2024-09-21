@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SkeletonEmployeeCard() {
   return (
-    <div className="bg-accent p-5 rounded-lg">
+    <div className="bg-muted/40 p-5 rounded-lg">
       <div className="text-center py-5">
         <div className="w-32 h-32 mx-auto rounded-full overflow-clip">
           <Skeleton className="w-full h-full" />

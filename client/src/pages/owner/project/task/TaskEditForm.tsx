@@ -23,8 +23,9 @@ import DatePickerDown from "@/components/common/DatePickerDown";
 import { EmployeeList } from "@/components/task/EmployeeList";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTask } from "@/store/taskThunk";
+import { fetchTasks, updateTask } from "@/store/taskThunk";
 import { useLocation } from "react-router-dom";
+import { format } from "date-fns";
 
 const formSchema = z.object({
   title: z
@@ -58,8 +59,12 @@ const formSchema = z.object({
 
 export default function TaskEditForm({
   setIsModalOpen,
+  task,
+  projectId
 }: {
   setIsModalOpen: any;
+  task: any;
+  projectId: string
 }) {
   const location = useLocation();
   const curr = location.pathname.split("/")[1];
@@ -70,22 +75,26 @@ export default function TaskEditForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: (taskData && taskData.title) || "",
+      title: (task && task.title) || "",
       startDate:
-        (taskData && format(new Date(taskData.startDate), "MMM d, yyyy")) || undefined,
+        (task && task.startDate) || undefined,
       dueDate:
-        (taskData && format(new Date(taskData.dueDate), "MMM d, yyyy")) || undefined,
-      status: (taskData && taskData.status) || "",
-      priority: (taskData && taskData.priority) || "",
-      assignee: (taskData && taskData.assignee) || "",
-      description: (taskData && taskData.description) || "",
+        (task && task.dueDate) || undefined,
+      status: (task && task.status) || "",
+      priority: (task && task.priority) || "",
+      assignee: (task && task.assignee.id) || "",
+      description: (task && task.description) || "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
     if (taskData) {
-      const data = await dispatch(updateTask(values, taskData.id));
+      const res = await dispatch(updateTask(values, task.id));
+      if(res?.success){
         setIsModalOpen(false);
+        dispatch(fetchTasks(projectId));
+      }
     }
   }
 
@@ -114,7 +123,7 @@ export default function TaskEditForm({
               <FormControl>
                 <Textarea
                   placeholder="Enter Description"
-                  className="bg-backgroundAccent"
+                  className="bg-background"
                   {...field}
                 />
               </FormControl>

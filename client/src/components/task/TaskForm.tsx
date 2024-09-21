@@ -90,8 +90,10 @@ export default function TaskForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await dispatch(createTask(values))
+    const res: any = await dispatch(createTask(values, id as string));
+    if(res?.success){
       setIsModalOpen(false);
+    }
   }
 
   return (

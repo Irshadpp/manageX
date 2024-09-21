@@ -13,28 +13,34 @@ enum DurationType{
 }
 
 export interface SubTask{
+    id: string;
     title: string;
     status: ProjectStatus;
     duration: {
-        length: string;
+        length: number;
         durationType: DurationType;
     }
 }
 
-interface Notes{
+export interface Replay{
     text: string;
-    userId: string;
-    replay: {
-        text: string;
-        userId: string;
-    }
+    user: any;
+    createdAt: string;
 }
 
-interface Attachments{
+export interface Comments{
+    id: string;
+    text: string;
+    user: any;
+    createdAt: string;
+    replay: Replay[]
+}
+
+export interface Attachments{
     title: string;
     description: string;
-    userId: string;
-    attachments: string[];
+    user: any;
+    attachments?: string[];
 }
 
 export interface Task{
@@ -48,9 +54,9 @@ export interface Task{
     status: ProjectStatus;
     priority: Priority;
     assignee: string;
-    subTasks: SubTask;
-    attachments: Attachments;
-    notes: Notes;
+    subTasks: SubTask[];
+    attachments: Attachments[];
+    comments: Comments[];
 }
 
 export interface TaskState {

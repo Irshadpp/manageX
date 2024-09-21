@@ -20,11 +20,8 @@ const ProjectDetails = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { projectData } = useSelector((state: RootState) => state.project);  
 
-  console.log("projedctData", projectData)
-  
   const project: any = projectData.find(item => item.id === id);
   
-  console.log(project, "=================")
   const handleStatusUpdate = async (value: string) => {
     const data = {
       status: `${value}`,
@@ -33,7 +30,7 @@ const ProjectDetails = ({ id }: { id: string }) => {
   };
 
   return (
-    <ScrollArea className="h-screen bg-secondary shadow-md">
+    <ScrollArea className="h-screen bg-muted/40 shadow-md">
       {project && (
         <div className="p-5">
           <div className="flex justify-between">
@@ -47,7 +44,7 @@ const ProjectDetails = ({ id }: { id: string }) => {
             defaultValue={project.status}
             onValueChange={handleStatusUpdate}
           >
-            <SelectTrigger className="bg-accent">
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>

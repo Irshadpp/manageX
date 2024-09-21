@@ -9,7 +9,7 @@ const attachmentSchema = new mongoose.Schema({
         description: {
           type: String,
         },
-        userId: {
+        user: {
           type: Schema.Types.ObjectId,
           ref: "User",
         },
@@ -39,17 +39,17 @@ const replaySchema = new mongoose.Schema({
     text: {
         type: String
     },
-    userId: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
 }, { timestamps: true })
 
-const noteSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
     text: {
         type: String
     },
-    userId: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
@@ -95,8 +95,8 @@ const taskSchema = new mongoose.Schema({
     subTasks: {
         type: [subTaskSchema]
     },
-    notes: {
-        type: [noteSchema]
+    comments: {
+        type: [commentSchema]
     }
 },{
     toJSON:{

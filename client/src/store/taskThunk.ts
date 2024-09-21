@@ -2,13 +2,13 @@ import { apiRequest } from "@/services/api/commonRequest";
 import { AppDispatch } from ".";
 import { createTaskFailure, createTaskRequest, createTaskSuccess, fetchTaskFailure, fetchTaskRequest, fetchTaskSuccess, updateTaskFailure, updateTaskRequest, updateTaskSuccess } from "./taskSlice";
 
-export const fetchTask = () => async (dispatch: AppDispatch) => {
+export const fetchTasks = (id: string) => async (dispatch: AppDispatch) => {
   dispatch(fetchTaskRequest());
   try {
     const response: any = await apiRequest({
       method: "GET",
       url: import.meta.env.VITE_PROJECT_URL,
-      route: `/api/v1/task`,
+      route: `/api/v1/task/${id}`,
       headers: {
         "Content-type": "application/json"
       }
@@ -19,13 +19,13 @@ export const fetchTask = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const createTask= (task: any) => async (dispatch: AppDispatch) => {
+export const createTask= (task: any, id: string) => async (dispatch: AppDispatch) => {
   dispatch(createTaskRequest());
   try {
     const response: any = await apiRequest({
       method: "POST",
       url: import.meta.env.VITE_PROJECT_URL,
-      route: `/api/v1/task`,
+      route: `/api/v1/task/${id}`,
       data: task,
       headers: {
         "Content-type": "application/json"
@@ -35,7 +35,8 @@ export const createTask= (task: any) => async (dispatch: AppDispatch) => {
       const errorMessage = response.errors[0].message;
       dispatch(createTaskFailure(errorMessage));
     } else {
-      dispatch(createTaskRequest(response.data));
+      dispatch(createTaskSuccess(response.data));
+      return {success: true}
     }
   } catch (error: any) {
     dispatch(createTaskFailure(error.message || "Something went wrong"));
@@ -60,6 +61,7 @@ export const updateTask= (task: any, id: string) => async (dispatch: AppDispatch
         dispatch(updateTaskFailure(errorMessage));
       } else {
         dispatch(updateTaskSuccess(response.data));
+        return {success: true}
       }
     } catch (error: any) {
       dispatch(updateTaskFailure(error.message || "Something went wrong"));

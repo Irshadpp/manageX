@@ -70,7 +70,7 @@ export function EmployeeList({ field }: { field: any }) {
     </PopoverTrigger>
     <PopoverContent className="w-80 p-0">
       <Command>
-        <CommandInput placeholder="Search Employee..." />
+        <CommandInput placeholder="Search Employee..."/>
         <CommandEmpty>No Employee found.</CommandEmpty>
         <CommandGroup>
           <ScrollArea className="h-52 w-full rounded-md">
@@ -79,7 +79,8 @@ export function EmployeeList({ field }: { field: any }) {
                 key={employee.value}
                 value={employee.value}
                 onSelect={() => {
-                  setValue("employee", employee.value);
+                  setValue(field.name, employee.value);
+                  console.log(employee.value)
                 }}
               >
                 <Check
