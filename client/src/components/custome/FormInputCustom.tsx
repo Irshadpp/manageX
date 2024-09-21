@@ -26,7 +26,6 @@ const FormInputCustom: React.FC<InputProps> = ({
   disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(type === "password");
-
   return (
     <FormItem className="mt-2">
       {showTitle && <FormLabel>{title}</FormLabel>}

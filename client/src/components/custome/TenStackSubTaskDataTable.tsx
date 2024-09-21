@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,14 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -39,32 +30,30 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { ReactNode, useState } from "react";
-import { ScrollArea } from "../ui/scroll-area";
 
-export function TanStackDataTable<TData, TValue>({
+export function TanStackSubTAskDataTable<TData, TValue>({
   columns,
   data,
   pageTitle,
   newButton,
   searchField,
-  rowOnClick,
-  showColSelectButton = true,
+  rowOnCLick,
 }: {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageTitle?: string;
   newButton?: ReactNode;
   searchField?: string;
-  rowOnClick?: (id: string) => void;
-  showColSelectButton?: boolean;
+  rowOnCLick?: (slug: string) => void;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    id: false,
+    slug: false,
     description: false,
     endTime: false,
     startTime: false,
+    _id: false,
   });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -142,9 +131,9 @@ export function TanStackDataTable<TData, TValue>({
   };
 
   return (
-    <div className="w-full px-5">
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-2 pb-4">
-        {pageTitle && <h1 className="font-bold text-3xl">{pageTitle}</h1>}
+    <div className="w-full">
+      <div className="flex items-center justify-between gap-2 pb-4">
+        {pageTitle && <h1 className="font-bold text-xl">{pageTitle}</h1>}
         {searchField && (
           <Input
             placeholder={`Search ${searchField}...`}
@@ -157,42 +146,6 @@ export function TanStackDataTable<TData, TValue>({
             className="max-w-sm"
           />
         )}
-        {showColSelectButton && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="md:ml-auto">
-                Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  if (
-                    column.id === "id" ||
-                    column.id === "description" ||
-                    column.id === "endTime" ||
-                    column.id === "startTime"
-                  ) {
-                    return;
-                  }
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
         {newButton}
       </div>
       <div className="rounded-md border">
@@ -201,7 +154,7 @@ export function TanStackDataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="bg-muted/60 hover:bg-accent border-background"
+                className="bg-muted/50 hover:bg-muted/50 border-muted/100"
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -223,8 +176,8 @@ export function TanStackDataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="bg-muted/40 border-background cursor-pointer"
-                  onClick={() => rowOnClick && rowOnClick(row.getValue("id"))}
+                  className="bg-background border cursor-pointer"
+                  onClick={() => rowOnCLick && rowOnCLick(row.getValue("id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-3">

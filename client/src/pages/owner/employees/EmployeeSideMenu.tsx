@@ -38,10 +38,6 @@ export function EmployeeSideMenu() {
             <h1 className="flex text-2xl items-center gap-2 font-semibold">
               Employees
             </h1>
-            {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-              <Bell className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button> */}
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

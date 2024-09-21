@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import TaskEditForm from "./TaskEditForm";
-import { removeTaskOnClose } from "@/app/lib/features/task/taskSlice";
-import { columns } from "../subTask/subTaskColumns";
-import { TanStackDataTableSmall } from "@/components/custom/TanStackDataTableSmall";
+// import { removeTaskOnClose } from "@/app/lib/features/task/taskSlice";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import NewSubTaskButton from "../subTask/NewSubTaskButton";
 import {
   Dialog,
   DialogContent,
@@ -13,56 +10,56 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import SubTaskEditForm from "../subTask/SubTaskEditForm";
-
-import NotesListInSheet from "../notes/NotesListInSheet";
+import { columns } from "./SubTaskColumns";
+import { TanStackSubTAskDataTable } from "@/components/custome/TenStackSubTaskDataTable";
+import NewSubTaskButton from "./NewSubTaskButton";
+import SubTaskEditForm from "./SubTaskEditForm";
+import TaskComments from "./TaskComments";
+import Attachments from "./Attachments";
 import EstimatedDuration from "./EstimatedDuration";
-import TaskAttachments from "./TaskAttachments";
 
 interface PropsTypes {
   onOpenChange: any;
   setOnOpenChange: any;
+  task: any;
+  projectId: string;
 }
 
-const TaskDetailSheet = ({ onOpenChange, setOnOpenChange }: PropsTypes) => {
-  const dispatch = useAppDispatch();
+const TaskDetailSheet = ({ onOpenChange, setOnOpenChange, task, projectId }: PropsTypes) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subTaskId, setSubTaskId] = useState("");
-  const { task } = useAppSelector((state) => state.task);
 
   const rowOnClick = (value: string) => {
     setIsModalOpen(true);
     setSubTaskId(value);
   };
-
   return (
     <Sheet
       open={onOpenChange}
       onOpenChange={(data) => {
-        dispatch(removeTaskOnClose());
         setOnOpenChange(data);
       }}
     >
       <SheetContent className="pt-5 px-0">
-        <ScrollArea className="h-screen  p-5">
-          {task && <TaskEditForm setIsModalOpen={setOnOpenChange} />}
+        <ScrollArea className="h-screen p-5">
+          {task && <TaskEditForm setIsModalOpen={setOnOpenChange} task={task} projectId={projectId}/>}
           <div className="pt-3">
-            <TaskAttachments />
+            <Attachments task={task} />
             <div>Estimated Time</div>
-            <EstimatedDuration />
+            <EstimatedDuration task={task} />
             {task && (
-              <TanStackDataTableSmall
+              <TanStackSubTAskDataTable
                 columns={columns}
                 data={task.subTasks}
                 pageTitle="Sub Tasks"
-                newButton={<NewSubTaskButton />}
+                newButton={<NewSubTaskButton id={task.id}/>}
                 rowOnCLick={rowOnClick}
               />
             )}
           </div>
-          <NotesListInSheet />
+          <TaskComments task={task}/>
         </ScrollArea>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+       {task && <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Edit Sub Task</DialogTitle>
@@ -72,10 +69,11 @@ const TaskDetailSheet = ({ onOpenChange, setOnOpenChange }: PropsTypes) => {
             </DialogHeader>
             <SubTaskEditForm
               setIsModalOpen={setIsModalOpen}
+              taskId={task.id}
               subTaskId={subTaskId}
             />
           </DialogContent>
-        </Dialog>
+        </Dialog>}
       </SheetContent>
     </Sheet>
   );

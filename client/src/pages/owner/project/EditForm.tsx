@@ -53,11 +53,13 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
 
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
     if (project) {
-      const data = await dispatch(
+      const res: any = await dispatch(
         updateProject(values, project.id)
       );
       fetchProject();
+      if(res?.success){
         setIsModalOpen(false);
+      }
     }
   };
 

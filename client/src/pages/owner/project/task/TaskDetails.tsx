@@ -5,19 +5,24 @@ import { TanStackDataTable } from "@/components/custome/TanstackTable";
 import { columns } from "./TaskColumns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { fetchTask } from "@/store/taskThunk";
+import { fetchTasks } from "@/store/taskThunk";
 
 const TaskDetails = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { taskData } = useSelector((state: RootState) => state.task);
-
+  const [task, setTask] = useState({})
+  
+  
   const [onEditSheet, setOnEditSheet] = useState(false);
-
+  
   useEffect(() => {
-    dispatch(fetchTask());
+    dispatch(fetchTasks(id));
   }, [dispatch]);
-
-  const rowOnClick = () => {
+  
+  console.log(task)
+  const rowOnClick = (taskId: string) => {
+    const task: any = taskData ? taskData.find(task => task.id === taskId) : {}
+    setTask(task)
     setOnEditSheet(true);
   };
 
@@ -26,6 +31,8 @@ const TaskDetails = ({ id }: { id: string }) => {
       <TaskDetailSheet
         onOpenChange={onEditSheet}
         setOnOpenChange={setOnEditSheet}
+        task={task}
+        projectId={id}
       />
       {taskData && taskData.length > 0 ? (
         <TanStackDataTable
