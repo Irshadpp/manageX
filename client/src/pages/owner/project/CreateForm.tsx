@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { createProject } from "@/store/projectThunk";
 import { Project } from "@/store/types/project";
+import { useNavigate } from "react-router-dom";
 
 const projectSchema = z.object({
   name: z.string().min(2, { message: "Please give a valid name" }),
@@ -32,6 +33,7 @@ const projectSchema = z.object({
 const CreateForm = () => {
 
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.project);
 
   const form = useForm<z.infer<typeof projectSchema>>({
@@ -47,7 +49,10 @@ const CreateForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
-    await dispatch(createProject(values as Project));
+    const res = await dispatch(createProject(values as Project));
+    if(res?.success){
+      navigate('/owner/projects')
+    }
   };
 
   return (

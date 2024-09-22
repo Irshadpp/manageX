@@ -20,7 +20,6 @@ const NewSubTaskButton = ({id}: {id: string}) => {
       <Button
         variant="secondary"
         onClick={() => setIsModalOpen(true)}
-        disabled={curr === "employee"}
       >
         New
       </Button>

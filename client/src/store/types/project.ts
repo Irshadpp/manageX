@@ -12,7 +12,7 @@ export interface Project {
   startDate: Date;
   endDate: Date;
   status: ProjectStatus;
-  members: string[];
+  members: any[];
   tasks: string[];
   manager: string;
   client: string;

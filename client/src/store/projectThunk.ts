@@ -36,6 +36,7 @@ export const createProject = (project: any) => async (dispatch: AppDispatch) => 
       dispatch(createProjectFailure(errorMessage));
     } else {
       dispatch(createProjectSuccess(response.data));
+      return {success: true}
     }
   } catch (error: any) {
     dispatch(createProjectFailure(error.message || "Something went wrong"));

@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user/user.service";
 import { JWTUserPayload, NotFoundError } from "@ir-managex/common";
+import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
+import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
 
 const userService = new UserService();
 
@@ -16,7 +18,11 @@ export const updateUser = async (
       throw new NotFoundError();
     }
     const userData = req.body;
-    await userService.updateUser(id, userData);
+    const updatedUser = await userService.updateUser(id, userData);
+
+    const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(updatedUser!);
+    await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
     res
       .status(200)
       .json({ success: true, message: "User details updated successfully" });

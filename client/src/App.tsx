@@ -36,6 +36,8 @@ import Leaves from "./pages/employee/attendance/Leaves";
 import CreateProject from "./pages/owner/project/CreateProject";
 import ProjectList from "./pages/owner/project/ProjectList";
 import Project from "./pages/owner/project/Project";
+import EmpProjectList from "./pages/employee/project/EmpProjectList";
+import EmpProject from "./pages/employee/project/EmpProject";
 
 function App() {
   return (
@@ -92,6 +94,8 @@ function App() {
                       <Route path="logs" element={<Attendance />} />
                       <Route path="leaves" element={<Leaves />} />
                     </Route>
+                    <Route path="/employee/projects" element={<EmpProjectList/>}/>
+                    <Route path="/employee/projects/:id" element={<EmpProject/>}/>
                   </Route>
                 </Route>
 

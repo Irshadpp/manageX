@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import UserAvatar from '/useravatar.png';
+import UserAvatarImage from '/useravatar.png';
 import { FiSearch } from "react-icons/fi";
 import InputWithIcon from "@/components/custome/InputWithIcon";
 import MembersSkelton from "@/components/project/MembersSkelton";
@@ -91,7 +91,7 @@ export default function MembersList({
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full overflow-clip">
                     <img
-                      src={member.profileURL || UserAvatar}
+                      src={member.profileURL || UserAvatarImage}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       width={100}

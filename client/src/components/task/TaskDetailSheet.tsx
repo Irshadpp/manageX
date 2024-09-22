@@ -10,13 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { columns } from "./SubTaskColumns";
-import { TanStackSubTAskDataTable } from "@/components/custome/TenStackSubTaskDataTable";
-import NewSubTaskButton from "./NewSubTaskButton";
-import SubTaskEditForm from "./SubTaskEditForm";
-import TaskComments from "./TaskComments";
-import Attachments from "./Attachments";
-import EstimatedDuration from "./EstimatedDuration";
+import { columns } from "../subtask/SubTaskColumns";
+import { TanStackSubTAskDataTable } from "@/components/subtask/TenStackSubTaskDataTable";
+import NewSubTaskButton from "../subtask/NewSubTaskButton";
+import SubTaskEditForm from "../subtask/SubTaskEditForm";
+import TaskComments from "../comments/TaskComments";
+import Attachments from "../attachments/Attachments";
+import EstimatedDuration from "../subtask/EstimatedDuration";
 
 interface PropsTypes {
   onOpenChange: any;

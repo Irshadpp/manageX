@@ -26,7 +26,20 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
     const {taskId} = req.params;
     if(!taskId) throw new BadRequestError("Invalid taskId");
 
-    // console.log(req.body)
+    console.log(req.body)
     const updatedTask = await taskService.updateTask(taskId, req.body)
     res.status(200).json({success: true, message: "Tasks updated successfully", data: updatedTask});
 }
+
+export const replyToComment = async (req: Request, res: Response, next: NextFunction) => {
+    const { taskId } = req.params;
+    const commentId = req.query.id as string
+    const { text, user } = req.body;
+
+    try {
+        const updatedTask = await taskService.replyToComment(taskId, commentId, { text, user });
+        res.status(200).json({ success: true, message: "Reply added successfully", data: updatedTask });
+    } catch (error) {
+        next(error);
+    }
+};
