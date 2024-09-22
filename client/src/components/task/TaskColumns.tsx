@@ -1,4 +1,4 @@
-import UserAvatar from '/useravatar.png';
+import UserAvatarImage from '/useravatar.png';
 import {
   HoverCard,
   HoverCardContent,
@@ -76,7 +76,7 @@ export const columns: ColumnDef<Task>[] = [
                 (assignee &&
                   typeof assignee !== "string" &&
                   (assignee.profileURL as string)) ||
-                UserAvatar
+                  UserAvatarImage
               }
               alt="Profile"
               className="w-full h-full object-cover"

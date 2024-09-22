@@ -1,8 +1,8 @@
-import UserAvatar from '/useravatar.png';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
 import NewCommentButton from "./NewCommentButton";
 import ReplayButton from './ReplayButton';
+import UserAvatar from '@/components/common/UserAvatar';
 
 const TaskComments = ({task}: {task: any}) => {
 
@@ -17,30 +17,22 @@ const TaskComments = ({task}: {task: any}) => {
             <NewCommentButton task={task}/>
           </div>
           <ScrollArea className="h-52">
-            {task.notes && task.notes.length > 0 ? (
-              task.notes.map((comment: any, index: number) => (
+            {task.comments && task.comments.length > 0 ? (
+              task.comments.map((comment: any, index: number) => (
                 <div className="text-sm mb-1" key={index}>
                   {typeof comment.user !== "string" && (
                     <div className="flex gap-2">
-                        <img
-                    src={
-                      (comment.user &&
-                        typeof comment.user !== "string" &&
-                        (comment.user.profileURL as string)) ||
-                      UserAvatar
-                    }
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                    width={100}
-                    height={100}
-                  />
+                        <UserAvatar
+                        profileURL={comment.user.profileURL as string}
+                        size="w-7 h-7"
+                      />
                       <div className="w-full">
-                        <div className="bg-backgroundAccent rounded-md w-full p-2">
+                        <div className="bg-muted/40 rounded-md w-full p-2">
                           <div className="flex justify-between items-center">
                             <p className="font-bold line-clamp-1">
-                              {comment.user.firstName} {comment.user.lastName}
+                              {comment.user.fName} {comment.user.lName}
                             </p>
-                            <p className="text-xs text-foregroundAccent shrink-0">
+                            <p className="text-xs text-foreground/60 shrink-0">
                               {formatDistanceToNow(new Date(comment.createdAt), {
                                 addSuffix: true,
                               })}
@@ -48,7 +40,7 @@ const TaskComments = ({task}: {task: any}) => {
                           </div>
                           <p className="pt-2">{comment.text}</p>
                         </div>
-                        <ReplayButton comment={comment} taskId={task.id}/>
+                        <ReplayButton comment={comment} task={task}/>
                       </div>
                     </div>
                   )}

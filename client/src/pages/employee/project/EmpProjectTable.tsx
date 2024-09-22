@@ -11,41 +11,40 @@ interface Props {
   location: string;
 }
 
-const ProjectTable = ({ location }: Props) => {
+const EmpProjectTable = ({ location }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { projectData } = useSelector((state:RootState) => state.project);
+  const {user} = useSelector((state: RootState) => state.auth)
+
+  console.log(projectData)
+  const projects = projectData && projectData.filter(p => 
+    p.members.some(member => member.id === user!.id)
+  );
 
   useEffect(() => {
     dispatch(fetchProject());
   }, [dispatch]);
 
-  const rowOnClick = (id: string) => navigate(`/owner/projects/${id}`);
+  const rowOnClick = (id: string) => navigate(`/employee/projects/${id}`);
 
   return (
     <div className=" text-sm pb-5 ">
-      {projectData && projectData.length > 0 ? (
+      {projects && projects.length > 0 ? (
         <TanStackDataTable
           columns={location === "owner" ? columnsOwner : columns}
-          data={projectData}
+          data={projects}
           pageTitle="Projects"
           searchField="name"
           rowOnClick={rowOnClick}
-          newButton={<Link to="/owner/projects/create">
-            <Button>Create Projects</Button>
-          </Link>}
         />
       ) : (
         <div className="flex flex-col items-center justify-center h-full">
           <p className="mt-2">No projects where created yet!</p>
-          <p className="text-sm py-2">Please Create One</p>
-          <Link to="/owner/projects/create">
-            <Button>Create Projects</Button>
-          </Link>
         </div>
       )}
     </div>
   );
 };
 
-export default ProjectTable;
+export default EmpProjectTable;

@@ -1,4 +1,4 @@
-import { Consumer, EmployeeCreatedEvent, ProjectUserUpdatedEvent, Queues } from "@ir-managex/common";
+import { Consumer, ProjectUserUpdatedEvent, Queues } from "@ir-managex/common";
 import amqp from "amqplib"
 import { UserService } from "../../services/user/user.service";
 

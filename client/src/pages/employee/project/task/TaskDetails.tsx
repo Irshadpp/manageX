@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react";
-import TaskDetailSheet from "../../../../components/task/TaskDetailSheet";
 import CreateTaskButton from "@/components/task/createTaskButton";
 import { TanStackDataTable } from "@/components/custome/TanstackTable";
-import { columns } from "../../../../components/task/TaskColumns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { fetchTasks } from "@/store/taskThunk";
+import { columns } from "@/components/task/TaskColumns";
+import TaskDetailSheet from "../../../../components/task/TaskDetailSheet";
 
 const TaskDetails = ({ id }: { id: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { taskData } = useSelector((state: RootState) => state.task);
+  const {user} = useSelector((state: RootState) => state.auth);
   const [task, setTask] = useState({})
-  
-  
+
+  const filterdTaskData = taskData && taskData.filter((t: any )=> t.assignee.id === user?.id)
+  console.log(taskData, "==========", id)
   const [onEditSheet, setOnEditSheet] = useState(false);
   
   useEffect(() => {
     dispatch(fetchTasks(id));
   }, [dispatch]);
   
-  console.log(task)
   const rowOnClick = (taskId: string) => {
-    const task: any = taskData ? taskData.find(task => task.id === taskId) : {}
+    const task: any = filterdTaskData ? filterdTaskData.find(task => task.id === taskId) : {}
     setTask(task)
     setOnEditSheet(true);
   };
+  console.log(task)
 
   return (
     <div className="col-span-3 h-screen pt-5">
@@ -34,19 +36,17 @@ const TaskDetails = ({ id }: { id: string }) => {
         task={task}
         projectId={id}
       />
-      {taskData && taskData.length > 0 ? (
+      {filterdTaskData && filterdTaskData.length > 0 ? (
         <TanStackDataTable
           columns={columns}
-          data={taskData}
+          data={filterdTaskData}
           pageTitle="Tasks"
-          newButton={<CreateTaskButton id={id} />}
           searchField="title"
           rowOnClick={rowOnClick}
         />
       ) : (
         <div className="flex-1 flex justify-center flex-col items-center ">
           <p className="my-3">No tasks were created yet!</p>
-          <CreateTaskButton id={id} />
         </div>
       )}
     </div>

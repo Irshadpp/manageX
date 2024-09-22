@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import UserAvatar from '/useravatar.png';
+import UserAvatarImage from '/useravatar.png';
 import { FormControl } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/services/api/commonRequest";
@@ -94,7 +94,7 @@ export function EmployeeList({ field }: { field: any }) {
                 <div className="flex gap-2">
                   <div className="w-5 h-5 rounded-full overflow-clip">
                     <img
-                      src={employee.profileURL || UserAvatar}
+                      src={employee.profileURL || UserAvatarImage}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       width={100}

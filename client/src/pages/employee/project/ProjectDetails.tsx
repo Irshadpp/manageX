@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import EditButton from "./EditButton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import InputBox from "@/components/common/InputBox";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +34,6 @@ const ProjectDetails = ({ id }: { id: string }) => {
         <div className="p-5">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold mb-4">{project.name}</h2>
-            <EditButton project={project}/>
           </div>
           <Label>
             <p className="py-2">Project Status</p>
@@ -43,6 +41,7 @@ const ProjectDetails = ({ id }: { id: string }) => {
           <Select
             defaultValue={project.status}
             onValueChange={handleStatusUpdate}
+            disabled={true}
           >
             <SelectTrigger className="bg-background">
               <SelectValue placeholder="Select Status" />

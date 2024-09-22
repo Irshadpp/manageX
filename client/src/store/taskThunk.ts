@@ -68,3 +68,28 @@ export const updateTask= (task: any, id: string) => async (dispatch: AppDispatch
       return Promise.reject(error.message); 
     }
   };
+
+  export const replyToComment = (taskId: string, commentId: string, reply: any) => async (dispatch: AppDispatch) => {
+    dispatch(updateTaskRequest());
+    try {
+      const response: any = await apiRequest({
+        method: "PATCH",
+        url: import.meta.env.VITE_PROJECT_URL,
+        route: `/api/v1/task/${taskId}/comments/reply?id=${commentId}`,
+        data: reply,
+        headers: {
+          "Content-type": "application/json"
+        }
+      });
+      if (response.errors && response.errors.length > 0) {
+        const errorMessage = response.errors[0].message;
+        dispatch(updateTaskFailure(errorMessage));
+      } else {
+        dispatch(updateTaskSuccess(response.data));
+        return { success: true };
+      }
+    } catch (error: any) {
+      dispatch(updateTaskFailure(error.message || "Something went wrong"));
+      return Promise.reject(error.message);
+    }
+  };

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useRef, useState } from "react";
-import UserAvatar from '/useravatar.png'
+import UserAvatarImage from '/useravatar.png'
 import { AiOutlineDelete } from "react-icons/ai";
 
 const ImageUpload = ({
@@ -84,7 +84,7 @@ const ImageUpload = ({
           } rounded-full overflow-clip mx-auto`}
         >
           <img
-            src={UserAvatar}
+            src={UserAvatarImage}
             alt="Profile"
             className="w-full h-full object-cover"
             width={100}

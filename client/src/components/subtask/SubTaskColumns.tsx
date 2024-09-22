@@ -11,9 +11,6 @@ import { SubTask } from "@/store/types/task";
   
   export const columns: ColumnDef<SubTask>[] = [
     {
-      accessorKey: "id",
-    },
-    {
       accessorKey: "title",
       header: ({ column }) => {
         return (

@@ -11,12 +11,13 @@ interface SubTask{
 }
 
 interface Comments{
+    id: string;
     text: string;
     user: string;
-    replay: {
+    replays: {
         text: string;
         userId: string;
-    }
+    }[]
 }
 
 interface Attachments{
@@ -36,9 +37,9 @@ export interface TaskAttrs{
     status?: ProjectStatus;
     priority?: Priority;
     assignee?: string;
-    subTasks?: SubTask;
-    attachments?: Attachments;
-    comments?: Comments;
+    subTasks?: SubTask[];
+    attachments?: Attachments[];
+    comments?: Comments[];
 }
 
 export interface TaskDoc extends mongoose.Document{
@@ -51,9 +52,9 @@ export interface TaskDoc extends mongoose.Document{
     status: ProjectStatus;
     priority: Priority;
     assignee: string;
-    subTasks?: SubTask;
-    attachments?: Attachments;
-    comments?: Comments;
+    subTasks?: SubTask[];
+    attachments?: Attachments[];
+    comments?: Comments[];
 }
 
 export interface TaskModel extends mongoose.Model<TaskDoc>{

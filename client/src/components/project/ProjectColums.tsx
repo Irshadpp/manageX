@@ -61,9 +61,9 @@ import { Project } from "@/store/types/project";
                   typeof member !== "string" && (
                     <Avatar
                       key={index}
-                      className={`w-7 h-7 border ${index !== 0 ? "-ml-2" : ""}`}
+                      className={`w-7 h-7 border rounded-full ${index !== 0 ? "-ml-2" : ""}`}
                     >
-                      <AvatarImage src={member.profileURL} />
+                      <AvatarImage className="rounded-full w-full h-full object-cover" src={member.profileURL} />
                       <AvatarFallbackImage />
                     </Avatar>
                   )

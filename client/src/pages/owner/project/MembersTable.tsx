@@ -1,6 +1,6 @@
 import { FormLabel } from "@/components/ui/form";
 import { useState } from "react";
-import UserAvatar from '/useravatar.png';
+import UserAvatarImage from '/useravatar.png';
 import MemberAddButton from "./MemberAddButton";
 
 
@@ -26,7 +26,7 @@ export function MembersTable() {
                 <div className="flex gap-3 items-center">
                   <div className="w-7 h-7 rounded-full overflow-clip">
                     <img
-                      src={member.profileURL || UserAvatar}
+                      src={member.profileURL || UserAvatarImage}
                       alt="Profile"
                       className="w-full h-full object-cover"
                       width={100}

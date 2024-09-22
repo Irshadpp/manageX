@@ -29,11 +29,11 @@ export interface Replay{
 }
 
 export interface Comments{
-    id: string;
+    _id: string;
     text: string;
     user: any;
     createdAt: string;
-    replay: Replay[]
+    replays: Replay[]
 }
 
 export interface Attachments{

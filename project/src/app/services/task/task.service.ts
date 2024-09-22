@@ -31,4 +31,18 @@ export class TaskService implements ITaskService {
         {new: true}
       )
   }
+
+  async replyToComment(taskId: string, commentId: string, reply: any): Promise<TaskDoc | null> {
+    const task = await Task.findById(taskId);
+    if (!task) throw new Error("Task not found");
+
+    console.log(task.comments, commentId)
+
+    const comment = task.comments!.find(c => c.id.toString() === commentId);
+    if (!comment) throw new Error("Comment not found");
+
+    comment.replays.push(reply);
+
+    return await task.save();
+  }
 }
