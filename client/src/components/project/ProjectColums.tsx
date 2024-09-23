@@ -148,8 +148,8 @@ import { Project } from "@/store/types/project";
         return (
           <div className="flex gap-1 items-center">
             {manager && (
-              <Avatar className={`w-7 h-7`}>
-                <AvatarImage src={manager.profileURL} />
+              <Avatar className={`rounded-full w-7 h-7`}>
+                <AvatarImage className="rounded-full w-full h-full object-cover" src={manager.profileURL} />
                 <AvatarFallbackImage />
               </Avatar>
             )}
@@ -171,9 +171,9 @@ import { Project } from "@/store/types/project";
                   typeof member !== "string" && (
                     <Avatar
                       key={index}
-                      className={`w-7 h-7 border ${index !== 0 ? "-ml-2" : ""}`}
+                      className={`w-7 h-7 rounded-full border ${index !== 0 ? "-ml-2" : ""}`}
                     >
-                      <AvatarImage src={member.profileURL} />
+                      <AvatarImage className="rounded-full w-full h-full object-cover" src={member.profileURL} />
                       <AvatarFallbackImage />
                     </Avatar>
                   )

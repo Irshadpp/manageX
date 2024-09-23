@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 import { AppThunk } from ".";
 import { apiRequest } from "@/services/api/commonRequest";
 import { deleteObject, storeObject } from "@/utils/local-storage";
+import { boolean } from "zod";
 
 interface User{
     id: string,
@@ -26,8 +27,8 @@ const authSlice = createSlice({
     initialState,
     reducers:{
         setCredentials: (state, action: PayloadAction<{user: any}>) =>{
-            state.user = action.payload.user;
             state.isAuthenticated = true;
+            state.user = action.payload.user;
             storeObject("userData", state.user)
         },
         rehydrateAuthState: (state, action: PayloadAction<User | null>) => {

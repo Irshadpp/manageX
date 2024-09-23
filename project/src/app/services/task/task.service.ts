@@ -1,5 +1,5 @@
 import { Task } from "../../model/schema/task.schema";
-import { TaskAttrs, TaskDoc } from "../../model/task.model";
+import { Comments, TaskAttrs, TaskDoc } from "../../model/task.model";
 import { ITaskService } from "./task.service.interface";
 
 export class TaskService implements ITaskService {
@@ -32,6 +32,14 @@ export class TaskService implements ITaskService {
       )
   }
 
+  async updateComment(taskId: string, commentData: any): Promise<TaskDoc | null> {
+    const updatedTask =  await Task.findByIdAndUpdate(
+        taskId,
+        { $push: { comments: commentData } }, 
+        { new: true }
+    );
+    return updatedTask;
+}
   async replyToComment(taskId: string, commentId: string, reply: any): Promise<TaskDoc | null> {
     const task = await Task.findById(taskId);
     if (!task) throw new Error("Task not found");

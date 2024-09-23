@@ -18,15 +18,15 @@ export const updateTaskValidator = [
   .optional()
     .isISO8601()
     .withMessage("Please provide a valid ISO date for the start date")
-    .custom((value: string) => {
-      const startDate = new Date(value);
-      const currentDate = new Date();
-      if (startDate < currentDate) {
-        throw new Error("Start date cannot be in the past");
-      }
-      return true;
-    }),
-
+    // .custom((value: string) => {
+    //   const startDate = new Date(value);
+    //   const currentDate = new Date();
+    //   if (startDate < currentDate) {
+    //     throw new Error("Start date cannot be in the past");
+    //   }
+    //   return true;
+    // }),
+,
   body("dueDate")
   .optional()
     .isISO8601()

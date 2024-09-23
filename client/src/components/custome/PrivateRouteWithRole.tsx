@@ -15,22 +15,23 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   // const [loading, setLoading] = useState(true);
   // const dispatch = useDispatch<any>();
   // useEffect(() => {
-  //   const checkAuthentication = async () => {
-  //     if (!isAuthenticated) {
-  //       await dispatch(checkAuthStatus());
-  //     }
-  //   };
-  
-
-  //   // checkAuthentication();
-  // }, [dispatch, isAuthenticated]);
-  // setLoading(false);
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  if(isAuthenticated && isInitialSetup){
-    return <Outlet/>
-  }
+    //   const checkAuthentication = async () => {
+      //     if (!isAuthenticated) {
+        //       await dispatch(checkAuthStatus());
+        //     }
+        //   };
+        
+        
+        //   // checkAuthentication();
+        // }, [dispatch, isAuthenticated]);
+        // setLoading(false);
+        // if (loading) {
+          //   return <div>Loading...</div>;
+          // }
+          if(isAuthenticated && isInitialSetup){
+            console.log("=======================currPath", isInitialSetup)
+            return <Outlet/>
+          }
 
   if (!isAuthenticated || userRole !== requiredRole) {
     return <Navigate to={redirectPath} replace/>;
@@ -38,6 +39,7 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   
   const allowedRoutes = Array.from(rbacConfig[userRole]) as string[];
   const currPath = window.location.pathname.split(`/${userRole}`)[1];
+  console.log(currPath, "=======================currPath")
   if (allowedRoutes.includes(currPath) || allowedRoutes.includes(`/${userRole}`)) {
     return <Outlet />;
   }

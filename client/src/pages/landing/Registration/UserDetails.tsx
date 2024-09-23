@@ -91,7 +91,7 @@ const UserDetails = ({ handleNext }: { handleNext: any }) => {
         Enjoy using our App! You'r all setup
       </p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-2">
           <FormField
           name="fName"
           control = {form.control}

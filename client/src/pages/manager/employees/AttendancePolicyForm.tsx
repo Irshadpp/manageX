@@ -14,12 +14,27 @@ import { AttendancePolicyType } from "./types/attendancePolicy";
 const attendancePolicySchema = z.object({
   officeStartTime: z.string().min(5, { message: "Start time is required." }),
   lateThreshold: z.string().min(5, { message: "Late threshold is required." }),
-  halfDayThreshold: z.number().min(1, { message: "Enter a valid half-day threshold." }),
-  fullDayThreshold: z.number().min(1, { message: "Enter a valid full-day threshold." }),
+  halfDayThreshold: z
+    .string()
+    .min(1, { message: "Enter a valid half-day threshold." })
+    .transform((val) => parseFloat(val)),
+  fullDayThreshold: z
+    .string()
+    .min(1, { message: "Enter a valid full-day threshold." })
+    .transform((val) => parseFloat(val)),
   leavePolicy: z.object({
-    sickLeaves: z.number().min(0, { message: "Sick leaves must be at least 0." }),
-    casualLeaves: z.number().min(0, { message: "Casual leaves must be at least 0." }),
-    vacationLeaves: z.number().min(0, { message: "Vacation leaves must be at least 0." }),
+    sickLeaves: z
+      .string()
+      .min(0, { message: "Sick leaves must be at least 0." })
+      .transform((val) => parseFloat(val)),
+    casualLeaves: z
+      .string()
+      .min(0, { message: "Casual leaves must be at least 0." })
+      .transform((val) => parseFloat(val)),
+    vacationLeaves: z
+      .string()
+      .min(0, { message: "Vacation leaves must be at least 0." })
+      .transform((val) => parseFloat(val)),
   }),
 });
 
@@ -55,6 +70,7 @@ const AttendancePolicyForm: React.FC<EditableAttendancePolicyFormProps> = ({
   };
 
   const onSubmit = async (values: z.infer<typeof attendancePolicySchema>) => {
+    console.log("----------==========---")
     setLoading(true);
 
     const res = await apiRequest({

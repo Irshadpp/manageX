@@ -2,7 +2,7 @@ import ManagerSideBar from "@/components/ui/sidebars/ManagerSideBar";
 import { Outlet } from "react-router-dom";
 
 
-const OwnerLayout = () => {
+const ManLayout = () => {
   return (
     <div className="flex">
       <ManagerSideBar/>
@@ -13,5 +13,5 @@ const OwnerLayout = () => {
   );
 };
 
-export default OwnerLayout;
+export default ManLayout;
 

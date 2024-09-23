@@ -44,13 +44,14 @@ export const createTask= (task: any, id: string) => async (dispatch: AppDispatch
   }
 };
 
-export const updateTask= (task: any, id: string) => async (dispatch: AppDispatch) => {
+export const updateTask= (task: any, id: string, isComment: boolean) => async (dispatch: AppDispatch) => {
     dispatch(updateTaskRequest());
     try {
+      const comment = isComment ? true : false
       const response: any = await apiRequest({
         method: "PATCH",
         url: import.meta.env.VITE_PROJECT_URL,
-        route: `/api/v1/task/${id}`,
+        route: `/api/v1/task/${id}?comment=${comment}`,
         data: task,
         headers: {
           "Content-type": "application/json"
