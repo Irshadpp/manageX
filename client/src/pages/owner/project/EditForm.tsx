@@ -13,7 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ManagerList } from "./ManagerList";
 import FormInputCustom from "@/components/custome/FormInputCustom";
-import { fetchProject, updateProject } from "@/store/projectThunk";
+import { updateProject } from "@/store/projectThunk";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import DatePickerDown from "@/components/common/DatePickerDown";
@@ -56,10 +56,10 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
       const res: any = await dispatch(
         updateProject(values, project.id)
       );
-      fetchProject();
       if(res?.success){
         setIsModalOpen(false);
       }
+      console.log(res)
     }
   };
 

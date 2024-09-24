@@ -50,7 +50,6 @@ const ImageUpload = ({
     setSelectedFile(null);
   };
 
-  console.log(selectedFile)
   return (
     <div
       className={`rounded-md bg-background py-6 mb-2 text-center flex flex-col items-center justify-center relative ${

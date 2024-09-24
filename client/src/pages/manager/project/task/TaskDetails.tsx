@@ -7,46 +7,44 @@ import { fetchTasks } from "@/store/taskThunk";
 import { columns } from "@/components/task/TaskColumns";
 import TaskDetailSheet from "../../../../components/task/TaskDetailSheet";
 
-const TaskDetails = ({ id }: { id: string }) => {
+const TaskDetails = ({ projectId }: { projectId: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { taskData } = useSelector((state: RootState) => state.task);
-  const [task, setTask] = useState({})
+  const [taskId, setTaskId] = useState("")
 
-  console.log(taskData, "manager==========", id)
   const [onEditSheet, setOnEditSheet] = useState(false);
   
   useEffect(() => {
-    dispatch(fetchTasks(id));
-  }, [dispatch]);
+    console.log("fdkjdklsfkl", projectId)
+    dispatch(fetchTasks(projectId));
+  }, []);
   
   const rowOnClick = (taskId: string) => {
-    const task: any = taskData ? taskData.find(task => task.id === taskId) : {}
-    setTask(task)
+    setTaskId(taskId)
     setOnEditSheet(true);
   };
-  console.log(task)
 
   return (
     <div className="col-span-3 h-screen pt-5">
       <TaskDetailSheet
         onOpenChange={onEditSheet}
         setOnOpenChange={setOnEditSheet}
-        task={task}
-        projectId={id}
+        taskId={taskId}
+        projectId={projectId}
       />
       {taskData && taskData.length > 0 ? (
         <TanStackDataTable
           columns={columns}
           data={taskData}
           pageTitle="Tasks"
-          newButton={<CreateTaskButton id={id} />}
+          newButton={<CreateTaskButton projectId={projectId} />}
           searchField="title"
           rowOnClick={rowOnClick}
         />
       ) : (
         <div className="flex-1 flex justify-center flex-col items-center ">
           <p className="my-3">No tasks were created yet!</p>
-          <CreateTaskButton id={id} />
+          <CreateTaskButton projectId={projectId} />
         </div>
       )}
     </div>

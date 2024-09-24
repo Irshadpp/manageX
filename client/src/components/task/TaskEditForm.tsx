@@ -88,7 +88,6 @@ export default function TaskEditForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
     if (taskData) {
       const res = await dispatch(updateTask(values, task.id));
       if(res?.success){

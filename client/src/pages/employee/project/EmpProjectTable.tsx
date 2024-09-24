@@ -17,7 +17,6 @@ const EmpProjectTable = ({ location }: Props) => {
   const { projectData } = useSelector((state:RootState) => state.project);
   const {user} = useSelector((state: RootState) => state.auth)
 
-  console.log(projectData)
   const projects = projectData && projectData.filter(p => 
     p.members.some(member => member.id === user!.id)
   );

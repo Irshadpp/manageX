@@ -6,8 +6,8 @@ const Project = () => {
     const {id} = useParams();
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 w-full">
-      <ProjectDetails id={id!} />
-      <TaskDetails id={id!} />
+      <ProjectDetails projectId={id!} />
+      <TaskDetails projectId={id!} />
     </div>
   );
 };

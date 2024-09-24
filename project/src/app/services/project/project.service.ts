@@ -21,4 +21,14 @@ export class ProjectService implements IProjectService{
             path: "manager"
         })
     }
+
+    async getProjectById(_id: string): Promise<any> {
+        return await Project.findOne({_id})
+        .populate({
+            path: "members",
+        })
+        .populate({
+            path: "manager"
+        })
+    }
 }

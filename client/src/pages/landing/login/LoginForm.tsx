@@ -44,7 +44,6 @@ const LoginForm = () => {
         }
       });
       dispatch(updateIntitialSetup({value: false}));
-      console.log(isInitialSetup, " form login form")
       const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
       try {
         setLoading(true);

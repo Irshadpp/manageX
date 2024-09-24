@@ -13,7 +13,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ['auth','employee']
+    whitelist: ['auth','employee','attendance','project','task']
 }
 
 const rootReducer = combineReducers({

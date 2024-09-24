@@ -31,7 +31,6 @@ const taskSlice = createSlice({
 
     createTaskRequest: handleRequest,
     createTaskSuccess(state, action: PayloadAction<Task>) {
-      console.log(state.taskData, "-=--=-=-=================================")
       state.taskData.push(action.payload);
       state.loading = false;
       state.error = null;

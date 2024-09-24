@@ -7,22 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { fetchTasks } from "@/store/taskThunk";
 
-const TaskDetails = ({ id }: { id: string }) => {
+const TaskDetails = ({ projectId }: { projectId: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { taskData } = useSelector((state: RootState) => state.task);
-  const [task, setTask] = useState({})
+  const [taskId, setTaskId] = useState("")
   
   
   const [onEditSheet, setOnEditSheet] = useState(false);
   
   useEffect(() => {
-    dispatch(fetchTasks(id));
+    dispatch(fetchTasks(projectId));
   }, [dispatch]);
   
-  console.log(task)
   const rowOnClick = (taskId: string) => {
-    const task: any = taskData ? taskData.find(task => task.id === taskId) : {}
-    setTask(task)
+    setTaskId(taskId)
     setOnEditSheet(true);
   };
 
@@ -31,22 +29,22 @@ const TaskDetails = ({ id }: { id: string }) => {
       <TaskDetailSheet
         onOpenChange={onEditSheet}
         setOnOpenChange={setOnEditSheet}
-        task={task}
-        projectId={id}
+        taskId={taskId}
+        projectId={projectId}
       />
       {taskData && taskData.length > 0 ? (
         <TanStackDataTable
           columns={columns}
           data={taskData}
           pageTitle="Tasks"
-          newButton={<CreateTaskButton id={id} />}
+          newButton={<CreateTaskButton projectId={projectId} />}
           searchField="title"
           rowOnClick={rowOnClick}
         />
       ) : (
         <div className="flex-1 flex justify-center flex-col items-center ">
           <p className="my-3">No tasks were created yet!</p>
-          <CreateTaskButton id={id} />
+          <CreateTaskButton projectId={projectId} />
         </div>
       )}
     </div>

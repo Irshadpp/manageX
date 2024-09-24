@@ -35,7 +35,6 @@ export function ManagerList({ field }: { field: any }) {
           "Content-Type": "application/json",
         },
       });
-      console.log(res)
       if (res.success) {
         const managers = res.data;
         const transformedManagers = managers.map((manager: any) => ({

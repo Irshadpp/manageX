@@ -11,10 +11,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import TaskForm from "./TaskForm";
 
 const CreateTaskButton = ({
-  id,
+  projectId,
   customButton,
 }: {
-  id?: string;
+  projectId?: string;
   customButton?: boolean;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +40,7 @@ const CreateTaskButton = ({
               Update in the below form. After your done click the save button
             </DialogDescription>
           </DialogHeader>
-          <TaskForm setIsModalOpen={setIsModalOpen} id={id} />
+          <TaskForm setIsModalOpen={setIsModalOpen} projectId={projectId} />
         </DialogContent>
       </Dialog>
     </>

@@ -130,7 +130,7 @@ export default function NewAttachmentForm({
     let val: Attachments = values;
     await formSubmit(val);
     if (task) {
-      const existingAttachments = task.attachments || [];
+      const existingAttachments = task.attachments.map((atc: any )=> ({...atc, user: atc.id})) || [];
       let attachments = [...existingAttachments, val];
       const res = await dispatch(
         updateTask({attachments:attachments}, task.id)
@@ -173,7 +173,7 @@ export default function NewAttachmentForm({
                     <Textarea
                       placeholder="Enter your description"
                       {...field}
-                      className="my-2 h-44 bg-backgroundAccent"
+                      className="my-2 p-2 h-44 bg-background border border-input"
                     />
                   </FormControl>
                   <FormMessage />

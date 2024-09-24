@@ -27,7 +27,6 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.user = action.payload.user;
             storeObject("userData", state.user)
-            console.log(state.isInitialSetup,"is initial setup")
         },
         rehydrateAuthState: (state, action: PayloadAction<User | null>) => {
             state.user = action.payload;
