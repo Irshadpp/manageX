@@ -37,7 +37,7 @@ export function ProjectList({ field }: { field: any }) {
             variant="outline"
             role="combobox"
             className={cn(
-              "w-full justify-between bg-backgroundAccent",
+              "w-full justify-between bg-background",
               !field.value && "text-muted-foreground"
             )}
           >
@@ -59,7 +59,7 @@ export function ProjectList({ field }: { field: any }) {
                   key={project.value}
                   value={project.value}
                   onSelect={() => {
-                    setValue("project", project.value);
+                    setValue(project.label, project.value);
                   }}
                 >
                   <Check

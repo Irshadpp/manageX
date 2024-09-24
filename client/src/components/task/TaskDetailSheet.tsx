@@ -17,17 +17,22 @@ import SubTaskEditForm from "../subtask/SubTaskEditForm";
 import TaskComments from "../comments/TaskComments";
 import Attachments from "../attachments/Attachments";
 import EstimatedDuration from "../subtask/EstimatedDuration";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 
 interface PropsTypes {
   onOpenChange: any;
   setOnOpenChange: any;
-  task: any;
+  taskId: string;
   projectId: string;
 }
 
-const TaskDetailSheet = ({ onOpenChange, setOnOpenChange, task, projectId }: PropsTypes) => {
+const TaskDetailSheet = ({ onOpenChange, setOnOpenChange, taskId, projectId }: PropsTypes) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subTaskId, setSubTaskId] = useState("");
+  const {taskData} = useSelector((state: RootState) => state.task)
+
+  const task: any = taskData ? taskData.find(task => task.id === taskId) : {}
 
   const rowOnClick = (value: string) => {
     setIsModalOpen(true);

@@ -42,6 +42,7 @@ const projectSlice = createSlice({
     updateProjectRequest: handleRequest,
     updateProjectSuccess(state, action: PayloadAction<Project>) {
       const updatedProject = action.payload;
+      console.log(updatedProject)
       const projectIndex = state.projectData.findIndex(
         (project) => project.id === updatedProject.id
       );

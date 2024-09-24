@@ -29,11 +29,9 @@ const ReplayButton = ({ comment, task }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
 
   
-  console.log("task.........", task)
   const handleReplaySubmit = async () => {
     if (task && comment) {
       const replyData = { text: replayMessage, user: user!.id };
-      console.log(comment._id, "-======--=-=-=-=-=-=-=-=-=-=00000000000000000000000000")
       const res = await dispatch(replyToComment(task.id, comment._id, replyData));
       
       if (res?.success) {

@@ -61,6 +61,7 @@ export const updateProject = (project: any, id: string) => async (dispatch: AppD
         dispatch(updateProjectFailure(errorMessage));
       } else {
         dispatch(updateProjectSuccess(response.data));
+        return {success: true}
       }
     } catch (error: any) {
       dispatch(updateProjectFailure(error.message || "Something went wrong"));

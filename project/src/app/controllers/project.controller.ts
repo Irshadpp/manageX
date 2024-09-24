@@ -16,7 +16,8 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
     const {id} = req.params;
     if(!id) throw new BadRequestError("Invalid params");
 
-    const updatedProject = await projectService.updateProject(id, {...req.body});
+    await projectService.updateProject(id, {...req.body});
+    const updatedProject = await projectService.getProjectById(id);
     res.status(200).json({success: true, message: "Project updated successfully", data: updatedProject});
 }
 

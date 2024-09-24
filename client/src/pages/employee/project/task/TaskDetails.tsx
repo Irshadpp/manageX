@@ -7,34 +7,32 @@ import { fetchTasks } from "@/store/taskThunk";
 import { columns } from "@/components/task/TaskColumns";
 import TaskDetailSheet from "../../../../components/task/TaskDetailSheet";
 
-const TaskDetails = ({ id }: { id: string }) => {
+const TaskDetails = ({ projectId }: { projectId: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { taskData } = useSelector((state: RootState) => state.task);
   const {user} = useSelector((state: RootState) => state.auth);
-  const [task, setTask] = useState({})
+  const [taskId, setTaskId] = useState("")
+
 
   const filterdTaskData = taskData && taskData.filter((t: any )=> t.assignee.id === user?.id)
-  console.log(taskData, "==========", id)
   const [onEditSheet, setOnEditSheet] = useState(false);
   
   useEffect(() => {
-    dispatch(fetchTasks(id));
+    dispatch(fetchTasks(projectId));
   }, [dispatch]);
   
   const rowOnClick = (taskId: string) => {
-    const task: any = filterdTaskData ? filterdTaskData.find(task => task.id === taskId) : {}
-    setTask(task)
+    setTaskId(taskId)
     setOnEditSheet(true);
   };
-  console.log(task)
 
   return (
     <div className="col-span-3 h-screen pt-5">
       <TaskDetailSheet
         onOpenChange={onEditSheet}
         setOnOpenChange={setOnEditSheet}
-        task={task}
-        projectId={id}
+        taskId={taskId}
+        projectId={projectId}
       />
       {filterdTaskData && filterdTaskData.length > 0 ? (
         <TanStackDataTable

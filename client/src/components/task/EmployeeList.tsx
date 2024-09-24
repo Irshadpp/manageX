@@ -35,7 +35,6 @@ export function EmployeeList({ field }: { field: any }) {
           "Content-Type": "application/json",
         },
       });
-      console.log(res)
       if (res.success) {
         const employees = res.data;
         const transformedEmployees = employees.map((employee: any) => ({
@@ -80,7 +79,6 @@ export function EmployeeList({ field }: { field: any }) {
                 value={employee.value}
                 onSelect={() => {
                   setValue(field.name, employee.value);
-                  console.log(employee.value)
                 }}
               >
                 <Check

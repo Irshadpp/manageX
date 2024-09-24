@@ -2,7 +2,6 @@ import AttachmentRow from "./AttachmentRow";
 import NewAttachmentButton from "./NewAttachmentButton";
 
 const Attachments = ({task}: {task: any}) => {
-
   return (
     <div>
       <div className="flex items-center justify-between gap-2 pb-3">

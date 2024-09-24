@@ -18,7 +18,6 @@ export const fetchTasks = async (req: Request, res: Response, next: NextFunction
     if(!projectId) throw new BadRequestError("Invalid projectId");
 
     const tasks = await taskService.getTasksByProjectId(projectId)
-    if(tasks && tasks.length > 0){console.log(tasks[0].comments)}
     res.status(200).json({success: true, message: "Tasks fetched successfully", data: tasks});
 }
 
@@ -27,17 +26,16 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
     if(!taskId) throw new BadRequestError("Invalid taskId");
 
     const isComment = req.query.comment === 'true';
-    
-    let updatedTask;
+
+    console.log(req.body)
+
     if(isComment){
-        updatedTask = await taskService.updateComment(taskId, req.body);
-        console.log(updateTask,"updated comment body-------------")
+        await taskService.updateComment(taskId, req.body);
     }else{
-        updatedTask = await taskService.updateTask(taskId, req.body)
-        console.log(updatedTask, "updated task body...............")
+        await taskService.updateTask(taskId, req.body)
     }
 
-    
+    const updatedTask = await taskService.getTaskById(taskId)
     res.status(200).json({success: true, message: "Tasks updated successfully", data: updatedTask});
 }
 
@@ -47,8 +45,19 @@ export const replyToComment = async (req: Request, res: Response, next: NextFunc
     const { text, user } = req.body;
 
     try {
-        const updatedTask = await taskService.replyToComment(taskId, commentId, { text, user });
+        await taskService.replyToComment(taskId, commentId, { text, user });
+        const updatedTask = await taskService.getTaskById(taskId)
         res.status(200).json({ success: true, message: "Reply added successfully", data: updatedTask });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const fetchComments = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { taskId } = req.params;
+        const task = await taskService.getComments(taskId)
+        res.status(200).json({ success: true, message: "Reply added successfully", data: task.comments });
     } catch (error) {
         next(error);
     }

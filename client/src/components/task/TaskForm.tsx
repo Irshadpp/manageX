@@ -66,10 +66,10 @@ const formSchema = z.object({
 
 export default function TaskForm({
   setIsModalOpen,
-  id,
+  projectId,
 }: {
   setIsModalOpen: any;
-  id?: string;
+  projectId?: string;
 }) {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -79,7 +79,7 @@ export default function TaskForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      projectId: id ?? "",
+      projectId: projectId ?? "",
       startDate: undefined,
       dueDate: undefined,
       status: "",
@@ -90,7 +90,7 @@ export default function TaskForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res: any = await dispatch(createTask(values, id as string));
+    const res: any = await dispatch(createTask(values, projectId as string));
     if(res?.success){
       setIsModalOpen(false);
     }
@@ -215,7 +215,7 @@ export default function TaskForm({
             </FormItem>
           )}
         />
-        {!id && (
+        {!projectId && (
           <FormField
             control={form.control}
             name="projectId"

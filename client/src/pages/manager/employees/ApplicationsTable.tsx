@@ -13,7 +13,6 @@ const ApplicationsTable: React.FC = () => {
   const fetchLeaveApplications = useCallback(async () => {
     setLoading(true);
     try {
-      console.log("calling api......................")
       const response = await apiRequest({
         method: 'GET',
         url: import.meta.env.VITE_EMPLOYEE_URL,
@@ -49,7 +48,6 @@ const handleAction = async (id: string, action: 'approved' | 'rejected') => {
         'Content-Type': 'application/json',
       },
     });
-    console.log(response);
     if (response.errors && response.errors.length > 0) {
       setError(response.errors[0].message);
     } else {

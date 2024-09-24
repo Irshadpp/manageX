@@ -15,18 +15,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { updateProject } from "@/store/projectThunk";
 
-const ProjectDetails = ({ id }: { id: string }) => {
+const ProjectDetails = ({ projectId }: { projectId: string }) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const { projectData } = useSelector((state: RootState) => state.project);  
 
-  const project: any = projectData.find(item => item.id === id);
+  const project: any = projectData.find(item => item.id === projectId);
   
   const handleStatusUpdate = async (value: string) => {
     const data = {
       status: `${value}`,
     };
-      dispatch(updateProject(data, id));
+      dispatch(updateProject(data, projectId));
   };
 
   return (

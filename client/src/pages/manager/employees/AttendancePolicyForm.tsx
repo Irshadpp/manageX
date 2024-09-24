@@ -70,7 +70,6 @@ const AttendancePolicyForm: React.FC<EditableAttendancePolicyFormProps> = ({
   };
 
   const onSubmit = async (values: z.infer<typeof attendancePolicySchema>) => {
-    console.log("----------==========---")
     setLoading(true);
 
     const res = await apiRequest({
