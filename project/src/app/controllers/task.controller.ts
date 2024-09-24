@@ -26,16 +26,17 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
     const {taskId} = req.params;
     if(!taskId) throw new BadRequestError("Invalid taskId");
 
-    const comment = req.query;
+    const isComment = req.query.comment === 'true';
+    
     let updatedTask;
-    if(comment){
+    if(isComment){
         updatedTask = await taskService.updateComment(taskId, req.body);
-        console.log(updateTask)
+        console.log(updateTask,"updated comment body-------------")
     }else{
         updatedTask = await taskService.updateTask(taskId, req.body)
+        console.log(updatedTask, "updated task body...............")
     }
 
-    console.log("-----------",req.body, "-------------")
     
     res.status(200).json({success: true, message: "Tasks updated successfully", data: updatedTask});
 }

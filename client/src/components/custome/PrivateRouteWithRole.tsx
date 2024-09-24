@@ -9,7 +9,6 @@ import useSessionCheck from '@/hooks/useSessionCheck';
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
   useSessionCheck();
   const { isAuthenticated, user, isInitialSetup } = useSelector((state: RootState) => state.auth);
-  console.log("after use session check", isAuthenticated, isInitialSetup)
   const userRole = user?.role as Role;
   const naviate = useNavigate();
   // const [loading, setLoading] = useState(true);
@@ -29,7 +28,7 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
           //   return <div>Loading...</div>;
           // }
           if(isAuthenticated && isInitialSetup){
-            console.log("=======================currPath", isInitialSetup)
+            console.log("=======================is initial setup")
             return <Outlet/>
           }
 
@@ -40,6 +39,7 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   const allowedRoutes = Array.from(rbacConfig[userRole]) as string[];
   const currPath = window.location.pathname.split(`/${userRole}`)[1];
   console.log(currPath, "=======================currPath")
+  console.log(allowedRoutes)
   if (allowedRoutes.includes(currPath) || allowedRoutes.includes(`/${userRole}`)) {
     return <Outlet />;
   }
