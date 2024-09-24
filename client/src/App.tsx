@@ -38,6 +38,9 @@ import ProjectList from "./pages/owner/project/ProjectList";
 import Project from "./pages/owner/project/Project";
 import EmpProjectList from "./pages/employee/project/EmpProjectList";
 import EmpProject from "./pages/employee/project/EmpProject";
+import ManLayout from "./pages/manager/ManLayout";
+import ManProjectList from "./pages/manager/project/ManProjectList";
+import ManProject from "./pages/manager/project/ManProject";
 
 function App() {
   return (
@@ -78,7 +81,24 @@ function App() {
                 <Route
                   element={<PrivateRouteWithRole requiredRole="manager" />}
                 >
-                  <Route path="/manager" element={<ManDashboard />} />
+                  <Route path="/email-verified" element={<VerifiedEmail />} />
+                  <Route path="/set-password" element={<SetPassword />} />
+
+                 <Route path="/manager" element={<ManLayout />}>
+                    <Route index element={<ManDashboard />} />
+                    <Route path="employees" element={<EmployeeSideMenu />}>
+                      <Route index element={<EmployeeList />} />
+                      <Route path="list" element={<EmployeeList />} />
+                      <Route path=":id" element={<EmployeeProfile />} />
+                      <Route path="create" element={<CreateEmployee />} />
+                      <Route path="leave" element={<LeaveRequests />} />
+                      <Route path="policy" element={<AttendancePolicy />} />
+                      <Route path="ex-employee" element={<ExEmployees />} />
+                    </Route>
+                    <Route path="/manager/projects" element={<ManProjectList/>}/>
+                    <Route path="/manager/projects/create" element={<CreateProject/>}/>
+                    <Route path="/manager/projects/:id" element={<ManProject/>}/>
+                  </Route>
                 </Route>
 
                 <Route

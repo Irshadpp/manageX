@@ -8,6 +8,7 @@ import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
 import persistStore from "redux-persist/es/persistStore";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
 const persistConfig = {
     key: "root",
@@ -40,7 +41,7 @@ if (userData) {
     store.dispatch(rehydrateAuthState(userData));
 }
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState> & PersistPartial;
 export type AppDispatch = typeof store.dispatch;
 
 export type AppThunk<ReturnType = void> = ThunkAction<

@@ -7,10 +7,11 @@ import FormInputWithIcon from "@/components/custome/FormInputWithIcon";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/services/api/commonRequest";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "@/store";
 import useLogout from "@/hooks/useLogout";
+import { updateIntitialSetup } from "@/store/authSlice";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
@@ -35,6 +36,7 @@ const SetPasswordForm = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -62,6 +64,7 @@ const SetPasswordForm = () => {
           return setLoading(false);
         }
         setLoading(false);
+        // dispatch(updateIntitialSetup({value: false}))
         logout();
         navigate("/login");
       } catch (error) {

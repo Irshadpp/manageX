@@ -10,7 +10,7 @@ interface SubTask{
     }
 }
 
-interface Comments{
+export interface Comments{
     id: string;
     text: string;
     user: string;

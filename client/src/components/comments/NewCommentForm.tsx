@@ -49,9 +49,8 @@ export default function NewCommentForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let val = values as Comments;
     if (task) {
-      let comments = [...task.comments, val];
       const res = await dispatch(
-        updateTask({ comments: comments} , task.id )
+        updateTask(values , task.id, true)
       );
       if(res?.success){
         setIsModalOpen(false);
