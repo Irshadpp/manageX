@@ -5,11 +5,11 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { RootState } from '@/store';
 // import { checkAuthStatus } from '@/store/authSlice';
 import useSessionCheck from '@/hooks/useSessionCheck';
-import VerifiedEmail from '@/pages/landing/Registration/VerifiedEmail';
 
 const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requiredRole: Role, redirectPath?: string }) => {
   useSessionCheck();
   const { isAuthenticated, user, isInitialSetup } = useSelector((state: RootState) => state.auth);
+  console.log("after use session check", isAuthenticated, isInitialSetup)
   const userRole = user?.role as Role;
   const naviate = useNavigate();
   // const [loading, setLoading] = useState(true);
