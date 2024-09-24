@@ -6,10 +6,12 @@ import { AiOutlineDelete } from "react-icons/ai";
 const ImageUpload = ({
   selectedFile,
   setSelectedFile,
+  imageURL,
   size,
 }: {
   selectedFile: any;
   setSelectedFile: any;
+  imageURL?: string;
   size?: string;
 }) => {
   const fileInputRef = useRef<any>();
@@ -48,10 +50,11 @@ const ImageUpload = ({
     setSelectedFile(null);
   };
 
+  console.log(selectedFile)
   return (
     <div
       className={`rounded-md bg-background py-6 mb-2 text-center flex flex-col items-center justify-center relative ${
-        isDragging ? "opacity-70 border-blue-500" : " border-gray-200"
+        isDragging ? "opacity-70 border-blue-500" : "border-gray-200"
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -65,30 +68,32 @@ const ImageUpload = ({
       />
       {selectedFile ? (
         <div
-          className={`w-${size ?? "32"} h-${
-            size ?? "32"
-          } rounded-full overflow-clip mx-auto`}
+          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
         >
           <img
             src={URL.createObjectURL(selectedFile)}
-            alt={selectedFile?.name}
-            width={100}
-            height={100}
+            alt={selectedFile.name}
+            className="object-cover w-full h-full"
+          />
+        </div>
+      ) : imageURL ? (
+        <div
+          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
+        >
+          <img
+            src={imageURL}
+            alt="Profile"
             className="object-cover w-full h-full"
           />
         </div>
       ) : (
         <div
-          className={`w-${size ?? "32"} h-${
-            size ?? "32"
-          } rounded-full overflow-clip mx-auto`}
+          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
         >
           <img
             src={UserAvatarImage}
             alt="Profile"
-            className="w-full h-full object-cover"
-            width={100}
-            height={100}
+            className="object-cover w-full h-full"
           />
         </div>
       )}

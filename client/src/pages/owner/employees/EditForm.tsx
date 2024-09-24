@@ -25,6 +25,7 @@ import { uploadImage } from "@/utils/uploadImage";
 import { apiRequest } from "@/services/api/commonRequest";
 import { useNavigate } from "react-router-dom";
 import { Employee } from "@/store/types/employee";
+import UserAvatarImage from '/useravatar.png'
 
 const employeeSchema = z.object({
   fName: z
@@ -141,6 +142,7 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
             <ImageUpload
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
+              imageURL={employee.profileURL || UserAvatarImage}
             />
             <FormField
               control={form.control}

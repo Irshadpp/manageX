@@ -44,10 +44,12 @@ export const createTask= (task: any, id: string) => async (dispatch: AppDispatch
   }
 };
 
-export const updateTask= (task: any, id: string, isComment: boolean) => async (dispatch: AppDispatch) => {
+export const updateTask= (task: any, id: string, isComment?: boolean) => async (dispatch: AppDispatch) => {
     dispatch(updateTaskRequest());
+    console.log("task======>",task)
     try {
       const comment = isComment ? true : false
+      console.log(comment)
       const response: any = await apiRequest({
         method: "PATCH",
         url: import.meta.env.VITE_PROJECT_URL,
