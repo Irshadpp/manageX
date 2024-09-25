@@ -25,7 +25,7 @@ import { uploadImage } from "@/utils/uploadImage";
 import { apiRequest } from "@/services/api/commonRequest";
 import { useNavigate } from "react-router-dom";
 import { Employee } from "@/store/types/employee";
-import UserAvatarImage from '/useravatar.png'
+import { ScrollArea } from "../ui/scroll-area";
 
 const employeeSchema = z.object({
   fName: z
@@ -132,6 +132,7 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
   };
 
   return (
+    <ScrollArea className="h-96">
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -142,7 +143,6 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
             <ImageUpload
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
-              imageURL={employee.profileURL || UserAvatarImage}
             />
             <FormField
               control={form.control}
@@ -403,6 +403,7 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
         </div>
       </form>
     </Form>
+    </ScrollArea>
   );
 };
 

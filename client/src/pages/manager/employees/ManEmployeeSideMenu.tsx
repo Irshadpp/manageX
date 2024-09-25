@@ -29,7 +29,7 @@ const getNavLinkClassName = (isActive: boolean) =>
       : "text-muted-foreground hover:text-primary"
   }`;
 
-export function EmployeeSideMenu() {
+export function ManEmployeeSideMenu() {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[180px_1fr] lg:grid-cols-[240px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -42,35 +42,35 @@ export function EmployeeSideMenu() {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <NavLink
-                to="/owner/employees/list"
+                to="/manager/employees/list"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <PiUserListBold className="h-4 w-4" />
                 Employee List
               </NavLink>
               <NavLink
-                to="/owner/employees/create"
+                to="/manager/employees/create"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <MdGroupAdd className="h-4 w-4" />
                 Create
               </NavLink>
               <NavLink
-                to="/owner/employees/leave"
+                to="/manager/employees/leave"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <IoCreateOutline className="h-4 w-4" />
                 Leave Requests
               </NavLink>
               <NavLink
-                to="/owner/employees/policy"
+                to="/manager/employees/policy"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <MdOutlinePolicy className="h-5 w-4"/>
                 Attendance Policy
               </NavLink>
               <NavLink
-                to="/owner/employees/ex-employee"
+                to="/manager/employees/ex-employee"
                 className={({ isActive }) => getNavLinkClassName(isActive)}
               >
                 <BsPersonRolodex className="h-4 w-4" />
@@ -103,14 +103,14 @@ export function EmployeeSideMenu() {
                   <span className="sr-only">Employees</span>
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/list"
+                  to="/manager/employees/list"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <PiUserListBold className="h-5 w-5" />
                   Employee List
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/create"
+                  to="/manager/employees/create"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                 >
                   <MdGroupAdd className="h-5 w-5" />
@@ -118,21 +118,21 @@ export function EmployeeSideMenu() {
                   <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"></Badge>
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/leave"
+                  to="/manager/employees/leave"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <IoCreateOutline className="h-5 w-5" />
                   Leave Requests
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/policy"
+                  to="/manager/employees/policy"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <MdOutlinePolicy className="h-5 w-5" />
                   Attendance Policy
                 </NavLink>
                 <NavLink
-                  to="/owner/employees/ex-employee"
+                  to="/manager/employees/ex-employee"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <BsPersonRolodex className="h-5 w-5" />

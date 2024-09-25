@@ -9,7 +9,7 @@ import {
 import FormInputCustom from "@/components/custome/FormInputCustom";
 import { apiRequest } from "@/services/api/commonRequest";
 import { useState } from "react";
-import { AttendancePolicyType } from "./types/attendancePolicy";
+import { AttendancePolicyType } from "../../pages/manager/employees/types/attendancePolicy";
 
 const attendancePolicySchema = z.object({
   officeStartTime: z.string().min(5, { message: "Start time is required." }),
@@ -37,6 +37,7 @@ const attendancePolicySchema = z.object({
       .transform((val) => parseFloat(val)),
   }),
 });
+
 
 interface EditableAttendancePolicyFormProps {   
   policy: AttendancePolicyType;

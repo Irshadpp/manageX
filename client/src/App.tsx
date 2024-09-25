@@ -16,7 +16,6 @@ import Organizations from "./pages/admin/Organizations";
 import Users from "./pages/admin/Users";
 import { ToastProvider } from "./components/ui/toast";
 import { EmployeeSideMenu } from "./pages/owner/employees/EmployeeSideMenu";
-import EmployeeList from "./pages/owner/employees/EmployeeList";
 import CreateEmployee from "./pages/owner/employees/CreateEmployee";
 import LeaveRequests from "./pages/owner/employees/LeaveRequests";
 import ExEmployees from "./pages/owner/employees/ExEmployees";
@@ -25,7 +24,6 @@ import SignUpPage from "./pages/landing/Registration/signup";
 import VerifyEmail from "./pages/landing/Registration/VerifyEmail";
 import GetStarted from "./pages/landing/Registration/GetStarted";
 import VerifiedEmail from "./pages/landing/Registration/VerifiedEmail";
-import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 import SetPassword from "./pages/landing/Registration/SetPassword";
 import EmployeeSideBar from "./components/ui/sidebars/EmployeeSideBar";
 import EmpLayout from "./pages/employee/EmpLayout";
@@ -41,6 +39,15 @@ import EmpProject from "./pages/employee/project/EmpProject";
 import ManLayout from "./pages/manager/ManLayout";
 import ManProjectList from "./pages/manager/project/ManProjectList";
 import ManProject from "./pages/manager/project/ManProject";
+import EmployeeList from "./pages/owner/employees/EmployeeList";
+import ManEmployeeList from "./pages/manager/employees/ManEmployeeList";
+import { ManEmployeeProfile } from "./pages/manager/employees/ManEmployeeProfile";
+import ManCreateEmployee from "./pages/manager/employees/ManCreateEmployee";
+import ManLeaveRequests from "./pages/manager/employees/ManLeaveRequests";
+import ManAttendancePolicy from "./pages/manager/employees/ManAttendancePolicy";
+import ManExEmployees from "./pages/manager/employees/ManExEmployees";
+import { ManEmployeeSideMenu } from "./pages/manager/employees/ManEmployeeSideMenu";
+import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 
 function App() {
   return (
@@ -86,14 +93,14 @@ function App() {
 
                  <Route path="/manager" element={<ManLayout />}>
                     <Route index element={<ManDashboard />} />
-                    <Route path="employees" element={<EmployeeSideMenu />}>
-                      <Route index element={<EmployeeList />} />
-                      <Route path="list" element={<EmployeeList />} />
-                      <Route path=":id" element={<EmployeeProfile />} />
-                      <Route path="create" element={<CreateEmployee />} />
-                      <Route path="leave" element={<LeaveRequests />} />
-                      <Route path="policy" element={<AttendancePolicy />} />
-                      <Route path="ex-employee" element={<ExEmployees />} />
+                    <Route path="employees" element={<ManEmployeeSideMenu />}>
+                      <Route index element={<ManEmployeeList />} />
+                      <Route path="list" element={<ManEmployeeList />} />
+                      <Route path=":id" element={<ManEmployeeProfile />} />
+                      <Route path="create" element={<ManCreateEmployee />} />
+                      <Route path="leave" element={<ManLeaveRequests />} />
+                      <Route path="policy" element={<ManAttendancePolicy />} />
+                      <Route path="ex-employee" element={<ManExEmployees />} />
                     </Route>
                     <Route path="/manager/projects" element={<ManProjectList/>}/>
                     <Route path="/manager/projects/create" element={<CreateProject/>}/>

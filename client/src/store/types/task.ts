@@ -29,7 +29,7 @@ export interface Replay{
 }
 
 export interface Comments{
-    _id: string;
+    id: string;
     text: string;
     user: any;
     createdAt: string;

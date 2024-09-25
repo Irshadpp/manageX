@@ -32,7 +32,7 @@ const ReplayButton = ({ comment, task }: Props) => {
   const handleReplaySubmit = async () => {
     if (task && comment) {
       const replyData = { text: replayMessage, user: user!.id };
-      const res = await dispatch(replyToComment(task.id, comment._id, replyData));
+      const res = await dispatch(replyToComment(task.id, comment.id, replyData));
       
       if (res?.success) {
         setIsModalOpen(false);

@@ -2,11 +2,11 @@ import { RootState } from '@/store';
 import { fetchEmployees } from '@/store/employeeThunks';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import EmployeeCard from './EmployeeCard';
-import { SkeletonEmployeeCard } from './skeletons/SkeletonEmployeeCard';
-import EmptyList from './EmptyList';
+import EmployeeCard from '../../../components/employees/EmployeeCard';
+import EmptyList from '../../../components/employees/EmptyList';
+import { SkeletonEmployeeCard } from '@/components/skeletons/SkeletonEmployeeCard';
 
-const EmployeeList = () => {
+const ManEmployeeList = () => {
 
   const dispatch = useDispatch<any>();
   const {error, loading, employees} = useSelector((state: RootState) => state.employee);
@@ -36,4 +36,4 @@ const EmployeeList = () => {
   )
 }
 
-export default EmployeeList
+export default ManEmployeeList

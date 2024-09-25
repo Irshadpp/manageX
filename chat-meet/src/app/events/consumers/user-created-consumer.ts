@@ -4,7 +4,7 @@ import { UserService } from "../../services/user/user.service";
 
 const userService = new UserService();
 
-export class ProjectUserCreatedConsumer extends Consumer<ProjectUserCreatedEvent> {
+export class ChatUserCreatedConsumer extends Consumer<ProjectUserCreatedEvent> {
   queue: Queues.ProjectUserCreated = Queues.ProjectUserCreated;
 
   async onMessage(data: ProjectUserCreatedEvent["data"], msg: amqp.Message): Promise<void> {

@@ -60,21 +60,25 @@ export default function SubTaskEditForm({
   const dispatch = useDispatch<AppDispatch>();
 
   const { taskData, loading, error } = useSelector((state:RootState) => state.task);
-  const task = taskData.find(task => task.id === taskId)
+  const task = taskData.find(task => task.id === taskId);
+  const subTask = task?.subTasks.find(item => item.id === subTaskId);
+
+  console.log(subTaskId)
+  console.log(subTask)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: task?.subTasks.find((item) => item.id === subTaskId)?.id || "",
-      title: task?.subTasks.find((item) => item.id === subTaskId)?.title || "",
+      id: subTask?.id || "",
+      title: subTask?.title || "",
       status:
-        task?.subTasks.find((item) => item.id === subTaskId)?.status || "",
+        subTask?.status || "",
       duration: {
         durationType:
-          task?.subTasks.find((item) => item.id === subTaskId)?.duration
+          subTask?.duration
             .durationType || "",
         length:
-          task?.subTasks.find((item) => item.id === subTaskId)?.duration
+          subTask?.duration
             .length || undefined,
       },
     },

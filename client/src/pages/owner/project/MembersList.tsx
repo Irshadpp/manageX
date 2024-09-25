@@ -21,7 +21,6 @@ export default function MembersList({
     (any & { selected?: boolean })[]
   >([]);
   const { setValue } = useFormContext();
-
   useEffect(() => {
     const fetchMembers = async () => {
       setLoading(true);
