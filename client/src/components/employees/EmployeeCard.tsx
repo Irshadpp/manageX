@@ -4,6 +4,8 @@ import UserAvatarImage from '/useravatar.png'
 import { useNavigate } from "react-router-dom";
 import { Employee } from "@/store/types/employee";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface EmployeeCardProps{
     employee: Employee
@@ -12,10 +14,11 @@ interface EmployeeCardProps{
 
 const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(({ employee }) => {
   const navigate = useNavigate();
+  const {user} = useSelector((state: RootState) => state.auth)
   return (
     <div
       className="shadow-md bg-muted/40 p-5 rounded-lg cursor-pointer hover:opacity-80"
-      onClick={() => navigate(`/owner/employees/${employee.id}`)}
+      onClick={() => navigate(`/${user?.role}/employees/${employee.id}`)}
     >
       <div className="text-center py-5">
         <div className="w-32 h-32 mx-auto rounded-full overflow-clip">

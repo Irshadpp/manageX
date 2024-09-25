@@ -2,9 +2,9 @@ import { RootState } from '@/store';
 import { fetchEmployees } from '@/store/employeeThunks';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import EmployeeCard from './EmployeeCard';
 import { SkeletonEmployeeCard } from './skeletons/SkeletonEmployeeCard';
-import EmptyList from './EmptyList';
+import EmptyList from '@/components/employees/EmptyList';
+import EmployeeCard from '@/components/employees/EmployeeCard';
 
 const EmployeeList = () => {
 

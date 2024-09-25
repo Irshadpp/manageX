@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import AttendancePolicyForm from './AttendancePolicyForm'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { apiRequest } from '@/services/api/commonRequest';
 import { AttendancePolicyType } from './types/attendancePolicy';
+import AttendancePolicyForm from '@/components/employees/AttendancePolicyForm';
 
 const AttendancePolicy = () => {
     const {user} = useSelector((state:RootState) => state.auth)

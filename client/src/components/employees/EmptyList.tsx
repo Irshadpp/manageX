@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const EmptyList = () => {
+  const {user} = useSelector((state: RootState) => state.auth)
   return (
     <>
     <div className="flex items-center">
@@ -17,7 +20,7 @@ const EmptyList = () => {
       <p className="text-sm text-muted-foreground">
         Please create an employee.
       </p>
-      <Link to="/owner/employees/create">
+      <Link to={`/${user?.role}/employees/create`}>
       <Button className="mt-4">Create Employee</Button>
       </Link>
     </div>

@@ -1,4 +1,4 @@
-import ApplicationsTable from './ApplicationsTable'
+import ApplicationsTable from "@/components/employees/ApplicationsTable"
 
 const LeaveRequests = () => {
   return (

@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/pagination";
 import { ReactNode, useState } from "react";
 
-export function TanStackSubTAskDataTable<TData, TValue>({
+export function TanStackSubTAskDataTable<TData extends {id: string}, TValue>({
   columns,
   data,
   pageTitle,
@@ -44,12 +44,12 @@ export function TanStackSubTAskDataTable<TData, TValue>({
   pageTitle?: string;
   newButton?: ReactNode;
   searchField?: string;
-  rowOnCLick?: (slug: string) => void;
+  rowOnCLick?: (id: string) => void;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    slug: false,
+    id: false,
     description: false,
     endTime: false,
     startTime: false,
@@ -60,6 +60,7 @@ export function TanStackSubTAskDataTable<TData, TValue>({
     pageSize: 10,
   });
 
+  console.log(data)
   const table = useReactTable({
     data,
     columns,
@@ -177,7 +178,9 @@ export function TanStackSubTAskDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   className="bg-background border cursor-pointer"
-                  onClick={() => rowOnCLick && rowOnCLick(row.getValue("id"))}
+                  onClick={() =>{ 
+                    console.log(row.original.id)
+                    rowOnCLick && rowOnCLick(row.original.id)}}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-3">

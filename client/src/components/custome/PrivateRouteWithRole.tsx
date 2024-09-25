@@ -34,9 +34,9 @@ const PrivateRouteWithRole = ({ requiredRole, redirectPath = "/login" }: { requi
   if (!isAuthenticated || userRole !== requiredRole) {
     return <Navigate to={redirectPath} replace/>;
   }
-  
   const allowedRoutes = Array.from(rbacConfig[userRole]) as string[];
   const currPath = window.location.pathname.split(`/${userRole}`)[1];
+  console.log(currPath)
   if (allowedRoutes.includes(currPath) || allowedRoutes.includes(`/${userRole}`)) {
     return <Outlet />;
   }

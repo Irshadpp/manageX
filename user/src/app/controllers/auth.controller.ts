@@ -45,7 +45,7 @@ export const createUser = async (
     if (existingUser) {
       if (!existingUser.isEmailVerified) {
         await handleVerificationEmail(existingUser.id, existingUser.email);
-        return res.status(202).send({ success: true, ...existingUser });
+        return res.status(200).send({ success: true, ...existingUser });
       }
       throw new BadRequestError("Email is already exists");
     }

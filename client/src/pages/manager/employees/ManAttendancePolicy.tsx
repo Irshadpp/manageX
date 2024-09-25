@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import AttendancePolicyForm from './AttendancePolicyForm'
+import AttendancePolicyForm from '../../../components/employees/AttendancePolicyForm'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { apiRequest } from '@/services/api/commonRequest';
 import { AttendancePolicyType } from './types/attendancePolicy';
 
-const AttendancePolicy = () => {
+const ManAttendancePolicy = () => {
     const {user} = useSelector((state:RootState) => state.auth)
     const [policy, setPolicy] = useState({});
     const [error, setError] = useState("")
@@ -42,4 +42,4 @@ const AttendancePolicy = () => {
   )
 }
 
-export default AttendancePolicy
+export default ManAttendancePolicy

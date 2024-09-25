@@ -1,4 +1,4 @@
-import CreateForm from './CreateForm'
+import CreateForm from "@/components/employees/CreateForm"
 
 const CreateEmployee = () => {
   return (

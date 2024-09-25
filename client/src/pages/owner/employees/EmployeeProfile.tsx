@@ -4,9 +4,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import UserAvatarImage from '/useravatar.png'
-import EditForm from "./EditForm";
-import EmployeeSettings from "./EmployeeSettings";
-import EmployeeAttendance from "./EmployeeAttendance";
+import EditForm from "../../../components/employees/EditForm";
+import EmployeeSettings from "@/components/employees/EmployeeSettings";
+import EmployeeAttendance from "../../../components/employees/EmployeeAttendance";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
