@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { ChatType } from "./enum";
 
-export interface UserAttrs {
+export interface ChatAttrs {
   id: string;
   participants?: string[];
   type?: ChatType;
@@ -11,7 +11,7 @@ export interface UserAttrs {
   organizationId?: string;
 }
 
-export interface UserDoc extends mongoose.Document {
+export interface ChatDoc extends mongoose.Document {
     id: string;
     participants?: string[];
     type?: ChatType;
@@ -21,6 +21,6 @@ export interface UserDoc extends mongoose.Document {
     organizationId?: string;
 }
 
-export interface UserModel extends mongoose.Model<UserDoc> {
-  build(attrs: UserAttrs): UserDoc;
+export interface ChatModel extends mongoose.Model<ChatDoc> {    
+  build(attrs: ChatAttrs): ChatDoc;
 }

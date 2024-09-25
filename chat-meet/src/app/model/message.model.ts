@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Messagetype } from "./enum";
 
-export interface UserAttrs {
+export interface MessageAttrs {
   id: string;
   content: any;
   type: Messagetype;
@@ -10,8 +10,8 @@ export interface UserAttrs {
   to: string;
 }
 
-export interface UserDoc extends mongoose.Document {
-    id: string;
+export interface MessageDoc extends mongoose.Document {
+  id: string;
   content: any;
   type: Messagetype;
   chat: string;
@@ -19,6 +19,6 @@ export interface UserDoc extends mongoose.Document {
   to: string;
 }
 
-export interface UserModel extends mongoose.Model<UserDoc> {
-  build(attrs: UserAttrs): UserDoc;
+export interface MessageModel extends mongoose.Model<MessageDoc> {
+  build(attrs: MessageAttrs): MessageDoc;
 }
