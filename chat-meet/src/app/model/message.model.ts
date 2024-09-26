@@ -2,10 +2,9 @@ import mongoose from "mongoose";
 import { Messagetype } from "./enum";
 
 export interface MessageAttrs {
-  id: string;
   content: any;
   type: Messagetype;
-  chat: string;
+  chatId: string;
   from: string;
   to: string;
 }
@@ -14,7 +13,7 @@ export interface MessageDoc extends mongoose.Document {
   id: string;
   content: any;
   type: Messagetype;
-  chat: string;
+  chatId: string;
   from: string;
   to: string;
 }
