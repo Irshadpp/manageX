@@ -1,10 +1,13 @@
 import { app } from "./app";
 import { connectDB } from "./config/db";
+import {createServer} from "http";
 import { envChecker } from "./config/env-checker";
 import dotenv from "dotenv";
 import { rabbitmqWrapper } from "./config/rabbimq-wrapper";
 import { ChatUserCreatedConsumer } from "./app/events/consumers/user-created-consumer";
 import { ChatUserUpdatedConsumer } from "./app/events/consumers/user-updated-consumer";
+import { socketWrapper } from "./config/socket-wrapper";
+import { ChatEvents } from "./app/events/chat/chat.events";
 dotenv.config();
 
 const start = async () => {
@@ -15,6 +18,11 @@ const start = async () => {
     new ChatUserUpdatedConsumer(rabbitmqWrapper.channel).consume();
 
     connectDB();
+
+    const httpServer = createServer(app);
+    socketWrapper.init(httpServer);
+    ChatEvents.init();
+
   } catch (error: any) {
     console.log(error.message);
   }

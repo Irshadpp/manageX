@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { ChatType } from "./enum";
 
 export interface ChatAttrs {
-  id: string;
   participants?: string[];
   type?: ChatType;
   groupName?: string;

@@ -4,6 +4,7 @@ import employeeReducer from "./employeeSlice"
 import attendanceReducer from "./attendanceSlice";
 import projectReducer from "./projectSlice";
 import taskReducer from "./taskSlice";
+import chatReducer from "./chatSlice"
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
@@ -13,7 +14,7 @@ import { PersistPartial } from "redux-persist/es/persistReducer";
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ['auth','employee','attendance','project','task']
+    whitelist: ['auth','employee','attendance','project','task', 'chat']
 }
 
 const rootReducer = combineReducers({
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     employee: employeeReducer,
     attendance: attendanceReducer,
     project: projectReducer,
-    task: taskReducer
+    task: taskReducer,
+    chat: chatReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

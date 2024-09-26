@@ -48,6 +48,8 @@ import ManAttendancePolicy from "./pages/manager/employees/ManAttendancePolicy";
 import ManExEmployees from "./pages/manager/employees/ManExEmployees";
 import { ManEmployeeSideMenu } from "./pages/manager/employees/ManEmployeeSideMenu";
 import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
+import { ChatLayout } from "./components/chat/chat-layout";
+import Chat from "./pages/owner/chat/Chat";
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
                     <Route path="/owner/projects" element={<ProjectList/>}/>
                     <Route path="/owner/projects/create" element={<CreateProject/>}/>
                     <Route path="/owner/projects/:id" element={<Project/>}/>
+                    <Route path="/owner/chat" element={<Chat/>}>
+                    </Route>
                   </Route>
                 </Route>
 
