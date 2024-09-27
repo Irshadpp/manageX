@@ -8,6 +8,8 @@ import { generateEmailToken } from "../utils/jwt/email-varification.jwt";
 import { sendVarificationEmail } from "../utils/node-mailer/send-verification-email";
 import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-created-publisher";
 import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
+import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
+import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
 
 const employeeService = new EmployeeService();
 
@@ -56,6 +58,9 @@ export const createEmployee = async (
 
     const projecUserEventData = ProjectUserCreatedPublisher.mapToEventData(employeeData);
     await new ProjectUserCreatedPublisher(rabbitmqWrapper.channel).publish(projecUserEventData);
+
+    const chatUserEventData = ChatUserCreatedPublisher.mapToEventData(employee!);
+    await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
     res.status(201).send({success: true, message: "Created employee successfully"});
     
@@ -110,6 +115,9 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
 
     const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(employeeData!)
     await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
+    const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employee!);
+    await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
     res.status(201).send({success: true, message: "updated employee successfully"});
     

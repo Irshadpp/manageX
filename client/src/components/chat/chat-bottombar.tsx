@@ -17,10 +17,13 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setHasInitialResponse, setInput, setMessages } from "@/store/chatSlice";
+import { io } from "socket.io-client";
 
 interface ChatBottombarProps {
   isMobile: boolean;
 }
+
+const socket = io(import.meta.env.VITE_CHAT_URL)
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
@@ -200,7 +203,7 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
             onKeyDown={handleKeyPress}
             onChange={handleInputChange}
             placeholder="Type a message..."
-            className="rounded-full"
+            className="rounded-full pr-12"
           />
           <div className="absolute right-4 bottom-2  ">
             <EmojiPicker

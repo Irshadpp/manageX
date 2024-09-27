@@ -16,4 +16,8 @@ export class UserService implements IUserService{
     async fetchEmployeesByOrgId(organizationId: string, role: string): Promise<UserDoc[] | null> {
         return await User.find({organizationId, role});
     }
+
+    async findUserByEmail(email: string): Promise<UserDoc | null>{
+        return await User.findOne({email});
+    }
 }

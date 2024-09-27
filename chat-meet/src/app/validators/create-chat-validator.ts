@@ -13,7 +13,7 @@ export const createChatValidator = [
     }),
   body('type')
     .isString()
-    .isIn([ChatType.SINGLE, ChatType.GROUP])
+    .isIn([ChatType.ONE_ON_ONE, ChatType.GROUP])
     .withMessage('Chat type must be either "single" or "group"'),
   body('groupName')
     .optional()

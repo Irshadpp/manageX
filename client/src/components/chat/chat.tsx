@@ -116,7 +116,8 @@ export const userData: any[] = [
 ];
 
 export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
-  const messagesState = userData[0].messages;
+  const messagesState = selectedUser.messages;
+  console.log(selectedUser.messages)
 
   const sendMessage = (newMessage: any) => {
     // useChatStore.setState((state) => ({
@@ -130,7 +131,6 @@ export function Chat({ messages, selectedUser, isMobile }: ChatProps) {
   return (
     <div className="flex flex-col justify-between w-full h-full">
       <ChatTopbar selectedUser={selectedUser} />
-
       <ChatList
         messages={messagesState}
         selectedUser={selectedUser}

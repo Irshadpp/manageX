@@ -8,11 +8,13 @@ export const getChats = async (req: Request, res: Response, next: NextFunction) 
   try {
     const userId = req?.user?.id;
     const chats = await chatService.getChatsByUserId(userId!);
+    console.log(chats)
     res.status(200).send({ success: true, message: 'Chats fetched successfully', data: chats });
   } catch (error) {
     next(error);
   }
 };
+
 
 export const createChat = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,7 +24,7 @@ export const createChat = async (req: Request, res: Response, next: NextFunction
         throw new BadRequestError('At least two participants are required')
       }
   
-      if (type === ChatType.SINGLE && participants.length > 2) {
+      if (type === ChatType.ONE_ON_ONE && participants.length > 2) {
         throw new BadRequestError('Single chat can only have two participants');
       }
   

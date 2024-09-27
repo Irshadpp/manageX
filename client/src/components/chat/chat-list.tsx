@@ -14,6 +14,7 @@ import {
 import { ChatMessageList } from "./chat-message-list";
 import { DotsVerticalIcon, HeartIcon, Share1Icon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ChatListProps {
   messages: any[];
@@ -50,6 +51,7 @@ export function ChatList({
     <div className="w-full overflow-y-auto h-full flex flex-col">
       <ChatMessageList ref={messagesContainerRef}>
         <AnimatePresence>
+        <ScrollArea className="h-[540px] w-full ">
           {messages.map((message, index) => {
             const variant = getMessageVariant(message.name, selectedUser.name);
             return (
@@ -97,6 +99,7 @@ export function ChatList({
               </motion.div>
             );
           })}
+      </ScrollArea>
         </AnimatePresence>
       </ChatMessageList>
       <ChatBottombar isMobile={isMobile} />
