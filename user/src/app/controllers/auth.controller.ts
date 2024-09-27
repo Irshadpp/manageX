@@ -24,6 +24,7 @@ import { EmployeeCreatedPublisher } from "../events/publishers/employee-created-
 import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
 import { Role } from "../model/enum";
 import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-created-publisher";
+import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
 
 const userService = new UserService();
 const orgService = new OrgService();
@@ -60,6 +61,9 @@ export const createUser = async (
 
     const ProjectUserEventData = ProjectUserCreatedPublisher.mapToEventData(updatedUser!);
     await new ProjectUserCreatedPublisher(rabbitmqWrapper.channel).publish(ProjectUserEventData);
+
+    const ChatUserEventData = ChatUserCreatedPublisher.mapToEventData(updatedUser!);
+    await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(ChatUserEventData);
 
     await handleVerificationEmail(user.id, user.email);
 

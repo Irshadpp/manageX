@@ -1,5 +1,5 @@
 export enum ChatType{
-    SINGLE = "single",
+    ONE_ON_ONE = "one-on-one",
     GROUP =  "group"
 }
 

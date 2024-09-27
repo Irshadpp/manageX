@@ -3,6 +3,7 @@ import { UserService } from "../services/user/user.service";
 import { JWTUserPayload, NotFoundError } from "@ir-managex/common";
 import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
 import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
+import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
 
 const userService = new UserService();
 
@@ -22,6 +23,9 @@ export const updateUser = async (
 
     const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(updatedUser!);
     await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
+    const ChatUserEventData = ChatUserUpdatedPublisher.mapToEventData(updatedUser!);
+    await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(ChatUserEventData);
 
     res
       .status(200)
