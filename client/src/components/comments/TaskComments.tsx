@@ -42,7 +42,6 @@ const TaskComments = ({ task }: { task: any }) => {
     return () => clearInterval(intervalId)
   }, [task]);
 
-  console.log("Rendering the comments component.................")
 
   return (
     <div className="py-3">

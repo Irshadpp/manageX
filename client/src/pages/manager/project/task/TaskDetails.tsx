@@ -15,7 +15,6 @@ const TaskDetails = ({ projectId }: { projectId: string }) => {
   const [onEditSheet, setOnEditSheet] = useState(false);
   
   useEffect(() => {
-    console.log("fdkjdklsfkl", projectId)
     dispatch(fetchTasks(projectId));
   }, []);
   

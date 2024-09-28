@@ -10,6 +10,7 @@ export class UserService implements IUserService{
     }
 
     async updateUser(id: string, attrs: UserAttrs): Promise<UserDoc | null> {
+        
         return await User.findByIdAndUpdate(id, { ...attrs }, {new: true});
       }
 

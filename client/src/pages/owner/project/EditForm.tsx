@@ -59,7 +59,6 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
       if(res?.success){
         setIsModalOpen(false);
       }
-      console.log(res)
     }
   };
 

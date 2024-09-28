@@ -15,39 +15,56 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChatInput } from "./chat-input";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { setHasInitialResponse, setInput, setMessages } from "@/store/chatSlice";
+import { AppDispatch, RootState } from "@/store";
+import { setInput, setMessages } from "@/store/chatSlice";
 import { io } from "socket.io-client";
+import { fetchChats } from "@/store/chatThunk";
+import { ChatType, ChatTypes, Message } from "@/store/types/chat";
 
 interface ChatBottombarProps {
   isMobile: boolean;
+  selectedChatId: string;
 }
-
-const socket = io(import.meta.env.VITE_CHAT_URL)
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
-export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
+export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottombarProps) {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const dispatch = useDispatch();
-  const { messages, hasInitialResponse } = useSelector((state: RootState) => state.chat);
+  const dispatch = useDispatch<AppDispatch>();
+  const selectedChat =  useSelector((state: RootState) => 
+    state.chat.chatData.find(chat => chat.id === selectedChatId)
+  );
+  const messages = selectedChat ? selectedChat.messages : [];
   const [isLoading, setIsLoading] = useState(false);
+  const {user} = useSelector((state: RootState) => state.auth);
+  const [socket, setSocket] = useState<any>(null);
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
-    dispatch(setInput(event.target.value)); // Dispatch input change to Redux
+    // dispatch(setInput(event.target.value)); // Dispatch input change to Redux
   };
 
   const sendMessage = (newMessage: any) => {
-    dispatch(setMessages((messages) => [...messages, newMessage])); // Dispatch message addition to Redux
+    if(selectedChat){
+      socket.emit("sendMessage", {
+        chatId: selectedChat.id,
+        content: newMessage.message,
+        type: ChatType.ONE_ON_ONE,
+        from: user!.id
+      });
+
+      // socket.on("messageSaved", (savedMessage: Message) => {
+      //   dispatch(setMessages({ chatId: selectedChat.id, newMessage: savedMessage }));
+      // });
+    }
   };
 
   const handleThumbsUp = () => {
     const newMessage = {
-      id: messages.length + 1,
-      name: "User Name", // Replace with your user's name
-      avatar: "User Avatar URL", // Replace with your user's avatar URL
+      name: user!.name, 
+      profileURL: user?.profileURL, 
       message: "👍",
     };
     sendMessage(newMessage);
@@ -57,9 +74,8 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
   const handleSend = () => {
     if (message.trim()) {
       const newMessage = {
-        id: messages.length + 1,
-        name: "User Name", // Replace with your user's name
-        avatar: "User Avatar URL", // Replace with your user's avatar URL
+        name: user!.name, 
+      profileURL: user?.profileURL, 
         message: message.trim(),
       };
       sendMessage(newMessage);
@@ -71,28 +87,32 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
     }
   };
 
+  console.log(selectedChat!.messages)
+
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    const socketInstance = io(import.meta.env.VITE_CHAT_URL);
+    setSocket(socketInstance);
+
+    if (selectedChat) {
+      socketInstance.emit('joinRoom', { chatId: selectedChat.id });
     }
 
-    if (!hasInitialResponse) {
-      setIsLoading(true);
-      setTimeout(() => {
-        dispatch(setMessages((messages) => [
-          ...messages,
-          {
-            id: messages.length + 1,
-            avatar: "https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350",
-            name: "Jane Doe",
-            message: "Awesome! I am just chilling outside.",
-          },
-        ]));
-        setIsLoading(false);
-        dispatch(setHasInitialResponse(true)); // Dispatch initial response state change to Redux
-      }, 2500);
-    }
-  }, [hasInitialResponse, dispatch, messages]);
+    console.log("listening for new messages");
+
+    socketInstance.on("newMessage", (newMessage) => {
+      console.log("message received", newMessage);
+      dispatch(setMessages({ chatId: selectedChat!.id, newMessage }));
+    });
+
+    return () => {
+      socketInstance.off("newMessage");
+      socketInstance.disconnect();
+    };
+  }, [dispatch, selectedChat!.id]);
+
+  useEffect(()=>{
+    dispatch(fetchChats())
+  },[])
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {

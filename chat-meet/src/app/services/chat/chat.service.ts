@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import { ChatAttrs, ChatDoc } from "../../model/chat.model";
 import { ChatType } from "../../model/enum";
 import { Chat } from "../../model/schema/chat.schema";
+import { Message } from "../../model/schema/message.schema";
 import { User } from "../../model/schema/user.schema";
 import { UserDoc } from "../../model/user.model";
 import { IChatService } from "./chat.service.interface";
@@ -11,21 +13,18 @@ export class ChatService implements IChatService{
     return await chat.save();
   }
 
-   async getChatsByUserId(userId: string): Promise<ChatDoc[] | null> {
+   async getChatsByUserId(userId: string): Promise<any> {
     const chats = await Chat.aggregate([
       {
         $match: {
-          participants: userId,
+          participants: new mongoose.Types.ObjectId(userId),
         },
       },
       {
         $lookup: {
           from: "messages",
-          let: { chatId: "$_id" },
-          pipeline: [
-            { $match: { $expr: { $eq: ["$chatId", "$$chatId"] } } },
-            { $sort: { createdAt: 1 } }, 
-          ],
+          localField: "_id",
+          foreignField: "chatId",
           as: "messages",
         },
       },
@@ -38,29 +37,104 @@ export class ChatService implements IChatService{
         },
       },
       {
+        $unwind: {
+          path: "$participantsInfo",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: "$messages",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "messages.from",
+          foreignField: "_id",
+          as: "fromDetails",
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          type: { $first: "$type" },
+          name: {
+            $first: {
+              $cond: {
+                if: { $eq: ["$type", "one-on-one"] },
+                then: { $concat: ["$participantsInfo.fName", " ", "$participantsInfo.lName"] }, // Concatenate fName and lName
+                else: null,
+              },
+            },
+          },
+          profileURL: {
+            $first: {
+              $cond: [
+                { $eq: ["$type", "one-on-one"] },
+                "$participantsInfo.profileURL",
+                null,
+              ],
+            },
+          },
+          groupName: {
+            $first: {
+              $cond: [
+                { $eq: ["$type", "group"] },
+                "$groupName",
+                null,
+              ],
+            },
+          },
+          groupProfile: {
+            $first: {
+              $cond: [
+                { $eq: ["$type", "group"] },
+                "$groupProfile",
+                null,
+              ],
+            },
+          },
+          messages: { $push: { $mergeObjects: ["$messages", { fromDetails: { $arrayElemAt: ["$fromDetails", 0] } }] } },
+        },
+      },
+      {
         $project: {
           id: "$_id",
           type: 1,
+          name: 1,
+          profileURL: 1,
           groupName: 1,
           groupProfile: 1,
-          participantsInfo: {
-            id: 1,
-            fName: 1,
-            lName: 1,
-            profileURL: 1,
-          },
           messages: {
-            id: "$messages._id",
-            content: "$messages.content",
-            timestamp: "$messages.createdAt",
-            from: "$messages.from",
+            $map: {
+              input: "$messages",
+              as: "msg",
+              in: {
+                id: "$$msg._id",
+                message: "$$msg.content",
+                timestamp: "$$msg.createdAt",
+                  name: { $concat: ["$$msg.fromDetails.fName", " ", "$$msg.fromDetails.lName"] }, // Concatenate first and last names
+                  profileURL: "$$msg.fromDetails.profileURL",
+              },
+            },
           },
         },
       },
-      { $sort: { "messages.timestamp": -1 } },
     ]);
-  
-    return chats;
+    
+    const formattedChats = chats.map(chat => ({
+      id: chat.id,
+      type: chat.type,
+      name: chat.name || null,
+      profileURL: chat.profileURL || null,
+      groupName: chat.groupName || null,
+      groupProfile: chat.groupProfile || null,
+      messages: chat.messages,
+    }));
+    
+    return formattedChats;
   }
 
   async createChatsForNewUser(newUser: UserDoc): Promise<void> {

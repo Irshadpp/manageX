@@ -63,9 +63,6 @@ export default function SubTaskEditForm({
   const task = taskData.find(task => task.id === taskId);
   const subTask = task?.subTasks.find(item => item.id === subTaskId);
 
-  console.log(subTaskId)
-  console.log(subTask)
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

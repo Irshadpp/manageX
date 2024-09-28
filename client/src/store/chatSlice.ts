@@ -1,50 +1,52 @@
 // store/chatSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ChatBotMessages, Message, UserData, userData, Users } from "./mock";
+import { ChatTypes, ChatState, Message } from './types/chat';
+
+const handleRequest = (state: ChatState) => {
+  state.loading = true;
+  state.error = null;
+};
+
+const handleFailure = (state: ChatState, action: PayloadAction<string>) => {
+  state.loading = false;
+  state.error = action.payload;
+};
 
 export interface Example {
   name: string;
   url: string;
 }
 
-interface ChatState {
-  selectedExample: Example;
-  examples: Example[];
-  input: string;
-  chatBotMessages: Message[];
-  messages: Message[];
-  hasInitialAIResponse: boolean;
-  hasInitialResponse: boolean;
-  selectedUser: UserData;
-}
-
 const initialState: ChatState = {
-  selectedUser: Users[4],
-  selectedExample: { name: "Messenger example", url: "/" },
-  examples: [
-    { name: "Messenger example", url: "/" },
-    { name: "Chatbot example", url: "/chatbot" },
-    { name: "Chatbot2 example", url: "/chatbot2" },
-  ],
-  input: '',
-  chatBotMessages: ChatBotMessages,
-  messages: userData[0].messages,
-  hasInitialAIResponse: false,
-  hasInitialResponse: false,
+  selectedChat: null,
+  input: "",
+  chatData: [],
+  loading: false,
+  error: null
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setSelectedExample: (state, action: PayloadAction<Example>) => {
-      state.selectedExample = action.payload;
+    fetchChatRequest: handleRequest,
+    fetchChatSuccess(state, action: PayloadAction<ChatTypes[]>){
+      state.chatData = action.payload;
+      state.loading = false;
+      state.error = null;
     },
-    setExamples: (state, action: PayloadAction<Example[]>) => {
-      state.examples = action.payload;
+    fetchChatFailure: handleFailure,
+    setSelectedChat(state, action: PayloadAction<ChatTypes | null>) {
+      state.selectedChat = action.payload;
     },
-    setInput: (state, action: PayloadAction<string>) => {
+    setInput(state, action: PayloadAction<string>) {
       state.input = action.payload;
+    },
+    sendMessage(state, action: PayloadAction<Message>) {
+      if (state.selectedChat) {
+        state.selectedChat.messages.push(action.payload);
+      }
+      state.input = '';
     },
     handleInputChange: (
       state,
@@ -54,30 +56,27 @@ const chatSlice = createSlice({
     ) => {
       state.input = action.payload.target.value;
     },
-    setChatBotMessages: (state, action: PayloadAction<(chatBotMessages: Message[]) => Message[]>) => {
-      state.chatBotMessages = action.payload(state.chatBotMessages);
-    },
-    setMessages: (state, action: PayloadAction<(messages: Message[]) => Message[]>) => {
-      state.messages = action.payload(state.messages);
-    },
-    setHasInitialAIResponse: (state, action: PayloadAction<boolean>) => {
-      state.hasInitialAIResponse = action.payload;
-    },
-    setHasInitialResponse: (state, action: PayloadAction<boolean>) => {
-      state.hasInitialResponse = action.payload;
+    setMessages: (state, action: PayloadAction<{chatId: string, newMessage: Message}>) => {
+      const {chatId, newMessage} = action.payload;
+      const chat = state.chatData.find(chat => chat.id === chatId)
+      console.log(chat, "chat state.........")
+      if(chat){
+        chat.messages = [...chat.messages, newMessage];
+      }
+      console.log(chat?.messages)
     },
   },
 });
 
 export const {
-  setSelectedExample,
-  setExamples,
+  fetchChatRequest,
+  fetchChatSuccess,
+  fetchChatFailure,
+  // setSelectedExample,
+  // setExamples,
   setInput,
   handleInputChange,
-  setChatBotMessages,
   setMessages,
-  setHasInitialAIResponse,
-  setHasInitialResponse,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

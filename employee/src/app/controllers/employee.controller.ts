@@ -59,7 +59,8 @@ export const createEmployee = async (
     const projecUserEventData = ProjectUserCreatedPublisher.mapToEventData(employeeData);
     await new ProjectUserCreatedPublisher(rabbitmqWrapper.channel).publish(projecUserEventData);
 
-    const chatUserEventData = ChatUserCreatedPublisher.mapToEventData(employee!);
+    const chatUserEventData = ChatUserCreatedPublisher.mapToEventData(employeeData!);
+    console.log(chatUserEventData, "chat user created publishing data............")
     await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
     res.status(201).send({success: true, message: "Created employee successfully"});
@@ -116,7 +117,7 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(employeeData!)
     await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
 
-    const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employee!);
+    const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employeeData!);
     await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
     res.status(201).send({success: true, message: "updated employee successfully"});
