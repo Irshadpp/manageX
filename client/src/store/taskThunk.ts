@@ -4,7 +4,6 @@ import { createTaskFailure, createTaskRequest, createTaskSuccess, fetchTaskFailu
 
 export const fetchTasks = (id: string) => async (dispatch: AppDispatch) => {
   dispatch(fetchTaskRequest());
-  console.log(id)  
   try {
     const response: any = await apiRequest({
       method: "GET",
@@ -15,7 +14,6 @@ export const fetchTasks = (id: string) => async (dispatch: AppDispatch) => {
       }
     });
     dispatch(fetchTaskSuccess(response.data));
-    console.log(response.data)
   } catch (error: any) {
     dispatch(fetchTaskFailure(error.message));
   }

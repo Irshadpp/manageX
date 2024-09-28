@@ -23,13 +23,14 @@ const start = async () => {
     socketWrapper.init(httpServer);
     ChatEvents.init();
 
+    httpServer.listen("7000", () => {
+      console.log("Chat-Meet listening on port 7000");
+    });
+
   } catch (error: any) {
     console.log(error.message);
   }
 
-  app.listen("6000", () => {
-    console.log("Chat-Meet listening on port 6000");
-  });
 };
 
 start();

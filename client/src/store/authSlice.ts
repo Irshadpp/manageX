@@ -3,6 +3,8 @@ import { deleteObject, storeObject } from "@/utils/local-storage";
 
 interface User{
     id: string,
+    name: string | null,
+    profileURL: string | null;
     role: "owner" | "manager" | "employee" | "admin",
     organization: string
 }

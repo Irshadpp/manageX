@@ -24,13 +24,14 @@ export class ChatEvents{
                   groupName,
                   groupDescription,
                 });
-                socket.emit('chatCreated', chat);  // Emit chatCreated to the user who created the chat
+                socket.emit('chatCreated', chat); 
               });
 
-            socket.on('sendMessage', async ({chatId, content, type, from, to}) =>{
+            socket.on('sendMessage', async ({chatId, content, type, from}) =>{
                 try {
-                    const message = await messageService.saveMessage({chatId, content, type, from, to});
+                    const message = await messageService.saveMessage({chatId, content, type, from});
                     io.to(chatId).emit('newMessage', message)
+                    console.log("message emited successfully", message)
                 } catch (error) {
                     console.error('Error saving message:', error);
                 }

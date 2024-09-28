@@ -60,7 +60,6 @@ export function TanStackSubTAskDataTable<TData extends {id: string}, TValue>({
     pageSize: 10,
   });
 
-  console.log(data)
   const table = useReactTable({
     data,
     columns,
@@ -179,7 +178,6 @@ export function TanStackSubTAskDataTable<TData extends {id: string}, TValue>({
                   key={row.id}
                   className="bg-background border cursor-pointer"
                   onClick={() =>{ 
-                    console.log(row.original.id)
                     rowOnCLick && rowOnCLick(row.original.id)}}
                 >
                   {row.getVisibleCells().map((cell) => (

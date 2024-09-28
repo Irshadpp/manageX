@@ -37,7 +37,6 @@ const TaskDetailSheet = ({ onOpenChange, setOnOpenChange, taskId, projectId }: P
   const rowOnClick = (value: string) => {
     setIsModalOpen(true);
     setSubTaskId(value);
-    console.log(subTaskId)
   };
   return (
     <Sheet

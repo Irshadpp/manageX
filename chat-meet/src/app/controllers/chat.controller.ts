@@ -8,7 +8,6 @@ export const getChats = async (req: Request, res: Response, next: NextFunction) 
   try {
     const userId = req?.user?.id;
     const chats = await chatService.getChatsByUserId(userId!);
-    console.log(chats)
     res.status(200).send({ success: true, message: 'Chats fetched successfully', data: chats });
   } catch (error) {
     next(error);
