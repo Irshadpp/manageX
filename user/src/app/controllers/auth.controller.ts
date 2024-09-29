@@ -142,7 +142,6 @@ export const loginUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("=========");
   try {
     const { email, password } = req.body;
     const user = await userService.findByEmail(email);
@@ -203,7 +202,6 @@ export const newToken = async (
 ) => {
   try {
     const refreshToken = req.cookies.refreshToken;
-    console.log(refreshToken, "=================================");
     if (!refreshToken) {
       throw new NotAuthorizedError();
     }
@@ -316,7 +314,6 @@ export const checkUser = async (
     //@ts-ignore
     const { id } = req.user;
     const user = await userService.getUserById(id);
-    console.log(user);
     res
       .status(200)
       .json({

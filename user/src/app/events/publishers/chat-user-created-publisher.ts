@@ -6,7 +6,6 @@ export class ChatUserCreatedPublisher extends Publisher<ChatUserCreatedEvent>{
 
     async publish(data: ChatUserCreatedEvent['data']): Promise<void> {
         await super.publish(data)
-        console.log("chatUserCreated published from User.........")
     }
 
     static mapToEventData(createdUser: UserDoc): ChatUserCreatedEvent['data']{

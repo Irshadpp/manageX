@@ -3,12 +3,12 @@ import { FiUser } from "react-icons/fi";
 
 interface PropsTypes {
   profileURL: string;
-  size?: string;
+  size?: number;
 }
 
 const UserAvatar = ({ profileURL, size }: PropsTypes) => {
   return (
-    <Avatar className={size ? size : ""}>
+    <Avatar style={{ width: size, height: size }}>
       <AvatarImage className="w-full h-full object-cover rounded-full" src={profileURL} alt="@user" />
       <AvatarFallback>
         <AvatarFallback className="bg-background">

@@ -13,7 +13,7 @@ export class ChatService implements IChatService{
     return await chat.save();
   }
 
-   async getChatsByUserId(userId: string): Promise<any> {
+  async getChatsByUserId(userId: string): Promise<any> {
     const chats = await Chat.aggregate([
       {
         $match: {
@@ -37,8 +37,19 @@ export class ChatService implements IChatService{
         },
       },
       {
+        $addFields: {
+          otherParticipant: {
+            $filter: {
+              input: "$participantsInfo",
+              as: "participant",
+              cond: { $ne: ["$$participant._id", new mongoose.Types.ObjectId(userId)] },
+            },
+          },
+        },
+      },
+      {
         $unwind: {
-          path: "$participantsInfo",
+          path: "$otherParticipant",
           preserveNullAndEmptyArrays: true,
         },
       },
@@ -64,7 +75,7 @@ export class ChatService implements IChatService{
             $first: {
               $cond: {
                 if: { $eq: ["$type", "one-on-one"] },
-                then: { $concat: ["$participantsInfo.fName", " ", "$participantsInfo.lName"] }, // Concatenate fName and lName
+                then: { $concat: ["$otherParticipant.fName", " ", "$otherParticipant.lName"] },
                 else: null,
               },
             },
@@ -73,7 +84,7 @@ export class ChatService implements IChatService{
             $first: {
               $cond: [
                 { $eq: ["$type", "one-on-one"] },
-                "$participantsInfo.profileURL",
+                "$otherParticipant.profileURL",
                 null,
               ],
             },
@@ -96,7 +107,14 @@ export class ChatService implements IChatService{
               ],
             },
           },
-          messages: { $push: { $mergeObjects: ["$messages", { fromDetails: { $arrayElemAt: ["$fromDetails", 0] } }] } },
+          messages: {
+            $push: {
+              $mergeObjects: [
+                "$messages",
+                { fromDetails: { $arrayElemAt: ["$fromDetails", 0] } }
+              ],
+            },
+          },
         },
       },
       {
@@ -115,15 +133,17 @@ export class ChatService implements IChatService{
                 id: "$$msg._id",
                 message: "$$msg.content",
                 timestamp: "$$msg.createdAt",
-                  name: { $concat: ["$$msg.fromDetails.fName", " ", "$$msg.fromDetails.lName"] }, // Concatenate first and last names
-                  profileURL: "$$msg.fromDetails.profileURL",
+                name: {
+                  $concat: ["$$msg.fromDetails.fName", " ", "$$msg.fromDetails.lName"]
+                },
+                profileURL: "$$msg.fromDetails.profileURL",
               },
             },
           },
         },
       },
     ]);
-    
+
     const formattedChats = chats.map(chat => ({
       id: chat.id,
       type: chat.type,
@@ -131,11 +151,16 @@ export class ChatService implements IChatService{
       profileURL: chat.profileURL || null,
       groupName: chat.groupName || null,
       groupProfile: chat.groupProfile || null,
-      messages: chat.messages,
+      messages: chat.messages.length === 1 && chat.messages[0].name === null ? [] : chat.messages,
     }));
-    
+
     return formattedChats;
-  }
+}
+
+
+
+  
+
 
   async createChatsForNewUser(newUser: UserDoc): Promise<void> {
     console.log("createChatsForNewUser function called..................");

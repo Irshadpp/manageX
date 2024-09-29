@@ -4,6 +4,8 @@ export const sendVarificationEmail = async (email: string, token: string) => {
   try {
     const verificationLink = `http://localhost:5173/verify-email?token=${token}`;
 
+    console.log("invitation link..........>",verificationLink)
+
     const mailOptions = {
       from: process.env.SMTP_USER,
       to: email,
