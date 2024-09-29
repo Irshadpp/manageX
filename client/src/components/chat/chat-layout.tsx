@@ -106,7 +106,7 @@ export function ChatLayout({
       {selectedChat ? (
           <Chat
             messages={selectedChat.messages}
-            selectedChat={selectedChat}
+            selectedChatId={selectedChat.id}
             isMobile={isMobile}
           />
         ) : (

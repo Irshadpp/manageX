@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 import ChatBottombar from "./chat-bottombar";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,15 +10,18 @@ import {
   ChatBubbleActionWrapper,
 } from "./chat-bubble";
 import { ChatMessageList } from "./chat-message-list";
-import { DotsVerticalIcon, HeartIcon, Share1Icon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { format } from "date-fns";
 import UserAvatarImage from '/useravatar.png';
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 
 interface ChatListProps {
   messages: any[];
-  selectedChat: any;
+  selectedChatId: string;
   sendMessage: (newMessage: any) => void;
   isMobile: boolean;
 }
@@ -29,17 +31,23 @@ const getMessageVariant = (messageName: string, selectedChatName: string) =>
 
 export function ChatList({
   messages,
-  selectedChat,
+  selectedChatId,
   sendMessage,
   isMobile,
 }: ChatListProps) {
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const { chatData } = useSelector((state: RootState) => state.chat);
+  const selectedChat: any = chatData ? chatData.find(chat => chat.id === selectedChatId) : {};
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToBottom = () =>{
+    chatContainerRef.current?.scrollIntoView(false);
+  }
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [messages]);
+  console.log(chatData, "from chat list........");
 
   const actionIcons = [
     { icon: DotsVerticalIcon, type: "More" },
@@ -49,9 +57,10 @@ export function ChatList({
 
   return (
     <div className="w-full overflow-y-auto h-full flex flex-col">
-      <ChatMessageList ref={messagesContainerRef}>
+      <ChatMessageList>
         <AnimatePresence>
           <ScrollArea className="h-[540px] w-full">
+          <ScrollAreaPrimitive.Viewport ref={chatContainerRef} className="h-full w-full rounded-[inherit]">
             {messages.map((message, index) => {
               const variant = getMessageVariant(message.name, selectedChat.name);
               return (
@@ -66,7 +75,7 @@ export function ChatList({
                     layout: {
                       type: "spring",
                       bounce: 0.3,
-                      duration: index * 0.05 + 0.2,
+                      duration: index * 0.02,
                     },
                   }}
                   style={{ originX: 0.5, originY: 0.5 }}
@@ -98,10 +107,12 @@ export function ChatList({
                 </motion.div>
               );
             })}
+            </ScrollAreaPrimitive.Viewport>
           </ScrollArea>
         </AnimatePresence>
       </ChatMessageList>
-      <ChatBottombar isMobile={isMobile} selectedChatId={selectedChat.id}/>
+
+      <ChatBottombar isMobile={isMobile} selectedChatId={selectedChat.id} />
     </div>
   );
 }

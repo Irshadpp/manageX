@@ -17,6 +17,12 @@ import { updateProject } from "@/store/projectThunk";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import DatePickerDown from "@/components/common/DatePickerDown";
+import { Label } from "@/components/ui/label";
+import UserAvatarImage from "/useravatar.png";
+import { TiDelete, TiDeleteOutline } from "react-icons/ti";
+import MemberAddButton from "./MemberAddButton";
+import { useState } from "react";
+
 
 const projectSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -24,6 +30,7 @@ const projectSchema = z.object({
   endDate: z.date(),
   description: z.string().optional(),
   manager: z.string(),
+  members: z.array(z.string()),
 });
 
 interface PropsTypes {
@@ -32,31 +39,37 @@ interface PropsTypes {
 }
 
 const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
+  const [projectData, setProjectData] = useState(project)
+  const [members, setMembers] = useState(projectData.members);
   const dispatch = useDispatch<AppDispatch>();
-  const { projectData, loading, error } = useSelector((state: RootState) => state.project);
-
+  const { loading, error } = useSelector(
+    (state: RootState) => state.project
+  );
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      name: (project && project.name) || "",
-      startDate: (project && new Date(project.startDate)) || undefined,
-      endDate: (project && new Date(project.endDate)) || undefined,
-      description: (project && project.description) || "",
+      name: (projectData && projectData.name) || "",
+      startDate: (projectData && new Date(projectData.startDate)) || undefined,
+      endDate: (projectData && new Date(projectData.endDate)) || undefined,
+      description: (projectData && projectData.description) || "",
       manager:
-        (project &&
-          typeof project.manager !== "string" &&
-          project.manager.id) ||
+        (projectData &&
+          typeof projectData.manager !== "string" &&
+          projectData.manager.id) ||
         "",
+      members: members.map((m:any) => m.id)
     },
   });
+  const handleRemoveMember = (member: any) =>{
+    setMembers(members.filter((m: any )=> m !== member))
+  }
 
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
-    if (project) {
-      const res: any = await dispatch(
-        updateProject(values, project.id)
-      );
-      if(res?.success){
+    console.log("form submitted..........")
+    if (projectData) {
+      const res: any = await dispatch(updateProject(values, projectData.id));
+      if (res?.success) {
         setIsModalOpen(false);
       }
     }
@@ -66,14 +79,14 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 px-5 mb-5"
+        className="space-y-2 px-5 mb-5"
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormInputCustom
-              placeholder="Enter Project Name"
+              placeholder="Enter project Name"
               field={field}
               showTitle={true}
               title="Project Name"
@@ -123,6 +136,42 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
             </FormItem>
           )}
         />
+
+        <Label>
+          <p className="pt-2">Members</p>
+        </Label>
+        <div className="mb-2 flex">
+          {members &&
+            members !== "string" &&
+            members.map((member: any, index: number) => (
+              <div className="relative inline-block" key={index}>
+              <div
+                className={`relative w-11 h-11 rounded-full overflow-hidden border-4 `}
+              >
+                <img
+                  src={
+                    (member &&
+                      typeof member !== "string" &&
+                      (member.profileURL as string)) ||
+                    UserAvatarImage
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            
+              <button
+              type="button"
+                onClick={() => handleRemoveMember(member)}
+                className="absolute top-0 right-0 translate-x-2 -translate-y-2 w-5 h-5 flex items-center justify-center z-50"
+              >
+                <TiDelete className="text-red-500 w-5 h-5" />
+              </button>
+            </div>
+            ))}
+            <MemberAddButton isIcon={true} setMembers={setMembers} />
+        </div>
+  
 
         <Button type="submit" className="" disabled={loading}>
           {loading ? "Loading..." : "Update Project"}

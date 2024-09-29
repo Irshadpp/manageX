@@ -87,8 +87,6 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
     }
   };
 
-  console.log(selectedChat!.messages)
-
   useEffect(() => {
     const socketInstance = io(import.meta.env.VITE_CHAT_URL);
     setSocket(socketInstance);

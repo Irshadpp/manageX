@@ -50,6 +50,7 @@ import { ManEmployeeSideMenu } from "./pages/manager/employees/ManEmployeeSideMe
 import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 import { ChatLayout } from "./components/chat/chat-layout";
 import Chat from "./pages/owner/chat/Chat";
+import EmpChat from "./pages/employee/chat/EmpChat";
 
 function App() {
   return (
@@ -127,6 +128,7 @@ function App() {
                     </Route>
                     <Route path="/employee/projects" element={<EmpProjectList/>}/>
                     <Route path="/employee/projects/:id" element={<EmpProject/>}/>
+                    <Route path="/employee/chat" element={<EmpChat/>}></Route>
                   </Route>
                 </Route>
 

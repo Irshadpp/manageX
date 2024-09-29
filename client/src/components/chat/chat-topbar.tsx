@@ -1,30 +1,29 @@
-import React from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
 import { Info, Phone, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { ExpandableChatHeader } from "./expandable-chat";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import UserAvatar from "../common/UserAvatar";
+import UserAvatarImage from '/useravatar.png'
 
 interface ChatTopbarProps {
-  selectedChat: any;
+  selectedChatId: string;
 }
 
 export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedChat }: ChatTopbarProps) {
+export default function ChatTopbar({ selectedChatId }: ChatTopbarProps) {
+  const {chatData} = useSelector((state: RootState) => state.chat);
+  const selectedChat: any = chatData ? chatData.find(chat => chat.id === selectedChatId) : {}; 
   return (
     <ExpandableChatHeader>
       <div className="flex items-center gap-2">
-        <Avatar className="flex justify-center items-center">
-          <AvatarImage
-            src={selectedChat.profileURL}
-            alt={selectedChat.name}
-            width={6}
-            height={6}
-            className="w-10 h-10 "
-          />
-        </Avatar>
+      <UserAvatar
+                  profileURL={selectedChat.profileURL || UserAvatarImage}
+                 size={50}
+                />
         <div className="flex flex-col">
           <span className="font-medium">{selectedChat.name}</span>
           <span className="text-xs">Active 2 mins ago</span>

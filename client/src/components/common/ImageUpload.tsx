@@ -67,7 +67,7 @@ const ImageUpload = ({
       />
       {selectedFile ? (
         <div
-          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
+          className={`w-${size ?  size : "32"} h-${size ?  size : "32"} rounded-full overflow-clip mx-auto`}
         >
           <img
             src={URL.createObjectURL(selectedFile)}
@@ -77,7 +77,7 @@ const ImageUpload = ({
         </div>
       ) : imageURL ? (
         <div
-          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
+          className={`w-${size ?  size : "32"} h-${size ?  size : "32"} rounded-full overflow-clip mx-auto`}
         >
           <img
             src={imageURL}
@@ -87,7 +87,7 @@ const ImageUpload = ({
         </div>
       ) : (
         <div
-          className={`w-${size ?? "32"} h-${size ?? "32"} rounded-full overflow-clip mx-auto`}
+          className={`w-${size ?  size : "32"} h-${size ?  size : "32"} rounded-full overflow-clip mx-auto`}
         >
           <img
             src={UserAvatarImage}

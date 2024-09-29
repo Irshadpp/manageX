@@ -36,7 +36,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
 
                 try {
                     const refreshApiInstance = axios.create({
-                        baseURL: url,
+                        baseURL: import.meta.env.VITE_USERS_URL,
                         withCredentials: withCredential,
                       });
                     const refreshResponse = await refreshApiInstance.post("/api/v1/auth/refresh-token");

@@ -1,14 +1,17 @@
-import { MoreHorizontal, SquarePen } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { Avatar, AvatarImage } from "./avatar";
-import { Link } from "react-router-dom";
+import { IoCreateSharp } from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
+import CreateGroupButton from "./CreateGroupButton";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import UserAvatar from "../common/UserAvatar";
+import UserAvatarImage from '/useravatar.png'
 
 
 
@@ -35,8 +38,18 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
         <div className="flex justify-between p-2 items-center">
           <div className="flex gap-2 items-center text-2xl">
             <p className="font-medium">Chats</p>
-            <span className="text-zinc-300">({chats.length})</span>
+            <span >({chats.length})</span>
           </div>
+          <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+        <CreateGroupButton/>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Create New Group</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
@@ -56,8 +69,8 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
                   >
                     <Avatar className="flex justify-center items-center">
                       <AvatarImage
-                        src={chat.profileURL}
-                        alt={chat.profileURL}
+                        src={chat.profileURL || UserAvatarImage}
+                        alt={chat.profileURL || UserAvatarImage}
                         width={6}
                         height={6}
                         className="w-10 h-10 "
@@ -86,20 +99,15 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
               )}
               onClick={() => onUserClick(chat)} // Handle user click
             >
-              <Avatar className="flex justify-center items-center">
-                <AvatarImage
-                  src={chat.profileURL}
-                  alt={chat.profileURL}
-                  width={10}
-                  height={10}
-                  className="w-10 h-10 "
+                <UserAvatar
+                  profileURL={chat.profileURL}
+                 size={50}
                 />
-              </Avatar>
               <div className="flex flex-col max-w-28">
                 <span>{chat.name}</span>
                 {chat.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
-                    {chat.name}: {chat.messages[chat.messages.length - 1].message}
+                    {chat.messages[chat.messages.length - 1]?.name}: {chat.messages[chat.messages.length - 1].message}
                   </span>
                 )}
               </div>
