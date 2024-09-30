@@ -19,6 +19,11 @@ import DatePickerDown from "@/components/common/DatePickerDown";
 import { ManagerList } from "@/pages/owner/project/ManagerList";
 import ImageUpload from "../common/ImageUpload";
 import { useState } from "react";
+import { Label } from "flowbite-react";
+import UserAvatarImage from "/useravatar.png";
+import GroupImage from "/groupProfile.jpeg"
+import { TiDelete } from "react-icons/ti";
+import MemberAddButton from "@/pages/owner/project/MemberAddButton";
 
 const projectSchema = z.object({
   groupName: z
@@ -27,7 +32,7 @@ const projectSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   groupDescription: z.string().optional(),
-  manager: z.string(),
+  members: z.array(z.string()),
 });
 
 interface PropsTypes {
@@ -35,6 +40,7 @@ interface PropsTypes {
 }
 
 const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
+    const [members, setMembers] = useState<any>([]);
     const [selectedFile, setSelectedFile] = useState<any>();
   const dispatch = useDispatch<AppDispatch>();
   const { projectData, loading, error } = useSelector(
@@ -48,11 +54,20 @@ const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
       startDate: undefined,
       endDate: undefined,
       groupDescription: "",
-      manager: "",
+      members: [],
     },
   });
 
+  const { setValue } = form;
+  console.log(members)
+  const handleRemoveMember = (member: any) => {
+    const updatedMembers = members.filter((m: any) => m.id !== member.id);
+    setMembers(updatedMembers);
+    setValue("members", updatedMembers.map((m: any) => m.id));
+  };
+
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
+    
     // if (project) {
     //   const res: any = await dispatch(
     //     updateProject(values, project.id)
@@ -70,6 +85,7 @@ const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
         className="space-y-2  px-5 mb-5"
       >
         <ImageUpload
+        imageURL={GroupImage}
         size="20"
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
@@ -105,17 +121,40 @@ const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
         />
 
 
-        <FormField
-          control={form.control}
-          name="manager"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Choose Manager</FormLabel>
-              <ManagerList field={field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+<Label>
+          <p className="pt-2">Members</p>
+        </Label>
+        <div className="mb-2 flex">
+          {members &&
+            members !== "string" &&
+            members.map((member: any, index: number) => (
+              <div className="relative inline-block" key={index}>
+              <div
+                className={`relative w-11 h-11 rounded-full overflow-hidden border-4 `}
+              >
+                <img
+                  src={
+                    (member &&
+                      typeof member !== "string" &&
+                      (member.profileURL as string)) ||
+                    UserAvatarImage
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            
+              <button
+              type="button"
+                onClick={() => handleRemoveMember(member)}
+                className="absolute top-0 right-0 translate-x-2 -translate-y-2 w-5 h-5 flex items-center justify-center z-50"
+              >
+                <TiDelete className="text-red-500 w-5 h-5" />
+              </button>
+            </div>
+            ))}
+            <MemberAddButton isIcon={true} setMembers={setMembers} />
+        </div>
 
         <Button type="submit" className="" disabled={loading}>
           {loading ? "Creating..." : "Create Group"}

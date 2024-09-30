@@ -9,6 +9,7 @@ export interface Message {
   timestamp: string;
   name: string;
   profileURL: string;
+  chatId?: string;
 }
 
 export interface ChatTypes {

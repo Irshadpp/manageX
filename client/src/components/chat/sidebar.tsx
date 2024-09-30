@@ -12,7 +12,11 @@ import CreateGroupButton from "./CreateGroupButton";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import UserAvatar from "../common/UserAvatar";
 import UserAvatarImage from '/useravatar.png'
-
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { setMessages } from "@/store/chatSlice";
+import { io } from "socket.io-client";
 
 
 interface SidebarProps {
@@ -29,6 +33,9 @@ interface SidebarProps {
 }
 
 export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
+ 
   return (
     <div
       data-collapsed={isCollapsed}
