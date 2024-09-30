@@ -15,6 +15,7 @@ import { fetchChats } from "@/store/chatThunk";
 import UserAvatarImage from '/useravatar.png'
 import { SelectChat } from "./SelectChat";
 import { ChatTypes } from "@/store/types/chat";
+import { io } from "socket.io-client";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -38,6 +39,7 @@ export function ChatLayout({
 
   useEffect(()=>{
     dispatch(fetchChats());
+    
   },[])
 
   useEffect(() => {

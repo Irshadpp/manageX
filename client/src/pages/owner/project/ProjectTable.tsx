@@ -16,9 +16,10 @@ const ProjectTable = ({ location }: Props) => {
   const navigate = useNavigate();
   const { projectData } = useSelector((state:RootState) => state.project);
 
-  // useEffect(() => {
-  //   dispatch(fetchProject());
-  // }, [dispatch]);
+  console.log(projectData)
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
 
   const rowOnClick = (id: string) => navigate(`/owner/projects/${id}`);
 

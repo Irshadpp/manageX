@@ -20,7 +20,7 @@ const ProjectDetails = ({ projectId }: { projectId: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { projectData } = useSelector((state: RootState) => state.project);  
 
-  const project: any = projectData.find(item => item.id === projectId);
+  const project: any = projectData && projectData.find(item => item.id === projectId);
   
   const handleStatusUpdate = async (value: string) => {
     const data = {

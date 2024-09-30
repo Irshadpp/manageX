@@ -61,13 +61,19 @@ const EditForm = ({ setIsModalOpen, project }: PropsTypes) => {
       members: members.map((m:any) => m.id)
     },
   });
-  const handleRemoveMember = (member: any) =>{
-    setMembers(members.filter((m: any )=> m !== member))
-  }
+  
+  const { setValue } = form;
+
+  const handleRemoveMember = (member: any) => {
+    const updatedMembers = members.filter((m: any) => m.id !== member.id);
+    setMembers(updatedMembers);
+    setValue("members", updatedMembers.map((m: any) => m.id));
+  };
 
   const onSubmit = async (values: z.infer<typeof projectSchema>) => {
-    console.log("form submitted..........")
+    console.log("form submitted..........", members)
     if (projectData) {
+      console.log(values, ".............")
       const res: any = await dispatch(updateProject(values, projectData.id));
       if (res?.success) {
         setIsModalOpen(false);

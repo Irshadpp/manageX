@@ -3,9 +3,22 @@ import { Comments, TaskAttrs, TaskDoc } from "../../model/task.model";
 import { ITaskService } from "./task.service.interface";
 
 export class TaskService implements ITaskService {
-  async createTask(attrs: TaskAttrs): Promise<TaskDoc> {
-    const newTask = Task.build(attrs);
-    return await newTask.save();
+  async createTask(attrs: TaskAttrs): Promise<TaskDoc | null> {
+    const newTask = await Task.build(attrs).save(); 
+    return await Task.findOne({projectId: newTask.projectId})
+    .populate("assignee")
+      .populate({
+        path: "comments.user",
+        model: "User",
+      })
+      .populate({
+        path: "comments.replays.user",
+        model: "User",
+      })
+      .populate({
+        path: "attachments.user",
+        model: "User",
+      });
   }
 
   async getTasksByProjectId(projectId: string): Promise<any> {

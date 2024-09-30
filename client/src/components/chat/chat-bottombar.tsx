@@ -43,7 +43,6 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
-    // dispatch(setInput(event.target.value)); // Dispatch input change to Redux
   };
 
   const sendMessage = (newMessage: any) => {
@@ -54,10 +53,6 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
         type: ChatType.ONE_ON_ONE,
         from: user!.id
       });
-
-      // socket.on("messageSaved", (savedMessage: Message) => {
-      //   dispatch(setMessages({ chatId: selectedChat.id, newMessage: savedMessage }));
-      // });
     }
   };
 
@@ -95,11 +90,9 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
       socketInstance.emit('joinRoom', { chatId: selectedChat.id });
     }
 
-    console.log("listening for new messages");
-
     socketInstance.on("newMessage", (newMessage) => {
       console.log("message received", newMessage);
-      dispatch(setMessages({ chatId: selectedChat!.id, newMessage }));
+      dispatch(setMessages({ chatId: newMessage.chatId, newMessage: newMessage.message }));
     });
 
     return () => {

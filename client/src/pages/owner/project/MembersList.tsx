@@ -51,10 +51,11 @@ export default function MembersList({
     );
     setMembersList(updatedMembers);
   };
-
+  
   const handleAddMembers = () => {
     const selectedMembers = membersList.filter((member) => member.selected);
-
+    
+    console.log(selectedMembers)
     const selectedMembersId = selectedMembers.map((member) => {
       let mem = member.selected;
       return mem && member.id;
