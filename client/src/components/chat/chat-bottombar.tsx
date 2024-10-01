@@ -16,10 +16,9 @@ import { ChatInput } from "./chat-input";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { setInput, setMessages } from "@/store/chatSlice";
-import { io } from "socket.io-client";
 import { fetchChats } from "@/store/chatThunk";
-import { ChatType, ChatTypes, Message } from "@/store/types/chat";
+import {MessageType } from "@/store/types/chat";
+import useSocket from "@/hooks/useSocket";
 
 interface ChatBottombarProps {
   isMobile: boolean;
@@ -35,10 +34,9 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
   const selectedChat =  useSelector((state: RootState) => 
     state.chat.chatData.find(chat => chat.id === selectedChatId)
   );
-  const messages = selectedChat ? selectedChat.messages : [];
   const [isLoading, setIsLoading] = useState(false);
   const {user} = useSelector((state: RootState) => state.auth);
-  const [socket, setSocket] = useState<any>(null);
+  const {emitEvent} = useSocket()
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -47,12 +45,13 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
 
   const sendMessage = (newMessage: any) => {
     if(selectedChat){
-      socket.emit("sendMessage", {
+      const message = {
         chatId: selectedChat.id,
         content: newMessage.message,
-        type: ChatType.ONE_ON_ONE,
+        type: MessageType.TEXT,
         from: user!.id
-      });
+      }
+      emitEvent("sendMessage", message);
     }
   };
 
@@ -82,28 +81,13 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
     }
   };
 
+
   useEffect(() => {
-    const socketInstance = io(import.meta.env.VITE_CHAT_URL);
-    setSocket(socketInstance);
-
     if (selectedChat) {
-      socketInstance.emit('joinRoom', { chatId: selectedChat.id });
+      emitEvent('joinRoom', { chatId: selectedChat.id });
     }
+  }, [selectedChat]);
 
-    socketInstance.on("newMessage", (newMessage) => {
-      console.log("message received", newMessage);
-      dispatch(setMessages({ chatId: newMessage.chatId, newMessage: newMessage.message }));
-    });
-
-    return () => {
-      socketInstance.off("newMessage");
-      socketInstance.disconnect();
-    };
-  }, [dispatch, selectedChat!.id]);
-
-  useEffect(()=>{
-    dispatch(fetchChats())
-  },[])
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {

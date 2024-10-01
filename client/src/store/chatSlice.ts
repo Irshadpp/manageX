@@ -1,6 +1,5 @@
-// store/chatSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ChatTypes, ChatState, Message } from './types/chat';
+import { ChatTypes, ChatState, Message, ChatType } from './types/chat';
 
 const handleRequest = (state: ChatState) => {
   state.loading = true;
@@ -36,6 +35,13 @@ const chatSlice = createSlice({
       state.error = null;
     },
     fetchChatFailure: handleFailure,
+    createGroupRequest: handleRequest,
+    createGroupFailure: handleFailure,
+    createGroupSuccess(state, action: PayloadAction<ChatTypes>){
+      state.chatData.push(action.payload)
+      state.loading = false;
+      state.error = null;
+    },
     setSelectedChat(state, action: PayloadAction<ChatTypes | null>) {
       state.selectedChat = action.payload;
     },
@@ -59,12 +65,13 @@ const chatSlice = createSlice({
     setMessages: (state, action: PayloadAction<{chatId: string, newMessage: Message}>) => {
       const {chatId, newMessage} = action.payload;
       const chat = state.chatData.find(chat => chat.id === chatId)
-      console.log(chat, "chat state.........")
       if(chat){
         chat.messages = [...chat.messages, newMessage];
       }
-      console.log(chat?.messages)
     },
+    // setChat: (state, action: PayloadAction<ChatTypes>) => {
+    //   state.chatData.push(action.payload)
+    // }
   },
 });
 
@@ -72,11 +79,13 @@ export const {
   fetchChatRequest,
   fetchChatSuccess,
   fetchChatFailure,
-  // setSelectedExample,
-  // setExamples,
+  createGroupRequest,
+  createGroupFailure,
+  createGroupSuccess,
   setInput,
   handleInputChange,
   setMessages,
+  // setChat
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

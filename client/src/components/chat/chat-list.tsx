@@ -26,8 +26,11 @@ interface ChatListProps {
   isMobile: boolean;
 }
 
-const getMessageVariant = (messageName: string, selectedChatName: string) =>
-  messageName !== selectedChatName ? "sent" : "received";
+const getMessageVariant = (messageUserId: string, userId: string) =>{
+
+  console.log(userId, messageUserId)
+  return userId == messageUserId  ? "sent" : "received";
+}
 
 export function ChatList({
   messages,
@@ -36,6 +39,7 @@ export function ChatList({
   isMobile,
 }: ChatListProps) {
   const { chatData } = useSelector((state: RootState) => state.chat);
+  const { user } = useSelector((state: RootState) => state.auth);
   const selectedChat: any = chatData ? chatData.find(chat => chat.id === selectedChatId) : {};
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
@@ -47,7 +51,7 @@ export function ChatList({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  console.log(chatData, "from chat list........");
+  console.log(messages, "from chat list........");
 
   const actionIcons = [
     { icon: DotsVerticalIcon, type: "More" },
@@ -62,7 +66,7 @@ export function ChatList({
           <ScrollArea className="h-[540px] w-full">
           <ScrollAreaPrimitive.Viewport ref={chatContainerRef} className="h-full w-full rounded-[inherit]">
             {messages.map((message, index) => {
-              const variant = getMessageVariant(message.name, selectedChat.name);
+              const variant = getMessageVariant(message.userId, user?.id!);
               return (
                 <motion.div
                   key={index}

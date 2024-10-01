@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import UserAvatar from "../common/UserAvatar";
 import UserAvatarImage from '/useravatar.png'
+import { ChatType } from "@/store/types/chat";
+import GroupImage from "/groupProfile.jpeg";
 
 interface ChatTopbarProps {
   selectedChatId: string;
@@ -17,11 +19,12 @@ export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 export default function ChatTopbar({ selectedChatId }: ChatTopbarProps) {
   const {chatData} = useSelector((state: RootState) => state.chat);
   const selectedChat: any = chatData ? chatData.find(chat => chat.id === selectedChatId) : {}; 
+  console.log(selectedChat)
   return (
     <ExpandableChatHeader>
       <div className="flex items-center gap-2">
       <UserAvatar
-                  profileURL={selectedChat.profileURL || UserAvatarImage}
+                  profileURL={selectedChat.type == ChatType.ONE_ON_ONE ? (selectedChat.profileURL || UserAvatarImage) : (selectedChat.groupProfile || GroupImage)}
                  size={50}
                 />
         <div className="flex flex-col">

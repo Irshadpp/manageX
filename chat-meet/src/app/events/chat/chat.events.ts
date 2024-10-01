@@ -17,20 +17,21 @@ export class ChatEvents{
                 console.log(`User joined chat room ${chatId}`);
             });
 
-            socket.on('createChat', async ({ participants, type, groupName, groupDescription }) => {
-                const chat = await chatService.createChat({
-                  participants,
-                  type,
-                  groupName,
-                  groupDescription,
-                });
-                socket.emit('chatCreated', chat); 
-              });
+            // socket.on('groupChatCreated', async ({ participants, type, groupName, groupDescription, groupProfile }) => {
+            //     const chat = await chatService.createChat({
+            //       participants,
+            //       type,
+            //       groupName,
+            //       groupDescription,
+            //       groupProfile
+            //     });
+            //     socket.emit('chatCreated', chat); 
+            //   });
 
             socket.on('sendMessage', async ({chatId, content, type, from}) =>{
                 try {
                     const message = await messageService.saveMessage({chatId, content, type, from});
-                    io.to(chatId).emit('newMessage', message)
+                    io.emit('newMessage', message)
                     console.log("message emited successfully", message)
                 } catch (error) {
                     console.error('Error saving message:', error);

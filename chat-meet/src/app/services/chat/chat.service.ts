@@ -2,15 +2,13 @@ import mongoose from "mongoose";
 import { ChatAttrs, ChatDoc } from "../../model/chat.model";
 import { ChatType } from "../../model/enum";
 import { Chat } from "../../model/schema/chat.schema";
-import { Message } from "../../model/schema/message.schema";
 import { User } from "../../model/schema/user.schema";
 import { UserDoc } from "../../model/user.model";
 import { IChatService } from "./chat.service.interface";
 
 export class ChatService implements IChatService{
-    async createChat(attrs: ChatAttrs): Promise<ChatDoc> {
-    const chat = Chat.build(attrs);
-    return await chat.save();
+    async createChat(attrs: ChatAttrs): Promise<any> {
+    return await Chat.build(attrs).save();
   }
 
   async getChatsByUserId(userId: string): Promise<any> {
@@ -108,13 +106,14 @@ export class ChatService implements IChatService{
             },
           },
           messages: {
-            $push: {
+            $addToSet: {
               $mergeObjects: [
                 "$messages",
                 { fromDetails: { $arrayElemAt: ["$fromDetails", 0] } }
               ],
             },
           },
+          latestMessageTime: { $max: "$messages.createdAt" },
         },
       },
       {
@@ -127,7 +126,12 @@ export class ChatService implements IChatService{
           groupProfile: 1,
           messages: {
             $map: {
-              input: "$messages",
+              input: {
+                $sortArray: {
+                  input: "$messages",
+                  sortBy: { createdAt: 1 } 
+                }
+              },
               as: "msg",
               in: {
                 id: "$$msg._id",
@@ -136,10 +140,17 @@ export class ChatService implements IChatService{
                 name: {
                   $concat: ["$$msg.fromDetails.fName", " ", "$$msg.fromDetails.lName"]
                 },
+                userId: "$$msg.fromDetails._id",
                 profileURL: "$$msg.fromDetails.profileURL",
               },
             },
           },
+          latestMessageTime: 1,
+        },
+      },
+      {
+        $sort: {
+          latestMessageTime: -1,
         },
       },
     ]);
@@ -151,7 +162,7 @@ export class ChatService implements IChatService{
       profileURL: chat.profileURL || null,
       groupName: chat.groupName || null,
       groupProfile: chat.groupProfile || null,
-      messages: chat.messages.length === 1 && chat.messages[0].name === null ? [] : chat.messages,
+      messages:  chat.messages[0].id === undefined ? [] : chat.messages
     }));
 
     return formattedChats;
@@ -163,14 +174,12 @@ export class ChatService implements IChatService{
 
 
   async createChatsForNewUser(newUser: UserDoc): Promise<void> {
-    console.log("createChatsForNewUser function called..................");
 
     const existingUsers = await User.find({
         organizationId: newUser.organizationId,
         _id: { $ne: newUser.id },
     });
 
-    console.log("Existing users to create chats for new user...........", existingUsers);
 
     const participantIds = existingUsers.map(user => user.id);
     participantIds.push(newUser.id);
@@ -197,6 +206,5 @@ export class ChatService implements IChatService{
     });
 
     const result = await Promise.all(chatPromises);
-    console.log("Chats created or found: ", result);
 }
 }

@@ -1,6 +1,10 @@
 export enum ChatType {
-  ONE_ON_ONE = "one_on_one",
+  ONE_ON_ONE = "one-on-one",
   GROUP = "group",
+}
+
+export enum MessageType{
+  TEXT = "text"
 }
 
 export interface Message {

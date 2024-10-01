@@ -1,22 +1,19 @@
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import {  buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { IoCreateSharp } from "react-icons/io5";
-import { FiEdit } from "react-icons/fi";
 import CreateGroupButton from "./CreateGroupButton";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import UserAvatar from "../common/UserAvatar";
 import UserAvatarImage from '/useravatar.png'
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
-import { setMessages } from "@/store/chatSlice";
-import { io } from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { ChatType } from "@/store/types/chat";
+import GroupImage from "/groupProfile.jpeg";
 
 
 interface SidebarProps {
@@ -26,6 +23,8 @@ interface SidebarProps {
     name: string;
     messages: any[];
     profileURL: string;
+    type: string;
+    groupProfile?: string;
     variant: "secondary" | "ghost";
   }[];
   onUserClick: (user: any) => void; // Callback to update selected user
@@ -34,8 +33,8 @@ interface SidebarProps {
 
 export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarProps) {
   const dispatch = useDispatch<AppDispatch>();
-
- 
+  const {user} = useSelector((state: RootState) => state.auth)
+ console.log(chats," from side bar...........")
   return (
     <div
       data-collapsed={isCollapsed}
@@ -50,7 +49,7 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
           <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-        <CreateGroupButton/>
+        {user?.role !== "employee" && <CreateGroupButton/>}
         </TooltipTrigger>
         <TooltipContent>
           <p>Create New Group</p>
@@ -72,12 +71,12 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
                       chat.variant === "secondary" &&
                         "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white",
                     )}
-                    onClick={() => onUserClick(chat)} // Handle user click
+                    onClick={() => onUserClick(chat)} 
                   >
                     <Avatar className="flex justify-center items-center">
                       <AvatarImage
-                        src={chat.profileURL || UserAvatarImage}
-                        alt={chat.profileURL || UserAvatarImage}
+                        src={chat.type === ChatType.ONE_ON_ONE ? (chat.profileURL || UserAvatarImage) : (chat.groupProfile || GroupImage)}
+                        alt={chat.type === ChatType.ONE_ON_ONE ? (chat.profileURL || UserAvatarImage) : (chat.groupProfile || GroupImage)}
                         width={6}
                         height={6}
                         className="w-10 h-10 "
@@ -104,17 +103,17 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
                   "dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink",
                 "justify-start gap-4",
               )}
-              onClick={() => onUserClick(chat)} // Handle user click
+              onClick={() => onUserClick(chat)} 
             >
                 <UserAvatar
-                  profileURL={chat.profileURL}
+                  profileURL={chat.type === ChatType.ONE_ON_ONE ? (chat.profileURL || UserAvatarImage) : (chat.groupProfile || GroupImage)}
                  size={50}
                 />
               <div className="flex flex-col max-w-28">
                 <span>{chat.name}</span>
                 {chat.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
-                    {chat.messages[chat.messages.length - 1]?.name}: {chat.messages[chat.messages.length - 1].message}
+                    {chat.messages[chat.messages.length - 1]?.name === user?.name ? "You" : chat.messages[chat.messages.length - 1]?.name}: {chat.messages[chat.messages.length - 1].message}
                   </span>
                 )}
               </div>
