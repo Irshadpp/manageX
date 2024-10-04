@@ -62,3 +62,40 @@ export const fetchComments = async (req: Request, res: Response, next: NextFunct
         next(error);
     }
 };
+
+export const fetchTaskDoneData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {organization} = req.user!
+    const { interval } = req.query;
+    
+    const taskData = await taskService.getTaskDoneData(organization, interval as string);
+
+    return res.status(200).json({
+        success:true,
+      message: "Successfully fetched the task data",
+      data: taskData
+    });
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+};
+
+export const fetchTaskCount = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {organization} = req.user!
+    
+    let taskData: any = {}
+    taskData["taskCompleted"] = await taskService.getCompletedTasks(organization)
+    taskData["newTask"] = await taskService.getNewTasks(organization);
+
+    return res.status(200).json({
+        success:true,
+      message: "Successfully fetched the task count",
+      data: taskData
+    });
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+};

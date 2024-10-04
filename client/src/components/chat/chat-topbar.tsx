@@ -28,8 +28,8 @@ export default function ChatTopbar({ selectedChatId }: ChatTopbarProps) {
                  size={50}
                 />
         <div className="flex flex-col">
-          <span className="font-medium">{selectedChat.name}</span>
-          <span className="text-xs">Active 2 mins ago</span>
+          <span className="font-medium">{selectedChat.name || selectedChat.groupName}</span>
+          {/* <span className="text-xs">Active 2 mins ago</span> */}
         </div>
       </div>
 

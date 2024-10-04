@@ -13,7 +13,13 @@ export class UserService implements IUserService{
         return await User.findByIdAndUpdate(id, { ...attrs }, {new: true});
       }
 
-    async fetchEmployeesByOrgId(organizationId: string, role: string): Promise<UserDoc[] | null> {
-        return await User.find({organizationId, role});
+    async fetchEmployeesByOrgId(organizationId: string, role?: string): Promise<UserDoc[] | null> {
+        const filter: { organizationId: string; role?: string } = { organizationId };
+    
+        if (role) {
+            filter.role = role;
+        }
+        
+        return await User.find(filter);
     }
 }
