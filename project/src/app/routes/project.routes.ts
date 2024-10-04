@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProject, getProjects, updateProject } from '../controllers/project.controller';
+import { createProject, fetchProjectCount, getProjects, updateProject } from '../controllers/project.controller';
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import { createProjectValidator } from '../validators/create-project-validator';
 import { updateProjectValidator } from '../validators/update-project-validator';
@@ -12,6 +12,12 @@ router.post(
     createProjectValidator,
     validateRequest,
     createProject
+)
+
+router.get(
+    "/count",
+    requireAuth,
+    fetchProjectCount    
 )
 
 router.patch(

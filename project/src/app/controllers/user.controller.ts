@@ -8,7 +8,7 @@ export const fetchMembers = async (req: Request, res: Response, next: NextFuncti
     try {
         const orgId = req.user?.organization;
         const {role} = req.query;
-        if(!orgId || !role) throw new BadRequestError("Invalid user credentials");
+        if(!orgId) throw new BadRequestError("Invalid user credentials");
         const members = await userService.fetchEmployeesByOrgId(orgId, role as string);
         res.status(200).json({
             success: true,

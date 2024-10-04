@@ -34,8 +34,8 @@ const formSchema = z.object({
       message: "Please give a valid title.",
     })
     .optional(),
-  startDate: z.string().optional(),
-  dueDate: z.string().optional(),
+    startDate: z.date(),
+    dueDate: z.date(),
   status: z
     .string()
     .min(2, {
@@ -77,9 +77,9 @@ export default function TaskEditForm({
     defaultValues: {
       title: (task && task.title) || "",
       startDate:
-        (task && task.startDate) || undefined,
+        (task && new Date(task.startDate)) || undefined,
       dueDate:
-        (task && task.dueDate) || undefined,
+        (task && new Date(task.dueDate)) || undefined,
       status: (task && task.status) || "",
       priority: (task && task.priority) || "",
       assignee: (task && task.assignee.id) || "",
@@ -191,7 +191,7 @@ export default function TaskEditForm({
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-backgroundAccent">
+                      <SelectTrigger className="bg-background">
                         <SelectValue placeholder="Select Priority" />
                       </SelectTrigger>
                     </FormControl>

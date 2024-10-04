@@ -26,3 +26,21 @@ export const getProjects = async (req: Request, res: Response, next: NextFunctio
     const projects = await projectService.fetchProjectsByOrgId(orgId as string);
     res.status(200).json({success: true, message: "Projects fetched successfully", data: projects});
 }
+
+export const fetchProjectCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const {organization} = req.user!
+      
+      const projectData = await projectService.getCompletedProjects(organization)
+  
+      console.log("project count data", projectData)
+      return res.status(200).json({
+          success:true,
+        message: "Successfully fetched the project count",
+        data: projectData
+      });
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  };

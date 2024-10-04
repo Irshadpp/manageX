@@ -19,12 +19,12 @@ import { Label } from "flowbite-react";
 import UserAvatarImage from "/useravatar.png";
 import GroupImage from "/groupProfile.jpeg";
 import { TiDelete } from "react-icons/ti";
-import MemberAddButton from "@/pages/owner/project/MemberAddButton";
 import { uploadImage } from "@/utils/uploadImage";
 import { ChatType } from "@/store/types/chat";
 import { io } from "socket.io-client";
 import ImageUpload from "../common/ImageUpload";
 import { createGroup } from "@/store/chatThunk";
+import MemberAddButton from "./MemberAddButton";
 
 const groupSchema = z.object({
   groupName: z
@@ -67,7 +67,6 @@ const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
   }, []);
 
   const handleRemoveMember = (member: any) => {
-    console.log(member)
     const updatedMembers = members.filter((m: any) => m.id !== member.id);
     setMembers(updatedMembers);
   };
