@@ -99,7 +99,7 @@ export class TaskService implements ITaskService {
       })
   }
 
-  async getTaskDoneData(organizationId: string, interval: string): Promise<any>{
+  async getTaskDoneData(organizationId: string, interval: string, userId?:string): Promise<any>{
 
     let startDate: Date, endDate: Date;
 
@@ -122,9 +122,21 @@ export class TaskService implements ITaskService {
       default:
         throw new Error("Invalid interval provided");
     }
-  
-    const tasksByInterval = await Task.aggregate([
-      {
+
+    let matchStage;
+
+    if(userId){
+      matchStage = {
+        $match: {
+          assignee: new mongoose.Types.ObjectId(userId),
+          dueDate: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+        },
+      }
+    }else{
+      matchStage ={
         $match: {
           organizationId: organizationId,
           dueDate: {
@@ -132,7 +144,11 @@ export class TaskService implements ITaskService {
             $lte: endDate,
           },
         },
-      },
+      }
+    }
+  
+    const tasksByInterval = await Task.aggregate([
+      matchStage,
       {
         $group: {
           _id: {
@@ -210,13 +226,26 @@ export class TaskService implements ITaskService {
     return tasksByInterval;
   }
 
-  async getNewTasks(organizationId: string): Promise<any>{
+  async getNewTasks(organizationId: string, userId?: string): Promise<any>{
     try {
       const startDateOfMonth = startOfMonth(new Date());
       const dueDateOfMonth = endOfMonth(new Date());
-  
-      const tasksByDay = await Task.aggregate([
-        {
+
+      let matchStage;
+      if(userId){
+        console.log("its user--------------------------")
+        matchStage = {
+          $match: {
+            assignee: new mongoose.Types.ObjectId(userId),
+            status: ProjectStatus.PLANNING,
+            dueDate: {
+              $gte: startDateOfMonth,
+              $lte: dueDateOfMonth,
+            },
+          },
+        }
+      }else{
+        matchStage = {
           $match: {
             organizationId: organizationId,
             status: ProjectStatus.PLANNING,
@@ -225,7 +254,11 @@ export class TaskService implements ITaskService {
               $lte: dueDateOfMonth,
             },
           },
-        },
+        }
+      }
+  
+      const tasksByDay = await Task.aggregate([
+        matchStage,
         {
           $group: {
             _id: "$dueDate",
@@ -250,13 +283,26 @@ export class TaskService implements ITaskService {
     }
   }
 
-  async getCompletedTasks(organizationId: string):Promise<any>{
+  async getCompletedTasks(organizationId: string, userId?: string):Promise<any>{
     try {
       const startDateOfMonth = startOfMonth(new Date());
       const dueDateOfMonth = endOfMonth(new Date());
-  
-      const tasksByDay = await Task.aggregate([
-        {
+
+      let matchStage;
+      if(userId){
+        console.log("its user--------------------------")
+        matchStage = {
+          $match: {
+            assignee: new mongoose.Types.ObjectId(userId),
+            status: ProjectStatus.COMPLETED,
+            dueDate: {
+              $gte: startDateOfMonth,
+              $lte: dueDateOfMonth,
+            },
+          },
+        }
+      }else{
+        matchStage = {
           $match: {
             organizationId: organizationId,
             status: ProjectStatus.COMPLETED,
@@ -265,7 +311,11 @@ export class TaskService implements ITaskService {
               $lte: dueDateOfMonth,
             },
           },
-        },
+        }
+      }
+  
+      const tasksByDay = await Task.aggregate([
+       matchStage,
         {
           $group: {
             _id: "$dueDate",

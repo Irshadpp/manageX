@@ -35,11 +35,36 @@ export class ProjectService implements IProjectService{
         })
     }
 
-    async getCompletedProjects(organizationId: string):Promise<any>{
+    async getCompletedProjects(organizationId: string, userId?: string):Promise<any>{
         try {
           const startDateOfMonth = startOfMonth(new Date());
           const dueDateOfMonth = endOfMonth(new Date());
+          
+          let matchStage;
 
+          if(userId){
+            matchStage = {
+                $match: {
+                  members: new mongoose.Types.ObjectId(userId),
+                  status: ProjectStatus.COMPLETED,
+                  endDate: {
+                    $gte: startDateOfMonth,
+                    $lte: dueDateOfMonth,
+                  },
+                },
+              }
+          }else{
+            matchStage = {
+                $match: {
+                  organizationId: new mongoose.Types.ObjectId(organizationId),
+                  status: ProjectStatus.COMPLETED,
+                  endDate: {
+                    $gte: startDateOfMonth,
+                    $lte: dueDateOfMonth,
+                  },
+                },
+              }
+          }
       
           const projectByDay = await Project.aggregate([
             {

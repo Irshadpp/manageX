@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import LeaveForm from './LeaveForm'; // Import your LeaveForm component
+import LeaveForm from './LeaveForm';
 
-const LeaveDialog: React.FC = () => {
+interface LeaveDialogProps {
+  setLeaveData: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+const LeaveDialog: React.FC<LeaveDialogProps> = ({ setLeaveData }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
@@ -17,7 +21,7 @@ const LeaveDialog: React.FC = () => {
               Please provide your leave details below.
             </DialogDescription>
           </DialogHeader>
-          <LeaveForm setModalOpen={setModalOpen} />
+          <LeaveForm setModalOpen={setModalOpen} setLeaveData={setLeaveData} />
         </DialogContent>
       </Dialog>
     </>
