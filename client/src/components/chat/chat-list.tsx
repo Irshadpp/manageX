@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { ChatType } from "@/store/types/chat";
+import UserAvatar from "../common/UserAvatar";
 
 interface ChatListProps {
   messages: any[];
@@ -87,7 +88,7 @@ export function ChatList({
                   className="flex flex-col gap-2 p-4"
                 >
                   <ChatBubble variant={variant}>
-                    {selectedChat.type === ChatType.GROUP && <ChatBubbleAvatar src={message.profileURL || UserAvatarImage} />}
+                    {selectedChat.type === ChatType.GROUP && <UserAvatar profileURL={message.profileURL || UserAvatarImage} />}
                     <ChatBubbleMessage isLoading={message.isLoading}>
                       {message.message}
                       {message.timestamp && (

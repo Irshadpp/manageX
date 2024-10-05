@@ -1,6 +1,7 @@
 import { BadRequestError } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { ProjectService } from "../services/project/project.service";
+import { Role } from "../model/enum";
 
 const projectService = new ProjectService();
 
@@ -29,9 +30,14 @@ export const getProjects = async (req: Request, res: Response, next: NextFunctio
 
 export const fetchProjectCount = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {organization} = req.user!
-      
-      const projectData = await projectService.getCompletedProjects(organization)
+      const {organization, role, id} = req.user!
+
+      let projectData;
+      if(role === Role.EMPLOYEE){
+         projectData = await projectService.getCompletedProjects(organization, id)
+      }else{
+           projectData = await projectService.getCompletedProjects(organization, id)
+      }
   
       console.log("project count data", projectData)
       return res.status(200).json({

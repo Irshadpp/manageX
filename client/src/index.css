@@ -131,3 +131,8 @@
 .chart-box-content {
   @apply flex gap-2 items-center pt-2;
 }
+
+ul.pagination {
+  list-style: none;
+}
+

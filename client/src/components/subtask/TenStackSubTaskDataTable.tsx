@@ -203,7 +203,7 @@ export function TanStackSubTAskDataTable<TData extends {id: string}, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-endspace-x-2 py-4 ">
         <div className="space-x-2">
           <Pagination>
             <PaginationContent>

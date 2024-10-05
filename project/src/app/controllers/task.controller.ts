@@ -1,6 +1,7 @@
 import { BadRequestError } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { TaskService } from "../services/task/task.service";
+import { Role } from "../model/enum";
 
 const taskService = new TaskService();
 
@@ -65,10 +66,16 @@ export const fetchComments = async (req: Request, res: Response, next: NextFunct
 
 export const fetchTaskDoneData = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {organization} = req.user!
+    const {organization, role, id} = req.user!
     const { interval } = req.query;
-    
-    const taskData = await taskService.getTaskDoneData(organization, interval as string);
+
+    let taskData;
+
+    if(role === Role.EMPLOYEE){
+        taskData = await taskService.getTaskDoneData(organization, interval as string, id);
+    }else{
+        taskData = await taskService.getTaskDoneData(organization, interval as string);
+    }
 
     return res.status(200).json({
         success:true,
@@ -81,13 +88,20 @@ export const fetchTaskDoneData = async (req: Request, res: Response, next: NextF
   }
 };
 
+
+
 export const fetchTaskCount = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {organization} = req.user!
+    const {organization, role, id} = req.user!
     
     let taskData: any = {}
-    taskData["taskCompleted"] = await taskService.getCompletedTasks(organization)
-    taskData["newTask"] = await taskService.getNewTasks(organization);
+    if(role === Role.EMPLOYEE){
+        taskData["taskCompleted"] = await taskService.getCompletedTasks(organization, id)
+        taskData["newTask"] = await taskService.getNewTasks(organization, id);
+    }else{
+        taskData["taskCompleted"] = await taskService.getCompletedTasks(organization)
+        taskData["newTask"] = await taskService.getNewTasks(organization);
+    }
 
     return res.status(200).json({
         success:true,

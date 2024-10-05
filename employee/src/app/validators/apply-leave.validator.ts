@@ -4,7 +4,7 @@ export const applyLeaveValidator = [
   body('leaveType')
     .notEmpty()
     .withMessage('Leave type is required')
-    .isIn(['sick', 'casual', 'vacation'])
+    .isIn(['sick', 'casual', 'vecation'])
     .withMessage('Invalid leave type'),
 
   body('startDate')

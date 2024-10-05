@@ -32,17 +32,17 @@ const LeaveTable: React.FC<LeaveTableProps> = ({ data }) => {
     <div className="w-full">
       <Table>
         <thead>
-          <tr>
+          <TableRow className="bg-muted/50 hover:bg-muted/50 border-red/100">
             <TableCell>Leave Type</TableCell>
             <TableCell>Start Date</TableCell>
             <TableCell>End Date</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Reason</TableCell>
-          </tr>
+          </TableRow>
         </thead>
         <tbody>
           {currentItems && currentItems.map((leave: any, idx) => (
-            <TableRow key={idx}>
+            <TableRow key={idx} className="bg-muted/40 border-background">
               <TableCell>{leave.leaveType}</TableCell>
               <TableCell>{leave.startDate}</TableCell>
               <TableCell>{leave.endDate}</TableCell>
