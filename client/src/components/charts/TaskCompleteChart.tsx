@@ -1,12 +1,11 @@
 import { Tooltip, Area, XAxis } from "recharts";
 import React, { useEffect, useState, Suspense } from "react";
 import { MdOutlineTaskAlt } from "react-icons/md";
-import CustomTooltip from "../custome/CustomTooltip"; // Adjust the path as needed
-import { countTotal } from "@/utils/functions"; // Adjust the path as needed
-import { CountByDay } from "@/constants/types"; // Adjust the path as needed
+import CustomTooltip from "../custome/CustomTooltip"; 
+import { countTotal } from "@/utils/functions";
+import { CountByDay } from "@/constants/types";
 import { apiRequest } from "@/services/api/commonRequest";
 
-// Lazy load AreaChart for code splitting
 const AreaChart = React.lazy(() =>
   import("recharts").then((recharts) => ({ default: recharts.AreaChart }))
 );
