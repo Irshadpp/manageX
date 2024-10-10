@@ -17,17 +17,6 @@ export class ChatEvents{
                 console.log(`User joined chat room ${chatId}`);
             });
 
-            // socket.on('groupChatCreated', async ({ participants, type, groupName, groupDescription, groupProfile }) => {
-            //     const chat = await chatService.createChat({
-            //       participants,
-            //       type,
-            //       groupName,
-            //       groupDescription,
-            //       groupProfile
-            //     });
-            //     socket.emit('chatCreated', chat); 
-            //   });
-
             socket.on('sendMessage', async ({chatId, content, type, from}) =>{
                 try {
                     const message = await messageService.saveMessage({chatId, content, type, from});

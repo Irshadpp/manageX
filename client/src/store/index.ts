@@ -5,6 +5,7 @@ import attendanceReducer from "./attendanceSlice";
 import projectReducer from "./projectSlice";
 import taskReducer from "./taskSlice";
 import chatReducer from "./chatSlice"
+import meetReducer from "./meetSlice"
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     attendance: attendanceReducer,
     project: projectReducer,
     task: taskReducer,
-    chat: chatReducer
+    chat: chatReducer,
+    meet: meetReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

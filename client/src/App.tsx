@@ -51,6 +51,9 @@ import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
 import { ChatLayout } from "./components/chat/chat-layout";
 import Chat from "./pages/owner/chat/Chat";
 import EmpChat from "./pages/employee/chat/EmpChat";
+import Meet from "./pages/owner/meetings/Meet";
+import JoinRoom from "./pages/owner/meetings/JoinRoom";
+import Room from "./pages/owner/meetings/room/Room";
 
 function App() {
   return (
@@ -85,8 +88,10 @@ function App() {
                     <Route path="/owner/projects" element={<ProjectList/>}/>
                     <Route path="/owner/projects/create" element={<CreateProject/>}/>
                     <Route path="/owner/projects/:id" element={<Project/>}/>
-                    <Route path="/owner/chat" element={<Chat/>}>
-                    </Route>
+                    <Route path="/owner/chat" element={<Chat/>}/>
+                    <Route path="/owner/meetings" element={<Meet/>}/>
+                    <Route path="/owner/meetings/join-room" element={<JoinRoom/>}/>
+                    <Route path="/owner/meetings/room" element={<Room/>}/>
                   </Route>
                 </Route>
 
