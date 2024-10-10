@@ -30,7 +30,6 @@ interface ChatListProps {
 
 const getMessageVariant = (messageUserId: string, userId: string) =>{
 
-  console.log(userId, messageUserId)
   return userId == messageUserId  ? "sent" : "received";
 }
 
@@ -53,7 +52,6 @@ export function ChatList({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  console.log(messages, "from chat list........");
 
   const actionIcons = [
     { icon: DotsVerticalIcon, type: "More" },

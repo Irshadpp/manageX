@@ -42,6 +42,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@types/redux-persist": "^4.0.0",
     "@types/redux-thunk": "^2.1.32",
+    "@types/simple-peer": "^9.11.8",
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -65,6 +66,7 @@
     "redux-thunk": "^3.1.0",
     "removed": "^0.0.5",
     "shadcn-ui": "^0.8.0",
+    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.0",
     "tailwind-merge": "^2.5.2",
     "tailwind-scrollbar-hide": "^1.1.7",
@@ -74,6 +76,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@eslint/js": "^9.9.0",
     "@types/node": "^22.4.1",
     "@types/react": "^18.3.3",
