@@ -35,6 +35,17 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
   const dispatch = useDispatch<AppDispatch>();
   const {user} = useSelector((state: RootState) => state.auth)
  console.log(chats," from side bar...........")
+
+ const sortedChats = [...chats].sort((a, b) => {
+  const lastMessageA = a.messages[a.messages.length - 1];
+  const lastMessageB = b.messages[b.messages.length - 1];
+
+  const timestampA = lastMessageA ? new Date(lastMessageA.timestamp).getTime() : 0;
+  const timestampB = lastMessageB ? new Date(lastMessageB.timestamp).getTime() : 0;
+
+  return timestampB - timestampA; // Sort in descending order (latest on top)
+});
+
   return (
     <div
       data-collapsed={isCollapsed}
@@ -59,7 +70,7 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {chats.map((chat, index) =>
+        {sortedChats.map((chat, index) =>
           isCollapsed ? (
             <TooltipProvider key={index}>
               <Tooltip key={index} delayDuration={0}>
