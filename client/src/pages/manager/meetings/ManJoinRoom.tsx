@@ -6,7 +6,7 @@ import { setIsRoomHost } from '@/store/meetSlice';
 import JoinRoomContent from '../../../components/meetings/JoinRoomContent';
 import JoinRoomTitle from '../../../components/meetings/JoinRoomTitle';
 
-const JoinRoom = () => {
+const ManJoinRoom = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
   const { isRoomHost } = useSelector((state: RootState) => state.meet);
@@ -37,4 +37,4 @@ const JoinRoom = () => {
   );
 };
 
-export default JoinRoom;
+export default ManJoinRoom;

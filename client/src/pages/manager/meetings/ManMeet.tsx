@@ -3,7 +3,7 @@ import ConnectingButtons from '../../../components/meetings/ConnectingButtons';
 import { connectWithSocketIOServer } from '@/utils/wss';
 // import logo from '../../../public/logo.png';
 
-const Meet = () => {
+const ManMeet = () => {
   window.onload = () => {
     console.log('Checking WebRTC and secure random number support...');
     if ((window.crypto as any).getRandomValues && window.RTCPeerConnection) {
@@ -31,4 +31,4 @@ const Meet = () => {
   );
 };
 
-export default Meet;
+export default ManMeet;

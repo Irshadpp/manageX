@@ -22,8 +22,7 @@ interface SingleParticipantProps {
 const SingleParticipants = ({ participant, lastItem, identity }: SingleParticipantProps) => {
   return (
     <>
-      <p className="text-base font-semibold text-foreground">{identity}</p>
-      {!lastItem && <span className="border-b border-gray-300 my-1"></span>}
+      <p className="text-base w-5/6 px-20 py-1 bg-card rounded-lg mx-auto my-1 font-semibold text-foreground">{identity}</p>
     </>
   );
 };

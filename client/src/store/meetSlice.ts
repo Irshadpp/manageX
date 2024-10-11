@@ -37,6 +37,10 @@ const meetSlice = createSlice({
     setMessages (state, action: PayloadAction<any[]>){
       state.messages = action.payload
     },
+    setMeetState(state, action: PayloadAction<any>) {
+      // Sync entire meet state from another tab
+      return action.payload;
+    },
     resetState: () => initialState
   },
 });
@@ -49,6 +53,7 @@ export const {
     setShowOverlay,
     setParticipants,
     setMessages,
+    setMeetState,
     resetState
 } = meetSlice.actions;
 

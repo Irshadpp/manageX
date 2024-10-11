@@ -28,7 +28,7 @@ const NewMessage = () => {
         <div className='w-full h-[100px] flex items-center justify-center relative'>
             <input 
                 type="text"
-                className='border border-[#d1dbe2] text-black rounded-[60px] py-0 px-[20px] h-[60px] text-[16px] w-[80%] shadow-[2px_20px_5px_rgba(0,82,201,0.05)]'
+                className='border bg-background border-[#d1dbe2] text-foreground rounded-[60px] py-0 px-[20px] h-[50px] text-[16px] w-[80%] shadow-[2px_20px_5px_rgba(0,82,201,0.05)]'
                 value={message}
                 onChange={handleOnChange}
                 placeholder='Type your message....'
@@ -37,7 +37,7 @@ const NewMessage = () => {
             <img 
                 src={SendMessageButton} 
                 alt="Send message button" 
-                className='ml-2 cursor-pointer h-8 w-8'
+                className='ml-2 cursor-pointer h-10 w-10'
                 onClick={sendMessage}
             />
         </div>

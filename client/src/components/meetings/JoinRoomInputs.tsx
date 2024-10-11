@@ -19,7 +19,7 @@ const Input = ({ placeholder, value, changeHandler }: InputProps) => {
     <input
       value={value}
       onChange={changeHandler}
-      className="w-[300px] h-[40px] rounded-lg border border-gray-300 px-4 focus:border-blue-500"
+      className="w-[300px] h-[40px] rounded-lg border bg-background border-background px-4 focus:border-blue-500"
       placeholder={placeholder}
     />
   );

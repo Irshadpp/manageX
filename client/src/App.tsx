@@ -54,8 +54,36 @@ import EmpChat from "./pages/employee/chat/EmpChat";
 import Meet from "./pages/owner/meetings/Meet";
 import JoinRoom from "./pages/owner/meetings/JoinRoom";
 import Room from "./pages/owner/meetings/room/Room";
+import EmpRoom from "./pages/employee/meetings/room/EmpRoom";
+import EmpJoinRoom from "./pages/employee/meetings/EmpJoinRoom";
+import EmpMeet from "./pages/employee/meetings/EmpMeet";
+import ManChat from "./pages/manager/chat/ManChat";
+import ManMeet from "./pages/manager/meetings/ManMeet";
+import ManJoinRoom from "./pages/manager/meetings/ManJoinRoom";
+import ManRoom from "./pages/manager/meetings/room/ManRoom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { broadcastMeetState, listenToMeetStateChanges } from "./utils/broadcast-meet-state";
+import store from "./store";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Listen for state changes across tabs
+    listenToMeetStateChanges(dispatch);
+
+    // Broadcast meet state when it changes
+    const unsubscribe = store.subscribe(() => {
+      const meetState = store.getState().meet;
+      broadcastMeetState(meetState);  // Send the meet state to other tabs
+    });
+
+    // Cleanup on unmount
+    return () => {
+      unsubscribe();
+    };
+  }, [dispatch]);
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -91,8 +119,8 @@ function App() {
                     <Route path="/owner/chat" element={<Chat/>}/>
                     <Route path="/owner/meetings" element={<Meet/>}/>
                     <Route path="/owner/meetings/join-room" element={<JoinRoom/>}/>
-                    <Route path="/owner/meetings/room" element={<Room/>}/>
                   </Route>
+                    <Route path="/owner/meetings/room" element={<Room/>}/>
                 </Route>
 
                 <Route
@@ -115,7 +143,11 @@ function App() {
                     <Route path="/manager/projects" element={<ManProjectList/>}/>
                     <Route path="/manager/projects/create" element={<CreateProject/>}/>
                     <Route path="/manager/projects/:id" element={<ManProject/>}/>
+                    <Route path="/manager/chat" element={<ManChat/>}/>
+                    <Route path="/manager/meetings" element={<ManMeet/>}/>
+                    <Route path="/manager/meetings/join-room" element={<ManJoinRoom/>}/>
                   </Route>
+                    <Route path="/manager/meetings/room" element={<ManRoom/>}/>
                 </Route>
 
                 <Route
@@ -134,7 +166,10 @@ function App() {
                     <Route path="/employee/projects" element={<EmpProjectList/>}/>
                     <Route path="/employee/projects/:id" element={<EmpProject/>}/>
                     <Route path="/employee/chat" element={<EmpChat/>}></Route>
+                    <Route path="/employee/meetings" element={<EmpMeet/>}/>
+                    <Route path="/employee/meetings/join-room" element={<EmpJoinRoom/>}/>
                   </Route>
+                    <Route path="/employee/meetings/room" element={<EmpRoom/>}/>
                 </Route>
 
                 <Route element={<PrivateRouteWithRole requiredRole="admin" />}>

@@ -4,7 +4,7 @@ import Participants from './Participants'
 
 const ParticipantsSection = () => {
   return (
-    <div className='h-full w-1/6 bg-muted/60 flex flex-col'>
+    <div className='h-full w-1/6 items-center bg-muted/60 flex flex-col'>
       <ParticipantsLabel/>
       <Participants/>
     </div>

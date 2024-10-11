@@ -8,7 +8,7 @@ import Chat from "../../../../components/meetings/room/chat/Chat";
 import Video from "../../../../components/meetings/room/video/Video";
 import Overlay from "../../../../components/meetings/room/Overlay";
 
-const Room = () => {
+const ManRoom = () => {
   const { roomId, isRoomHost, identity, showOverlay, connectOnlyWithAudio } =
     useSelector((state: RootState) => state.meet);
 
@@ -36,4 +36,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default ManRoom;
