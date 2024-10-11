@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../ui/button';
 
 interface ConnectingButtonProps {
   createRoomButton?: boolean;
@@ -12,13 +13,13 @@ const ConnectingButton: React.FC<ConnectingButtonProps> = ({
   onClickHandler,
 }) => {
   const buttonClass = createRoomButton
-    ? 'mt-4 bg-card text-card-foreground border border-border w-[180px] h-[30px] rounded-md transition-all hover:bg-muted'
-    : 'bg-blue-500 text-white border border-border w-[180px] h-[30px] rounded-md transition-all hover:bg-blue-700';
+    ? 'mt-5 bg-card w-[230px] border border-border transition-all hover:bg-muted'
+    : 'w-[230px] transition-all';
 
   return (
-    <button className={buttonClass} onClick={onClickHandler}>
+    <Button className={buttonClass} onClick={onClickHandler}>
       {buttonText}
-    </button>
+    </Button>
   );
 };
 

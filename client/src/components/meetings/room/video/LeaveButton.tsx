@@ -1,19 +1,19 @@
-import { AppDispatch } from '@/store';
+import { AppDispatch, persistor, RootState } from '@/store';
 import { resetState } from '@/store/meetSlice';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const LeaveButton = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const {user} = useSelector((state:RootState) => state.auth)
 
   const handleRoomDisconnect = async () => {
-    const siteUrl = window.location.origin;
-    window.location.href = siteUrl;
-
+    dispatch(resetState());
     setTimeout(() => {
-      dispatch(resetState());
+      const siteUrl = window.location.origin;
+    window.location.href = `${siteUrl}/${user?.role}/meetings`;
     }, 500);
   };
 

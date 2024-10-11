@@ -38,7 +38,7 @@ const chatSlice = createSlice({
     createGroupRequest: handleRequest,
     createGroupFailure: handleFailure,
     createGroupSuccess(state, action: PayloadAction<ChatTypes>){
-      state.chatData.push(action.payload)
+      state.chatData.push({...action.payload, messages: []})
       state.loading = false;
       state.error = null;
     },

@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import * as webRTChandler from '@/utils/webRTCHandler';
 import { RootState } from "@/store";
-import RoomLabel from "../../../../components/meetings/room/RoomLabel";
-import ParticipantsSection from "../../../../components/meetings/room/participants/ParticipantsSection";
-import Chat from "../../../../components/meetings/room/chat/Chat";
-import Video from "../../../../components/meetings/room/video/Video";
-import Overlay from "../../../../components/meetings/room/Overlay";
+import ParticipantsSection from "@/components/meetings/room/participants/ParticipantsSection";
+import Video from "@/components/meetings/room/video/Video";
+import RoomLabel from "@/components/meetings/room/RoomLabel";
+import Chat from "@/components/meetings/room/chat/Chat";
+import Overlay from "@/components/meetings/room/Overlay";
 
-const Room = () => {
+const EmpRoom = () => {
   const { roomId, isRoomHost, identity, showOverlay, connectOnlyWithAudio } =
     useSelector((state: RootState) => state.meet);
 
@@ -36,4 +36,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default EmpRoom;

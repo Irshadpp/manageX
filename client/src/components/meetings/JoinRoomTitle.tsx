@@ -4,7 +4,7 @@ const JoinRoomTitle = ({ isRoomHost }: { isRoomHost: boolean }) => {
   const titleText = isRoomHost ? "Host meeting" : "Join meeting";
 
   return (
-    <p className="text-2xl font-bold ml-[35px] mt-[80px]">
+    <p className="text-2xl font-bold my-[40px]">
       {titleText}
     </p>
   );
