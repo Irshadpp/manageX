@@ -22,6 +22,7 @@ export class MessageService implements IMessageService {
       chatId: messageData.chatId,
       message: {
         id: messageData._id,
+        type: messageData.type,
         message: messageData.content,
         timestamp: messageData.createdAt,
         name: `${user.fName} ${user.lName}`,

@@ -137,6 +137,7 @@ export class ChatService implements IChatService{
                 id: "$$msg._id",
                 message: "$$msg.content",
                 timestamp: "$$msg.createdAt",
+                type: "$$msg.type",
                 name: {
                   $concat: ["$$msg.fromDetails.fName", " ", "$$msg.fromDetails.lName"]
                 },
