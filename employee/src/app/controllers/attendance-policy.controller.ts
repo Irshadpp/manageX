@@ -1,4 +1,4 @@
-import { BadRequestError } from "@ir-managex/common";
+import { BadRequestError, HttpStatusCode, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { AttendancePolicyService } from "../services/attendance/attendance-policy.service";
 
@@ -11,11 +11,7 @@ export const fetchAttendancePolicy = async (req: Request, res: Response, next: N
             throw new BadRequestError("Organization Id is required")
         }
         const attendacePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organizationId as string);
-        res.status(200).json({
-            success: true,
-            message: "Attendance policy fetched successfully",
-            data: attendacePolicy
-        });
+        sendResponse(res, HttpStatusCode.OK, "Attendance policy fetched successfully", attendacePolicy );
     } catch (error) {
         console.log(error);
         next(error)
@@ -29,11 +25,7 @@ export const updateAttendancePolicy = async (req: Request, res: Response, next: 
             throw new BadRequestError("Organization Id is required")
         }
         const newAttendancePolicy = await attendancePolicyService.updateAttendancePolicy(organizationId as string, req.body);
-        res.status(200).json({
-            success: true,
-            message: "Attendance policy updated successfully",
-            data: newAttendancePolicy
-        })
+        sendResponse(res, HttpStatusCode.OK, "Attendance policy updated successfully", newAttendancePolicy );
     } catch (error) {
         console.log(error);
         next(error);

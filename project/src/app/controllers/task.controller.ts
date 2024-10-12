@@ -1,4 +1,4 @@
-import { BadRequestError } from "@ir-managex/common";
+import { BadRequestError, CommonMessages, HttpStatusCode, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { TaskService } from "../services/task/task.service";
 import { Role } from "../model/enum";
@@ -11,16 +11,16 @@ export const createTask = async (req: Request, res: Response, next: NextFunction
     if(!orgId || !projectId) throw new BadRequestError("Invalid user creadentials");
 
     const newTask = await taskService.createTask({...req.body, organizationId: orgId, projectId});
-    res.status(201).json({success: true, message: "Task created successfully", data: newTask});
-}
+    sendResponse(res, HttpStatusCode.CREATED, "Task created successfully", newTask);
+  }
 
 export const fetchTasks = async (req: Request, res: Response, next: NextFunction) =>{
     const {projectId} = req.params;
     if(!projectId) throw new BadRequestError("Invalid projectId");
 
     const tasks = await taskService.getTasksByProjectId(projectId)
-    res.status(200).json({success: true, message: "Tasks fetched successfully", data: tasks});
-}
+    sendResponse(res, HttpStatusCode.OK, "Tasks fetched successfully", tasks);
+  }
 
 export const updateTask = async (req: Request, res: Response, next: NextFunction) =>{
     const {taskId} = req.params;
@@ -37,8 +37,8 @@ export const updateTask = async (req: Request, res: Response, next: NextFunction
     }
 
     const updatedTask = await taskService.getTaskById(taskId)
-    res.status(200).json({success: true, message: "Tasks updated successfully", data: updatedTask});
-}
+    sendResponse(res, HttpStatusCode.OK, "Tasks updated successfully", updatedTask);
+  }
 
 export const replyToComment = async (req: Request, res: Response, next: NextFunction) => {
     const { taskId } = req.params;
@@ -48,8 +48,8 @@ export const replyToComment = async (req: Request, res: Response, next: NextFunc
     try {
         await taskService.replyToComment(taskId, commentId, { text, user });
         const updatedTask = await taskService.getTaskById(taskId)
-        res.status(200).json({ success: true, message: "Reply added successfully", data: updatedTask });
-    } catch (error) {
+        sendResponse(res, HttpStatusCode.OK, "Reply added successfully", updatedTask);
+      } catch (error) {
         next(error);
     }
 };
@@ -58,8 +58,8 @@ export const fetchComments = async (req: Request, res: Response, next: NextFunct
     try {
         const { taskId } = req.params;
         const task = await taskService.getComments(taskId)
-        res.status(200).json({ success: true, message: "Reply added successfully", data: task.comments });
-    } catch (error) {
+        sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, task.comments);
+      } catch (error) {
         next(error);
     }
 };
@@ -77,11 +77,7 @@ export const fetchTaskDoneData = async (req: Request, res: Response, next: NextF
         taskData = await taskService.getTaskDoneData(organization, interval as string);
     }
 
-    return res.status(200).json({
-        success:true,
-      message: "Successfully fetched the task data",
-      data: taskData
-    });
+    return sendResponse(res, HttpStatusCode.OK, "Successfully fetched the task data", taskData );
   } catch (error) {
     console.log(error)
     next(error)
@@ -103,11 +99,7 @@ export const fetchTaskCount = async (req: Request, res: Response, next: NextFunc
         taskData["newTask"] = await taskService.getNewTasks(organization);
     }
 
-    return res.status(200).json({
-        success:true,
-      message: "Successfully fetched the task count",
-      data: taskData
-    });
+    return sendResponse(res, HttpStatusCode.OK, "Successfully fetched the task count", taskData);
   } catch (error) {
     console.log(error)
     next(error)

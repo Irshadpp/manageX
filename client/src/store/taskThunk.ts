@@ -13,6 +13,7 @@ export const fetchTasks = (id: string) => async (dispatch: AppDispatch) => {
         "Content-type": "application/json"
       }
     });
+    console.log(response.data)
     dispatch(fetchTaskSuccess(response.data));
   } catch (error: any) {
     dispatch(fetchTaskFailure(error.message));

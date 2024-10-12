@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "@ir-managex/common";
+import { BadRequestError, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { EmployeeService } from "../services/employee/employee.service";
 import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
@@ -63,7 +63,8 @@ export const createEmployee = async (
     console.log(chatUserEventData, "chat user created publishing data............")
     await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
-    res.status(201).send({success: true, message: "Created employee successfully"});
+    sendResponse(res, HttpStatusCode.CREATED, "Created employee successfully");
+
     
   } catch (error) {
     next(error)
@@ -120,8 +121,7 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employeeData!);
     await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
 
-    res.status(201).send({success: true, message: "updated employee successfully"});
-    
+    sendResponse(res, HttpStatusCode.CREATED, "Updated employee successfully");
   } catch (error) {
     next(error)
   }
@@ -132,7 +132,7 @@ export const sendInvitationMail = async (req: Request, res: Response, next: Next
     const {email, id} = req.body;
     const token = generateEmailToken(id);
     await sendVarificationEmail(email, token);
-    res.status(200).send({success: true});
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
   } catch (error) {
     console.log(error)
     next(error);
@@ -144,7 +144,7 @@ export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next:
     const orgId = req.user?.organization;
     if (!orgId) throw new NotFoundError();
     const employees = await employeeService.findEmployeesWithOrgId(orgId);
-    res.status(200).json({success: true, message: "Fetched employees successfully", data: employees});
+    sendResponse(res, HttpStatusCode.OK, "Fetched employees successfully", employees );
   } catch (error) {
     next(error);
   }

@@ -14,6 +14,9 @@ import {
   verifyJwt,
   setCookie,
   ForbiddenError,
+  sendResponse,
+  HttpStatusCode,
+  CommonMessages,
 } from "@ir-managex/common";
 import { UserAttrs } from "../model/user.model";
 import { UserService } from "../services/user/user.service";
@@ -79,7 +82,7 @@ export const createUser = async (
 
     await handleVerificationEmail(user.id, user.email);
 
-    res.status(201).send({ success: true, user });
+    sendResponse(res, HttpStatusCode.CREATED, "User created successfully", { user });
   } catch (error) {
     console.log(error);
     next(error);
@@ -127,11 +130,7 @@ export const verifyEmail = async (
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
-      success: true,
-      user,
-      message: "Signup successfull",
-    });
+    sendResponse(res, HttpStatusCode.OK, "Signup successful", { user });
   } catch (error) {
     next(error);
   }
@@ -184,12 +183,7 @@ export const loginUser = async (
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
-      success: true,
-      user: payload,
-      accessToken,
-      message: `${user.role} Login successfull`,
-    });
+    sendResponse(res, HttpStatusCode.OK, `${user.role} Login successful`, { user: payload, accessToken });
   } catch (error) {
     next(error);
   }
@@ -224,7 +218,7 @@ export const newToken = async (
 
     setCookie(res, "accessToken", newAccessToken, { maxAge: 30 * 60 * 1000 });
 
-    res.json({ accessToken: newAccessToken });
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, { accessToken: newAccessToken });
   } catch (error) {
     console.log("Error in new token", error);
     next(error);
@@ -294,12 +288,7 @@ export const googleLogin = async (
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({
-      success: true,
-      user: payload,
-      accessToken,
-      message: "google signin successfull",
-    });
+    sendResponse(res, HttpStatusCode.OK, "Google signin successful", { user: payload, accessToken });
   } catch (error) {
     next(error);
   }
@@ -314,13 +303,7 @@ export const checkUser = async (
     //@ts-ignore
     const { id } = req.user;
     const user = await userService.getUserById(id);
-    res
-      .status(200)
-      .json({
-        success: true,
-        user,
-        message: "Fetched user status successfully",
-      });
+   sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, { user });
   } catch (error) {
     console.log(error);
   }
@@ -333,7 +316,7 @@ export const logout = async (
 ) => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
-  res.status(200).send({ success: true, message: "Logged out successfully" });
+  sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
 };
 
 export const setPassword = async (
@@ -345,9 +328,7 @@ export const setPassword = async (
     const { id } = req.user as JWTUserPayload;
     const { password } = req.body;
     await userService.updatePassword(id, password);
-    res
-      .status(200)
-      .json({ success: true, message: "Password created successfully" });
+    sendResponse(res, HttpStatusCode.OK, "Password created successfully");
   } catch (error) {
     console.log(error);
     next(error);

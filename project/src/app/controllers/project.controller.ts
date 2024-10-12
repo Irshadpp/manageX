@@ -1,4 +1,4 @@
-import { BadRequestError } from "@ir-managex/common";
+import { BadRequestError, HttpStatusCode, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { ProjectService } from "../services/project/project.service";
 import { Role } from "../model/enum";
@@ -10,8 +10,8 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
     if(!orgId) throw new BadRequestError("Invalid user creadentials");
 
     const newProject = await projectService.createProject({...req.body, organizationId: orgId});
-    res.status(201).json({success: true, message: "Project created successfully", data: newProject});
-}
+    sendResponse(res, HttpStatusCode.CREATED, "Project created successfully",  newProject );
+  }
 
 export const updateProject = async (req: Request, res: Response, next: NextFunction) =>{
     const {id} = req.params;
@@ -19,14 +19,14 @@ export const updateProject = async (req: Request, res: Response, next: NextFunct
 
     await projectService.updateProject(id, {...req.body});
     const updatedProject = await projectService.getProjectById(id);
-    res.status(200).json({success: true, message: "Project updated successfully", data: updatedProject});
-}
+    sendResponse(res, HttpStatusCode.OK, "Project updated successfully",  updatedProject);
+  }
 
 export const getProjects = async (req: Request, res: Response, next: NextFunction) =>{
     const orgId = req.user?.organization
     const projects = await projectService.fetchProjectsByOrgId(orgId as string);
-    res.status(200).json({success: true, message: "Projects fetched successfully", data: projects});
-}
+    sendResponse(res, HttpStatusCode.OK, "Projects fetched successfully", projects);
+  }
 
 export const fetchProjectCount = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -39,12 +39,7 @@ export const fetchProjectCount = async (req: Request, res: Response, next: NextF
            projectData = await projectService.getCompletedProjects(organization, id)
       }
   
-      console.log("project count data", projectData)
-      return res.status(200).json({
-          success:true,
-        message: "Successfully fetched the project count",
-        data: projectData
-      });
+      return sendResponse(res, HttpStatusCode.OK, "Successfully fetched the project count", projectData );
     } catch (error) {
       console.log(error)
       next(error)
