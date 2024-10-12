@@ -13,7 +13,7 @@ import { ChatMessageList } from "./chat-message-list";
 import { DotsVerticalIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import UserAvatarImage from '/useravatar.png';
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -90,7 +90,12 @@ export function ChatList({
                     <ChatBubbleMessage isLoading={message.isLoading}>
                       {message.message}
                       {message.timestamp && (
-                        <ChatBubbleTimestamp timestamp={format(new Date(message.timestamp), "hh:mm a")} />
+                        <ChatBubbleTimestamp timestamp={formatDistanceToNow(
+                          new Date(message.timestamp),
+                          {
+                            addSuffix: true,
+                          }
+                        )} />
                       )}
                     </ChatBubbleMessage>
                     <ChatBubbleActionWrapper>

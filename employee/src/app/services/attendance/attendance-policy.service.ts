@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import {
   AttendacePolicyDoc,
   AttendancePolicyAttrs,
@@ -20,7 +21,7 @@ export class AttendancePolicyService implements IAttendancePolicyService {
     attrs: AttendancePolicyAttrs
   ): Promise<AttendacePolicyDoc | null> {
     return await AttendancePolicy.findByIdAndUpdate(
-      orgId,
+      new mongoose.Types.ObjectId(orgId),
       { $set: { ...attrs } },
       { new: true }
     );

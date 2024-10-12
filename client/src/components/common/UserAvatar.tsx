@@ -3,7 +3,7 @@ import { FiUser } from "react-icons/fi";
 
 interface PropsTypes {
   profileURL: string;
-  size?: number;
+  size?: number | string;
 }
 
 const UserAvatar = ({ profileURL, size }: PropsTypes) => {

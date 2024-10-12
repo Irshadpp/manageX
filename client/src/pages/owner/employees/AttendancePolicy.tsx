@@ -10,12 +10,13 @@ const AttendancePolicy = () => {
     const [policy, setPolicy] = useState({});
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(true);
+    console.log(user?.organizationId)
     useEffect(()=>{
         const fetchPolicy = async () =>{
             const res = await apiRequest({
                 method: "GET",
                 url: import.meta.env.VITE_EMPLOYEE_URL,
-                route: `/api/v1/attendance-policy/${user!.organization}`,
+                route: `/api/v1/attendance-policy/${user?.organizationId}`,
                 headers:{
                     "Content-Type": "application/json"
                 }

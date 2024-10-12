@@ -7,6 +7,7 @@ const attendancePolicyService = new AttendancePolicyService()
 export const fetchAttendancePolicy = async (req: Request, res: Response, next: NextFunction) =>{
     try {
         const {organizationId} = req.params;
+        console.log("organizaationid=======>", organizationId)
         if(!organizationId){
             throw new BadRequestError("Organization Id is required")
         }

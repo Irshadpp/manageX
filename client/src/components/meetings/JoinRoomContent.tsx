@@ -8,6 +8,7 @@ import JoinRoomButtons from "./JoinRoomButtons";
 import OnlyWithAudioCheckbox from "./OnlyWithAudioCheckBox";
 import ErrorMessage from "./ErrorMessage";
 import { getRoomExists } from "@/services/api/meetApis";
+import { apiRequest } from "@/services/api/commonRequest";
 
 const JoinRoomContent = () => {
   const { isRoomHost } = useSelector((state: RootState) => state.meet);
@@ -19,6 +20,12 @@ const JoinRoomContent = () => {
   const navigate = useNavigate();
 
   const handleJoinRoom = async () => {
+    if(!nameValue){
+      return setErrorMessage("Name is required")
+    }
+    if(nameValue.trim().length < 2){
+      return setErrorMessage("Name must include minimum 2 charecters")
+    }
     dispatch(setIdentity(nameValue));
     if (isRoomHost) {
       createRoom();
@@ -33,16 +40,31 @@ const JoinRoomContent = () => {
   
   const joinRoom = async () => {
     try {
-      const response = await getRoomExists(roomIdValue);
+      if(roomIdValue.trim().length < 1){
+        return setErrorMessage("Room id is required")
+      }
+      const response = await apiRequest({
+        method: "GET",
+        url: import.meta.env.VITE_MEET_URL,
+        route: `/api/v1/meet/room-exists/${roomIdValue}`,
+        headers:{
+          "Content-Type": "application/json"
+        }
+      });
+      if(!response.success){
+        setErrorMessage(response?.errors[0]?.message || "An error occurred. Please try again.");
+        return
+      }
       if (response.success) {
         dispatch(setRoomId(roomIdValue));
         navigate(`/${user?.role}/meetings/room`);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log("errorr======>",error)
       setErrorMessage("An error occurred. Please try again.");
     }
   };
-
+  
   const createRoom = () => {
     navigate(`/${user?.role}/meetings/room`);
   };
