@@ -18,7 +18,7 @@ const useSessionCheck = () =>{
                         "Content-Type":"application/json"
                     }
                 });
-                const {user} = response;
+                const {user} = response.data;
                 if(!user.isActive){
                     return dispatch(clearCredentials());
                 }

@@ -61,8 +61,8 @@ const LoginForm = () => {
           setError(res?.errors[0]?.message || "Login failed Please try again later");
           return setLoading(false);
         }
-        const {user} = res
-        dispatch(setCredentials({user:res.user}));
+        const {user} = res.data
+        dispatch(setCredentials({user}));
         switch(user.role){
           case 'owner':
             navigate("/owner");

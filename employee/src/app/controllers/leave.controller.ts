@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AttendancePolicyService } from "../services/attendance/attendance-policy.service";
-import { BadRequestError } from "@ir-managex/common";
+import { BadRequestError, HttpStatusCode, sendResponse } from "@ir-managex/common";
 import { LeaveService } from "../services/leave/leave.service";
 import { LeaveAttrs } from "../model/leave.model";
 
@@ -33,12 +33,8 @@ export const applyLeave = async (req: Request, res: Response, next: NextFunction
         organizationId: organization
     } as LeaveAttrs);
 
-    res.status(201).json({
-        success: true,
-        message: "Leave applied successfully",
-        data: leave
-    })
-    } catch (error) {
+    sendResponse(res, HttpStatusCode.CREATED, "Leave applied successfully", leave);
+} catch (error) {
         next(error)
     }
 }
@@ -53,11 +49,7 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
         }
 
         const updatedLeave = leaveService.updateLeaveStatus(leaveId, status);
-        res.status(200).send({
-            success: true,
-            message: "Leave status updated successfully",
-            data: updatedLeave
-        });
+        sendResponse(res, HttpStatusCode.OK, "Leave status updated successfully", updatedLeave );
     } catch (error) {
         next(error)
     }
@@ -66,19 +58,11 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
 export const fetchLeaveApplicatons = async (req: Request, res: Response, next: NextFunction) =>{
     const {id} = req.user!
     const applications = await leaveService.fetchApplicationsByEmpId(id);
-    res.status(200).send({
-        success: true,
-        message: "Leave data fethed successfully",
-        data: applications
-    })
+    sendResponse(res, HttpStatusCode.OK, "Leave data fetched successfully", applications );
 }
 
 export const fetchLeaveApplicatonsForOwner = async (req: Request, res: Response, next: NextFunction) =>{
     const {organization} = req.user!
     const applications = await leaveService.fetchApplicationsByOrg(organization);
-    res.status(200).send({
-        success: true,
-        message: "Leave applications fethed successfully",
-        data: applications
-    })
+    sendResponse(res, HttpStatusCode.OK, "Leave applications fetched successfully", applications );
 }

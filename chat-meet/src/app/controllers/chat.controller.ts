@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { ChatService } from '../services/chat/chat.service';
 import { ChatType } from '../model/enum';
-import { BadRequestError } from '@ir-managex/common';
+import { BadRequestError, HttpStatusCode, sendResponse } from '@ir-managex/common';
 
 const chatService = new ChatService()
 export const getChats = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req?.user?.id;
     const chats = await chatService.getChatsByUserId(userId!);
-    res.status(200).send({ success: true, message: 'Chats fetched successfully', data: chats });
+    sendResponse(res, HttpStatusCode.OK, "Chats fetched successfully", chats );
   } catch (error) {
     next(error);
   }
@@ -28,9 +28,7 @@ export const createChat = async (req: Request, res: Response, next: NextFunction
       }
   
       const chat = await chatService.createChat(req.body);
-      const chatData = {...chat, messages: []}
-      console.log(chatData, "create group chat data")
-      res.status(201).send({ success: true, message: 'Chat created successfully', data: chat });
+      sendResponse(res, HttpStatusCode.CREATED, "Chat created successfully", chat );
     } catch (error) {
       next(error);
     }
