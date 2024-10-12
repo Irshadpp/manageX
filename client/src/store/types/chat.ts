@@ -4,12 +4,16 @@ export enum ChatType {
 }
 
 export enum MessageType{
-  TEXT = "text"
+  TEXT = "text",
+  IMAGE = "image",
+  VIDEO = "vidoe",
+  FILE = "file"
 }
 
 export interface Message {
   id: string;
   message: string;
+  type: string;
   timestamp: string;
   name: string;
   profileURL: string;

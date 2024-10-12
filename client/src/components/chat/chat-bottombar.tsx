@@ -6,6 +6,7 @@ import {
   SendHorizontal,
   ThumbsUp,
 } from "lucide-react";
+import { AiOutlinePaperClip } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,8 @@ import { AppDispatch, RootState } from "@/store";
 import { fetchChats } from "@/store/chatThunk";
 import {MessageType } from "@/store/types/chat";
 import useSocket from "@/hooks/useSocket";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import FileUploadSelector from "./file-upload-selector";
 
 interface ChatBottombarProps {
   isMobile: boolean;
@@ -29,6 +32,7 @@ export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
 export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottombarProps) {
   const [message, setMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const selectedChat =  useSelector((state: RootState) => 
@@ -103,78 +107,27 @@ export default function ChatBottombar({ isMobile, selectedChatId }: ChatBottomba
   return (
     <div className="px-2 py-4 flex justify-between w-full items-center gap-2">
       <div className="flex">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Link
-              to="#"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "icon" }),
-                "h-9 w-9",
-                "shrink-0",
-              )}
-            >
-              <PlusCircle size={22} className="text-muted-foreground" />
-            </Link>
-          </PopoverTrigger>
-          <PopoverContent side="top" className="w-full p-2">
-            {message.trim() || isMobile ? (
-              <div className="flex gap-2">
-                <Link
-                  to="#"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "h-9 w-9",
-                    "shrink-0",
-                  )}
-                >
-                  <Mic size={22} className="text-muted-foreground" />
-                </Link>
-                {BottombarIcons.map((icon, index) => (
-                  <Link
-                    key={index}
-                    to="#"
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "h-9 w-9",
-                      "shrink-0",
-                    )}
-                  >
-                    <icon.icon size={22} className="text-muted-foreground" />
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <Link
-                to="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9",
-                  "shrink-0",
-                )}
-              >
-                <Mic size={22} className="text-muted-foreground" />
-              </Link>
-            )}
-          </PopoverContent>
-        </Popover>
         {!message.trim() && !isMobile && (
           <div className="flex">
-            {BottombarIcons.map((icon, index) => (
-              <Link
-                key={index}
-                to="#"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "h-9 w-9",
-                  "shrink-0",
-                )}
-              >
-                <icon.icon size={22} className="text-muted-foreground" />
-              </Link>
-            ))}
+            <AiOutlinePaperClip
+            onClick={() => setIsModalOpen(!isModalOpen)}
+            className="text-muted-foreground h-9 w-9 shrink-0"/>   
           </div>
         )}
       </div>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Upload file</DialogTitle>
+              <DialogDescription>
+                Choose the type of file you are planning to send
+              </DialogDescription>
+            </DialogHeader> 
+            <FileUploadSelector chat={selectedChat} setIsModalOpen={setIsModalOpen} />
+          </DialogContent>
+        </Dialog>
+
 
       <AnimatePresence initial={false}>
         <motion.div

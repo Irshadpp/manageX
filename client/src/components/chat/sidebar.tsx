@@ -12,8 +12,9 @@ import UserAvatar from "../common/UserAvatar";
 import UserAvatarImage from '/useravatar.png'
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { ChatType } from "@/store/types/chat";
+import { ChatType, MessageType } from "@/store/types/chat";
 import GroupImage from "/groupProfile.jpeg";
+import { Message } from "@mui/icons-material";
 
 
 interface SidebarProps {
@@ -123,9 +124,16 @@ export function Sidebar({ chats, isCollapsed, onUserClick, isMobile }: SidebarPr
               <div className="flex flex-col max-w-28">
                 <span>{chat.name}</span>
                 {chat.messages.length > 0 && (
-                  <span className="text-zinc-300 text-xs truncate ">
-                    {chat.messages[chat.messages.length - 1]?.name === user?.name ? "You" : chat.messages[chat.messages.length - 1]?.name}: {chat.messages[chat.messages.length - 1].message}
-                  </span>
+                  <span className="text-zinc-300 text-xs truncate">
+                  {chat.messages[chat.messages.length - 1]?.name === user?.name ? "You" : chat.messages[chat.messages.length - 1]?.name}:
+                  {chat.messages[chat.messages.length - 1]?.type === MessageType.IMAGE
+                    ? " Image"
+                    : chat.messages[chat.messages.length - 1]?.type === MessageType.VIDEO
+                    ? " Video"
+                    : chat.messages[chat.messages.length - 1]?.type === MessageType.FILE
+                    ? " File"
+                    : " "+chat.messages[chat.messages.length - 1]?.message}
+                </span>
                 )}
               </div>
             </button>

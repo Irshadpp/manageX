@@ -18,7 +18,7 @@ import UserAvatarImage from '/useravatar.png';
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { ChatType } from "@/store/types/chat";
+import { ChatType, MessageType } from "@/store/types/chat";
 import UserAvatar from "../common/UserAvatar";
 
 interface ChatListProps {
@@ -88,7 +88,12 @@ export function ChatList({
                   <ChatBubble variant={variant}>
                     {selectedChat.type === ChatType.GROUP && <UserAvatar profileURL={message.profileURL || UserAvatarImage} />}
                     <ChatBubbleMessage isLoading={message.isLoading}>
-                      {message.message}
+                      {message.type === MessageType.IMAGE ? (
+                        <img src={message.message} alt="image" />
+                      ):(
+                        message.message
+                      )
+                      }
                       {message.timestamp && (
                         <ChatBubbleTimestamp timestamp={formatDistanceToNow(
                           new Date(message.timestamp),
