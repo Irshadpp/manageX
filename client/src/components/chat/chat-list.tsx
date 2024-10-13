@@ -14,7 +14,7 @@ import { DotsVerticalIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { format, formatDistanceToNow } from "date-fns";
-import UserAvatarImage from '/useravatar.png';
+import UserAvatarImage from "/useravatar.png";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
@@ -28,10 +28,9 @@ interface ChatListProps {
   isMobile: boolean;
 }
 
-const getMessageVariant = (messageUserId: string, userId: string) =>{
-
-  return userId == messageUserId  ? "sent" : "received";
-}
+const getMessageVariant = (messageUserId: string, userId: string) => {
+  return userId == messageUserId ? "sent" : "received";
+};
 
 export function ChatList({
   messages,
@@ -41,13 +40,15 @@ export function ChatList({
 }: ChatListProps) {
   const { chatData } = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
-  const selectedChat: any = chatData ? chatData.find(chat => chat.id === selectedChatId) : {};
+  const selectedChat: any = chatData
+    ? chatData.find((chat) => chat.id === selectedChatId)
+    : {};
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollToBottom = () =>{
+  const scrollToBottom = () => {
     chatContainerRef.current?.scrollIntoView(false);
-  }
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -64,63 +65,85 @@ export function ChatList({
       <ChatMessageList>
         <AnimatePresence>
           <ScrollArea className="h-[540px] w-full">
-          <ScrollAreaPrimitive.Viewport ref={chatContainerRef} className="h-full w-full rounded-[inherit]">
-            {messages.map((message, index) => {
-              const variant = getMessageVariant(message.userId, user?.id!);
-              return (
-                <motion.div
-                  key={index}
-                  layout
-                  initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
-                  animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                  exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
-                  transition={{
-                    opacity: { duration: 0.1 },
-                    layout: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: index * 0.02,
-                    },
-                  }}
-                  style={{ originX: 0.5, originY: 0.5 }}
-                  className="flex flex-col gap-2 p-4"
-                >
-                  <ChatBubble variant={variant}>
-                    {selectedChat.type === ChatType.GROUP && <UserAvatar profileURL={message.profileURL || UserAvatarImage} />}
-                    <ChatBubbleMessage isLoading={message.isLoading}>
-                      {message.type === MessageType.IMAGE ? (
-                        <img src={message.message} alt="image" />
-                      ):(
-                        message.message
-                      )
-                      }
-                      {message.timestamp && (
-                        <ChatBubbleTimestamp timestamp={formatDistanceToNow(
-                          new Date(message.timestamp),
-                          {
-                            addSuffix: true,
-                          }
-                        )} />
-                      )}
-                    </ChatBubbleMessage>
-                    <ChatBubbleActionWrapper>
-                      {actionIcons.map(({ icon: Icon, type }) => (
-                        <ChatBubbleAction
-                          className="size-7"
-                          key={type}
-                          icon={<Icon className="size-4" />}
-                          onClick={() =>
-                            console.log(
-                              "Action " + type + " clicked for message " + index,
-                            )
-                          }
+            <ScrollAreaPrimitive.Viewport
+              ref={chatContainerRef}
+              className="h-full w-full rounded-[inherit]"
+            >
+              {messages.map((message, index) => {
+                const variant = getMessageVariant(message.userId, user?.id!);
+                return (
+                  <motion.div
+                    key={index}
+                    layout
+                    initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
+                    animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                    exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+                    transition={{
+                      opacity: { duration: 0.1 },
+                      layout: {
+                        type: "spring",
+                        bounce: 0.3,
+                        duration: index * 0.02,
+                      },
+                    }}
+                    style={{ originX: 0.5, originY: 0.5 }}
+                    className="flex flex-col gap-2 p-4"
+                  >
+                    <ChatBubble variant={variant}>
+                      {selectedChat.type === ChatType.GROUP && (
+                        <UserAvatar
+                          profileURL={message.profileURL || UserAvatarImage}
                         />
-                      ))}
-                    </ChatBubbleActionWrapper>
-                  </ChatBubble>
-                </motion.div>
-              );
-            })}
+                      )}
+                      <ChatBubbleMessage isLoading={message.isLoading}>
+                        {message.type === MessageType.IMAGE ? (
+                          <img src={message.message} alt="image" />
+                        ) : message.type === MessageType.VIDEO ? (
+                          <video controls>
+                            <source src={message.message} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        ) : message.type === MessageType.FILE ? (
+                          <a
+                            href={message.message}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View PDF
+                          </a>
+                        ) : (
+                          message.message
+                        )}
+                        {message.timestamp && (
+                          <ChatBubbleTimestamp
+                            timestamp={formatDistanceToNow(
+                              new Date(message.timestamp),
+                              { addSuffix: true }
+                            )}
+                          />
+                        )}
+                      </ChatBubbleMessage>
+                      <ChatBubbleActionWrapper>
+                        {actionIcons.map(({ icon: Icon, type }) => (
+                          <ChatBubbleAction
+                            className="size-7"
+                            key={type}
+                            icon={<Icon className="size-4" />}
+                            onClick={() =>
+                              console.log(
+                                "Action " +
+                                  type +
+                                  " clicked for message " +
+                                  index
+                              )
+                            }
+                          />
+                        ))}
+                      </ChatBubbleActionWrapper>
+                    </ChatBubble>
+                  </motion.div>
+                );
+              })}
             </ScrollAreaPrimitive.Viewport>
           </ScrollArea>
         </AnimatePresence>
