@@ -25,7 +25,6 @@ import VerifyEmail from "./pages/landing/Registration/VerifyEmail";
 import GetStarted from "./pages/landing/Registration/GetStarted";
 import VerifiedEmail from "./pages/landing/Registration/VerifiedEmail";
 import SetPassword from "./pages/landing/Registration/SetPassword";
-import EmployeeSideBar from "./components/ui/sidebars/EmployeeSideBar";
 import EmpLayout from "./pages/employee/EmpLayout";
 import AttendancePolicy from "./pages/owner/employees/AttendancePolicy";
 import { AttendanceSideMenu } from "./pages/employee/attendance/AttendanceSideMenu";
@@ -48,7 +47,6 @@ import ManAttendancePolicy from "./pages/manager/employees/ManAttendancePolicy";
 import ManExEmployees from "./pages/manager/employees/ManExEmployees";
 import { ManEmployeeSideMenu } from "./pages/manager/employees/ManEmployeeSideMenu";
 import { EmployeeProfile } from "./pages/owner/employees/EmployeeProfile";
-import { ChatLayout } from "./components/chat/chat-layout";
 import Chat from "./pages/owner/chat/Chat";
 import EmpChat from "./pages/employee/chat/EmpChat";
 import Meet from "./pages/owner/meetings/Meet";
@@ -65,6 +63,8 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { broadcastMeetState, listenToMeetStateChanges } from "./utils/broadcast-meet-state";
 import store from "./store";
+import Subscription from "./pages/owner/subscription/Subscription";
+import Plans from "./components/subscription/Plans";
 
 function App() {
   const dispatch = useDispatch();
@@ -119,6 +119,9 @@ function App() {
                     <Route path="/owner/chat" element={<Chat/>}/>
                     <Route path="/owner/meetings" element={<Meet/>}/>
                     <Route path="/owner/meetings/join-room" element={<JoinRoom/>}/>
+                    <Route path="/owner/billing" element={<Subscription/>}/>
+                    <Route path="/owner/billing" element={<Subscription/>}/>
+                    <Route path="/owner/billing/plans" element={<Plans/>}/>
                   </Route>
                     <Route path="/owner/meetings/room" element={<Room/>}/>
                 </Route>
