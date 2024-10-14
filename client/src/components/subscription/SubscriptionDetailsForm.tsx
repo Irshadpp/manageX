@@ -43,7 +43,7 @@ const formSchema = z.object({
       message: "Country must be at least 2 characters.",
     })
     .max(30, { message: "Country should be less than 30 characters" }),
-  zipCode: z
+  zipcode: z
     .string()
     .min(2, {
       message: "zipCode must be at least 2 characters.",
@@ -73,7 +73,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
       state: "",
       city: "",
       country: "",
-      zipCode: "",
+      zipcode: "",
     },
   });
 
@@ -193,7 +193,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
         />
         <FormField
           control={form.control}
-          name="zipCode"
+          name="zipcode"
           render={({ field }) => (
             <FormInputCustom
               field={field}
