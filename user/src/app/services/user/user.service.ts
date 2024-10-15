@@ -94,13 +94,14 @@ export class UserService implements IUserService {
   async getUserById(id: string): Promise<any> {
     const user = await User.findOne(
       { _id: id },
-      { role: 1, isActive: 1, organizationId: 1, fName: 1, lName: 1 }
+      { role: 1, isActive: 1, organizationId: 1, email: 1, fName: 1, lName: 1 }
     ).lean(); 
     
     if (user) {
       return {
         id: user._id,
         role: user.role,
+        email: user.email,
         isActive: user.isActive,
         organizationId: user.organizationId,
         name: `${user.fName} ${user.lName}`

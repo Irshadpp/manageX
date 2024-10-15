@@ -1,11 +1,11 @@
 import { body } from "express-validator";
 
 export const createSubscriptionValidator = [
-  body("priceId")
-    .notEmpty()
-    .withMessage("Price ID is required")
-    .isString()
-    .withMessage("Price ID must be a valid string"),
+//   body("price")
+//     .notEmpty()
+//     .withMessage("Price ID is required")
+//     .isString()
+//     .withMessage("Price ID must be a valid string"),
 
   body("email")
     .notEmpty()

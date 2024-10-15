@@ -1,25 +1,26 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import PlanCards from "./PlanCards";
+import { apiRequest } from "@/services/api/commonRequest";
 
 export default function Plans() {
   const [subscription, setSubscription] = useState<any>();
 
   useEffect(() => {
-    // const loadData = async () => {
-    //   const res = await actualCommonRequest({
-    //     route: API_ROUTES.SUBSCRIPTION,
-    //     method: "GET",
-    //     url: "/api/subscription",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
-    //   if (res.success) {
-    //     setSubscription(res.subscription);
-    //   }
-    // };
-    // loadData();
+    const fetchData = async () => {
+      const response = await apiRequest({
+        url: import.meta.env.VITE_SIBSCRIPTION_URL,
+        method: "GET",
+        route: "/api/v1/subscription",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.success) {
+        setSubscription(response.subscription);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
@@ -40,10 +41,10 @@ export default function Plans() {
           <TabsTrigger value="yearly">yearly</TabsTrigger>
         </TabsList>
         <TabsContent value="monthly">
-          <PlanCards pro="49" business="399" subscription={subscription} />
+          <PlanCards pro="499" business="4999" subscription={subscription} />
         </TabsContent>
         <TabsContent value="yearly">
-          <PlanCards pro="499" business="3999" subscription={subscription} />
+          <PlanCards pro="899" business="8999" subscription={subscription} />
         </TabsContent>
       </Tabs>
     </div>

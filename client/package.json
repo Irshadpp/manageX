@@ -38,6 +38,7 @@
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.7",
     "@shadcn/ui": "^0.0.4",
+    "@stripe/stripe-js": "^4.8.0",
     "@tabler/icons-react": "^3.12.0",
     "@tanstack/react-table": "^8.20.5",
     "@types/redux-persist": "^4.0.0",

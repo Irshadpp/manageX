@@ -111,6 +111,7 @@ export const verifyEmail = async (
       id: user.id,
       role: user.role,
       name: `${user.fName} ${user.lName}`,
+      email: user.email,
       profileURL: user.profileURL,
       isActive: user.isActive,
       organization: user.organizationId,
@@ -163,6 +164,7 @@ export const loginUser = async (
     const payload: JWTUserPayload = {
       id: user.id,
       name: `${user.fName} ${user.lName}`,
+      email: user.email,
       profileURL: user.profileURL,
       isActive: user.isActive,
       role: user.role,
@@ -177,7 +179,7 @@ export const loginUser = async (
       payload,
       process.env.JWT_REFRESH_SECRET!
     );
-
+    
     setCookie(res, "accessToken", accessToken, { maxAge: 30 * 60 * 1000 });
     setCookie(res, "refreshToken", refreshToken, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -196,6 +198,7 @@ export const newToken = async (
 ) => {
   try {
     const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken, "refresh token---------------")
     if (!refreshToken) {
       throw new NotAuthorizedError();
     }
@@ -208,6 +211,7 @@ export const newToken = async (
     const payload: JWTUserPayload = {
       id: user.id,
       name: user.name,
+      email: user.email,
       profileURL: user.profileURL,
       role: user.role,
       isActive: user.isActive,
@@ -247,6 +251,7 @@ export const googleLogin = async (
       payload = {
         id: existingUser.id,
         name: `${existingUser.fName} ${existingUser.lName}`,
+        email: existingUser.email,
         profileURL: existingUser.profileURL,
         role: existingUser.role,
         isActive: existingUser.isActive,
@@ -274,6 +279,7 @@ export const googleLogin = async (
       payload = {
         id: user.id,
         name: `${user.fName} ${user.lName}`,
+        email: user.email,
         profileURL: user.profileURL,
         role: user.role,
         isActive: user.isActive,

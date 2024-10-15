@@ -29,7 +29,6 @@ export function CountryList({
   value?: string;
 }) {
   const countries = Country.getAllCountries();
-  console.log("countries================>",countries)
 
   const [managers, setManagers] = useState<ICountry[]>([...countries]);
   const { setValue } = useFormContext();

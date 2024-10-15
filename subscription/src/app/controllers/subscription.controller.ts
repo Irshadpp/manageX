@@ -7,14 +7,28 @@ import Stripe from "stripe";
 
 const subscriptionService = new SubscriptionService();
 
+const fetchSubscription = async (req: Request, res: Response, next: NextFunction) =>{
+
+}
+
 export const createSubscription = async (req: Request, res: Response, next: NextFunction) =>{
-    const {priceId, email, name, address} = req.body;
+    const {price, email, name, address} = req.body;
     const {organization} = req.user!;
     if(!organization){
         throw new BadRequestError("Invalid user creadential");
     }
 
     try {
+
+        const prices = await stripe.prices.list(); 
+        const priceObject = prices.data.find(p => p.unit_amount === price * 100 && p.currency === 'inr'); 
+
+        if (!priceObject) {
+            throw new BadRequestError("Invalid price value");
+        }
+
+        const priceId = priceObject.id; 
+
         const existingCustomer = await stripe.customers.list({email});
         let customer;
 
@@ -33,7 +47,8 @@ export const createSubscription = async (req: Request, res: Response, next: Next
                 mode: "subscription",
                 payment_method_types: ["card"],
                 line_items: [{ price: priceId, quantity: 1 }],
-                success_url: `${process.env.CLIENT_URL}/success`,
+                success_url: `${process.env.CLIENT_URL}/owner/billing/success`,
+                cancel_url: `${process.env.CLIENT_URL}/onwer/billing/failure`,
                 customer: customer.id,
               });
           
@@ -46,7 +61,7 @@ export const createSubscription = async (req: Request, res: Response, next: Next
 
 export const handleStripeWebhook = async (req: Request, res: Response, next: NextFunction) =>{
     const sig = req.headers["stripe-signature"]!;
-    let event: Stripe.Event | null = null; // Initialize as null
+    let event: Stripe.Event | null = null;
 
 
     try {
