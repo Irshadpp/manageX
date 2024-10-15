@@ -17,7 +17,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(({ employee }) => {
   const {user} = useSelector((state: RootState) => state.auth)
   return (
     <div
-      className="shadow-md bg-muted/40 p-5 rounded-lg cursor-pointer hover:opacity-80"
+      className="shadow-md bg-muted/40 p-4 rounded-lg cursor-pointer hover:opacity-80"
       onClick={() => navigate(`/${user?.role}/employees/${employee.id}`)}
     >
       <div className="text-center py-5">
