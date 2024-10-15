@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user/user.service";
-import { JWTUserPayload, NotFoundError } from "@ir-managex/common";
+import { CommonMessages, HttpStatusCode, JWTUserPayload, NotFoundError, sendResponse } from "@ir-managex/common";
+import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
+import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
+import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
 
 const userService = new UserService();
 
@@ -16,10 +19,16 @@ export const updateUser = async (
       throw new NotFoundError();
     }
     const userData = req.body;
-    await userService.updateUser(id, userData);
-    res
-      .status(200)
-      .json({ success: true, message: "User details updated successfully" });
+    const updatedUser = await userService.updateUser(id, userData);
+
+    const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(updatedUser!);
+    await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
+    const ChatUserEventData = ChatUserUpdatedPublisher.mapToEventData(updatedUser!);
+    await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(ChatUserEventData);
+
+    sendResponse(res, HttpStatusCode.OK, "User details updated successfully");
+
   } catch (error) {
     console.log(error);
   }
@@ -30,12 +39,9 @@ export const fetchUsers = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("-------------")
   try {
     const users = await userService.getUsersByRole();
-    res
-      .status(200)
-      .json({ success: true, users, message: "Fetched users successfully" });
+    sendResponse(res, HttpStatusCode.OK, "Fetched users successfully", { users });
   } catch (error) {
     console.log(error);
   }
@@ -49,7 +55,7 @@ export const blockUser = async (req: Request, res: Response, next: NextFunction)
       throw new NotFoundError();
     }
     await userService.blockAndUnblock(id);
-    res.status(200).send({success:true})
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS)
   } catch (error) {
     console.log(error);
   }

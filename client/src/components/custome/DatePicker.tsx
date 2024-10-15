@@ -16,11 +16,10 @@ interface InputWithIconProps{
 }
 
 const DatePicker: React.FC<InputWithIconProps> = ({field, title}) =>{
-    // Convert null to undefined for selected prop
     const selectedDate = field.value ?? undefined;
     return (
         <FormItem className="flex flex-col text-start font-semibold text-[15px]">
-            <FormLabel>{title}</FormLabel>
+            <FormLabel className="mt-2 mb-2">{title}</FormLabel>
             <Popover>
                 <PopoverTrigger asChild>
                     <FormControl>
@@ -34,7 +33,7 @@ const DatePicker: React.FC<InputWithIconProps> = ({field, title}) =>{
                         </Button>
                     </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="bg-white rounded-md shadow-lg w-full">
+                <PopoverContent className="bg-background rounded-md shadow-lg w-full">
                     <Calendar
                     mode="single"
                     selected={selectedDate}

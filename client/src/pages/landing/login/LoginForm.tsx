@@ -9,9 +9,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/services/api/commonRequest";
 import { storeObject } from "@/utils/local-storage";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials, updateIntitialSetup } from "@/store/authSlice";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "@/store";
 
 const formSchema = z.object({
   email: z
@@ -29,7 +30,7 @@ const formSchema = z.object({
 
 
 const LoginForm = () => {
-
+  const {isInitialSetup} = useSelector((state: RootState) => state.auth)
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -41,9 +42,9 @@ const LoginForm = () => {
             email: "",
             password: "",
         }
-    });
-
-    const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
+      });
+      dispatch(updateIntitialSetup({value: false}));
+      const handleSubmit = async (values: z.infer<typeof formSchema>) =>{
       try {
         setLoading(true);
         const res = await apiRequest({
@@ -60,10 +61,8 @@ const LoginForm = () => {
           setError(res?.errors[0]?.message || "Login failed Please try again later");
           return setLoading(false);
         }
-        // const {user, accessToken} = res
-        // dispatch(setCredentials({user:user, accessToken}));
-        const {user} = res
-        dispatch(setCredentials({user:res.user}));
+        const {user} = res.data
+        dispatch(setCredentials({user}));
         switch(user.role){
           case 'owner':
             navigate("/owner");

@@ -1,4 +1,4 @@
-import { BadRequestError, JWTUserPayload, NotFoundError } from "@ir-managex/common";
+import { BadRequestError, CommonMessages, HttpStatusCode, JWTUserPayload, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { OrgService } from "../services/organization/org.service";
 
@@ -31,9 +31,7 @@ export const updateOrg = async (
       orgData,
       isAddress
     );
-    res.status(200).json({
-      success: true,
-    });
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
   } catch (error) {
     console.log(error);
   }
@@ -42,7 +40,7 @@ export const updateOrg = async (
 export const fetchOrgs = async (req: Request, res: Response, next: NextFunction) =>{
   try {
     const orgsData = await orgService.getOrgsByPlan()
-    res.status(200).send({ success: true, data: orgsData});
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, orgsData );
   } catch (error) {
     console.log(error)
     next(error);

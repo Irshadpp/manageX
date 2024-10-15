@@ -37,6 +37,7 @@ const leaveSchema = new mongoose.Schema(
           delete ret.__v;
         },
       },
+      timestamps: true,
     }
   );
 

@@ -100,6 +100,7 @@ export class EmployeeService implements IEmployeeService{
                     hiringDate: 1,
                     salary: 1,
                     employeeType: 1,
+                    profileURL: 1,
                     gender: 1,
                     isActive: 1,
                     organizationId: 1,

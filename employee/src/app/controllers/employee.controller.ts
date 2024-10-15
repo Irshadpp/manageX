@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "@ir-managex/common";
+import { BadRequestError, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { EmployeeService } from "../services/employee/employee.service";
 import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
@@ -6,6 +6,10 @@ import { rabbitmqWrapper } from "../../config/rabbitmqWrpper";
 import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
 import { generateEmailToken } from "../utils/jwt/email-varification.jwt";
 import { sendVarificationEmail } from "../utils/node-mailer/send-verification-email";
+import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-created-publisher";
+import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
+import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
+import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
 
 const employeeService = new EmployeeService();
 
@@ -52,7 +56,15 @@ export const createEmployee = async (
     const eventData = UserCreatedPublisher.moveToEventData(employeeData);
     await new UserCreatedPublisher(rabbitmqWrapper.channel).publish(eventData);
 
-    res.status(201).send({success: true, message: "Created employee successfully"});
+    const projecUserEventData = ProjectUserCreatedPublisher.mapToEventData(employeeData);
+    await new ProjectUserCreatedPublisher(rabbitmqWrapper.channel).publish(projecUserEventData);
+
+    const chatUserEventData = ChatUserCreatedPublisher.mapToEventData(employeeData!);
+    console.log(chatUserEventData, "chat user created publishing data............")
+    await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
+
+    sendResponse(res, HttpStatusCode.CREATED, "Created employee successfully");
+
     
   } catch (error) {
     next(error)
@@ -103,8 +115,13 @@ export const updateEmployee = async (req: Request, res: Response, next: NextFunc
     const eventData = UserUpdatedPublisher.moveToEventData(employeeData!);
     await new UserUpdatedPublisher(rabbitmqWrapper.channel).publish(eventData);
 
-    res.status(201).send({success: true, message: "updated employee successfully"});
-    
+    const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(employeeData!)
+    await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
+    const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employeeData!);
+    await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
+
+    sendResponse(res, HttpStatusCode.CREATED, "Updated employee successfully");
   } catch (error) {
     next(error)
   }
@@ -115,7 +132,7 @@ export const sendInvitationMail = async (req: Request, res: Response, next: Next
     const {email, id} = req.body;
     const token = generateEmailToken(id);
     await sendVarificationEmail(email, token);
-    res.status(200).send({success: true});
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
   } catch (error) {
     console.log(error)
     next(error);
@@ -127,7 +144,7 @@ export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next:
     const orgId = req.user?.organization;
     if (!orgId) throw new NotFoundError();
     const employees = await employeeService.findEmployeesWithOrgId(orgId);
-    res.status(200).json({success: true, message: "Fetched employees successfully", data: employees});
+    sendResponse(res, HttpStatusCode.OK, "Fetched employees successfully", employees );
   } catch (error) {
     next(error);
   }

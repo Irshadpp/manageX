@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import AttendancePolicyForm from './AttendancePolicyForm'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { apiRequest } from '@/services/api/commonRequest';
 import { AttendancePolicyType } from './types/attendancePolicy';
+import AttendancePolicyForm from '@/components/employees/AttendancePolicyForm';
 
 const AttendancePolicy = () => {
     const {user} = useSelector((state:RootState) => state.auth)
     const [policy, setPolicy] = useState({});
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(true);
+    console.log(user?.organizationId)
     useEffect(()=>{
         const fetchPolicy = async () =>{
             const res = await apiRequest({
                 method: "GET",
                 url: import.meta.env.VITE_EMPLOYEE_URL,
-                route: `/api/v1/attendance-policy/${user!.organization}`,
+                route: `/api/v1/attendance-policy/${user?.organizationId}`,
                 headers:{
                     "Content-Type": "application/json"
                 }

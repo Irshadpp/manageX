@@ -1,22 +1,31 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import authReducer, { rehydrateAuthState, setCredentials } from "./authSlice"
 import employeeReducer from "./employeeSlice"
-import attendanceReducer from "./attendanceSlice"
+import attendanceReducer from "./attendanceSlice";
+import projectReducer from "./projectSlice";
+import taskReducer from "./taskSlice";
+import chatReducer from "./chatSlice"
+import meetReducer from "./meetSlice"
 import { getObject } from "@/utils/local-storage";
 import storage from "redux-persist/lib/storage"; 
 import {persistReducer, } from "redux-persist"
 import persistStore from "redux-persist/es/persistStore";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ['auth','employee']
+    whitelist: ['auth','employee','attendance','project','task', 'chat']
 }
 
 const rootReducer = combineReducers({
     auth: authReducer,
     employee: employeeReducer,
-    attendance: attendanceReducer
+    attendance: attendanceReducer,
+    project: projectReducer,
+    task: taskReducer,
+    chat: chatReducer,
+    meet: meetReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -36,7 +45,7 @@ if (userData) {
     store.dispatch(rehydrateAuthState(userData));
 }
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState> & PersistPartial;
 export type AppDispatch = typeof store.dispatch;
 
 export type AppThunk<ReturnType = void> = ThunkAction<

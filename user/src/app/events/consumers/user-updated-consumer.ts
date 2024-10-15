@@ -9,7 +9,6 @@ export class UserUpdatedConsumer extends Consumer<UserUpdatedEvent>{
 
     async onMessage(data: UserUpdatedEvent['data'], msg: amqp.Message): Promise<void>{
         try {
-            console.log(data);
             await userService.updateUser(data.id, data);
             this.channel.ack(msg);
         } catch (error) {

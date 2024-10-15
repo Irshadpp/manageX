@@ -17,7 +17,7 @@ const formSchema = z.object({
     required_error: "End date is required.",
   }),
   reason: z.string().min(1, "Please provide a reason for leave."),
-  leaveType: z.enum(["casual", "sick", "vacation"], {
+  leaveType: z.enum(["casual", "sick", "vecation"], {
     required_error: "Leave type is required.",
   }),
 }).superRefine(({ startDate, endDate }, ctx) => {
@@ -31,10 +31,11 @@ const formSchema = z.object({
 });
 
 interface PropsTypes {
-  setModalOpen: any;
+  setModalOpen: (open: boolean) => void;
+  setLeaveData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export default function LeaveForm({ setModalOpen }: PropsTypes) {
+export default function LeaveForm({ setModalOpen, setLeaveData }: PropsTypes) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,6 +72,7 @@ export default function LeaveForm({ setModalOpen }: PropsTypes) {
         const errorMessage = response.errors[0].message;
         setError(errorMessage);
       } else {
+        setLeaveData(prev => [...prev, response.data]); 
         setModalOpen(false);
       }
     } catch (error: any) {
@@ -142,7 +144,7 @@ export default function LeaveForm({ setModalOpen }: PropsTypes) {
                     <SelectContent>
                       <SelectItem value="casual">Casual</SelectItem>
                       <SelectItem value="sick">Sick</SelectItem>
-                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="vecation">Vecation</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

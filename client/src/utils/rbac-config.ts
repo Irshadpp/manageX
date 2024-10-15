@@ -6,7 +6,7 @@ export const rbacConfig = {
         "/employees"
     ],
     manager: [
-        "/manager"
+        "/manager",
     ],
     employee: [
         "/email-verified",

@@ -14,6 +14,9 @@ import {
   verifyJwt,
   setCookie,
   ForbiddenError,
+  sendResponse,
+  HttpStatusCode,
+  CommonMessages,
 } from "@ir-managex/common";
 import { UserAttrs } from "../model/user.model";
 import { UserService } from "../services/user/user.service";
@@ -23,6 +26,8 @@ import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 import { EmployeeCreatedPublisher } from "../events/publishers/employee-created-publisher";
 import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
 import { Role } from "../model/enum";
+import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-created-publisher";
+import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
 
 const userService = new UserService();
 const orgService = new OrgService();
@@ -44,7 +49,7 @@ export const createUser = async (
     if (existingUser) {
       if (!existingUser.isEmailVerified) {
         await handleVerificationEmail(existingUser.id, existingUser.email);
-        return res.status(202).send({ success: true, ...existingUser });
+        return res.status(200).send({ success: true, ...existingUser });
       }
       throw new BadRequestError("Email is already exists");
     }
@@ -54,12 +59,30 @@ export const createUser = async (
     const organization = { organizationId: org.id } as UserAttrs;
     const updatedUser = await userService.updateUser(user.id, organization);
 
-    const eventData = EmployeeCreatedPublisher.mapToEventData(updatedUser!);
-    await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(eventData);
+    const EmployeeEventData = EmployeeCreatedPublisher.mapToEventData(
+      updatedUser!
+    );
+    await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(
+      EmployeeEventData
+    );
+
+    const ProjectUserEventData = ProjectUserCreatedPublisher.mapToEventData(
+      updatedUser!
+    );
+    await new ProjectUserCreatedPublisher(rabbitmqWrapper.channel).publish(
+      ProjectUserEventData
+    );
+
+    const ChatUserEventData = ChatUserCreatedPublisher.mapToEventData(
+      updatedUser!
+    );
+    await new ChatUserCreatedPublisher(rabbitmqWrapper.channel).publish(
+      ChatUserEventData
+    );
 
     await handleVerificationEmail(user.id, user.email);
 
-    res.status(201).send({ success: true, user });
+    sendResponse(res, HttpStatusCode.CREATED, "User created successfully", { user });
   } catch (error) {
     console.log(error);
     next(error);
@@ -87,6 +110,9 @@ export const verifyEmail = async (
     const payload: JWTUserPayload = {
       id: user.id,
       role: user.role,
+      name: `${user.fName} ${user.lName}`,
+      email: user.email,
+      profileURL: user.profileURL,
       isActive: user.isActive,
       organization: user.organizationId,
     };
@@ -100,14 +126,12 @@ export const verifyEmail = async (
       process.env.JWT_REFRESH_SECRET!
     );
 
-    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
-    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
-
-    res.status(200).json({
-      success: true,
-      user,
-      message: "Signup successfull",
+    setCookie(res, "accessToken", accessToken, { maxAge: 30 * 60 * 1000 });
+    setCookie(res, "refreshToken", refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    sendResponse(res, HttpStatusCode.OK, "Signup successful", { user });
   } catch (error) {
     next(error);
   }
@@ -118,18 +142,19 @@ export const loginUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("=========")
   try {
     const { email, password } = req.body;
     const user = await userService.findByEmail(email);
     if (!user) {
       throw new BadRequestError("Invalid email or password!");
     }
-    if(!user.isEmailVerified){
+    if (!user.isEmailVerified) {
       throw new BadRequestError("Please verify your email!");
     }
-    if(!user.isActive){
-      throw new BadRequestError("Your account has been blocked. Please contact support.")
+    if (!user.isActive) {
+      throw new BadRequestError(
+        "Your account has been blocked. Please contact support."
+      );
     }
     const matchPassword = await Password.compare(user.password, password);
     if (!matchPassword) {
@@ -138,6 +163,9 @@ export const loginUser = async (
 
     const payload: JWTUserPayload = {
       id: user.id,
+      name: `${user.fName} ${user.lName}`,
+      email: user.email,
+      profileURL: user.profileURL,
       isActive: user.isActive,
       role: user.role,
       organization: user.organizationId,
@@ -151,16 +179,13 @@ export const loginUser = async (
       payload,
       process.env.JWT_REFRESH_SECRET!
     );
-
-    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
-    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
-
-    res.status(200).json({
-      success: true,
-      user: payload,
-      accessToken,
-      message: `${user.role} Login successfull`,
+    
+    setCookie(res, "accessToken", accessToken, { maxAge: 30 * 60 * 1000 });
+    setCookie(res, "refreshToken", refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    sendResponse(res, HttpStatusCode.OK, `${user.role} Login successful`, { user: payload, accessToken });
   } catch (error) {
     next(error);
   }
@@ -171,21 +196,23 @@ export const newToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  
   try {
     const refreshToken = req.cookies.refreshToken;
-    console.log(refreshToken,"=================================");
-    if(!refreshToken){
+    console.log(refreshToken, "refresh token---------------")
+    if (!refreshToken) {
       throw new NotAuthorizedError();
     }
 
     const refreshSecret = process.env.JWT_REFRESH_SECRET;
     const user = verifyJwt(refreshToken, refreshSecret!) as JWTUserPayload;
-    if (!user){
+    if (!user) {
       throw new ForbiddenError();
-    } 
+    }
     const payload: JWTUserPayload = {
       id: user.id,
+      name: user.name,
+      email: user.email,
+      profileURL: user.profileURL,
       role: user.role,
       isActive: user.isActive,
       organization: user.organization,
@@ -193,12 +220,12 @@ export const newToken = async (
     const accessSecret = process.env.JWT_ACCESS_SECRET;
     const newAccessToken = generateJwtAccessToken(payload, accessSecret!);
 
-    setCookie(res, 'accessToken', newAccessToken, {maxAge: 30 * 60 * 1000});
+    setCookie(res, "accessToken", newAccessToken, { maxAge: 30 * 60 * 1000 });
 
-    res.json({accessToken: newAccessToken});
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, { accessToken: newAccessToken });
   } catch (error) {
-    console.log("Error in new token",error);
-    next(error)
+    console.log("Error in new token", error);
+    next(error);
   }
 };
 
@@ -223,18 +250,21 @@ export const googleLogin = async (
     if (existingUser) {
       payload = {
         id: existingUser.id,
+        name: `${existingUser.fName} ${existingUser.lName}`,
+        email: existingUser.email,
+        profileURL: existingUser.profileURL,
         role: existingUser.role,
         isActive: existingUser.isActive,
         organization: existingUser.organizationId,
       };
-    }else{
+    } else {
       const userData = {
         fName: given_name || name,
         lName: family_name || name,
         username: name,
         email,
         profileURL: picture,
-        isEmailVerified: true
+        isEmailVerified: true,
       } as UserAttrs;
       const user = await userService.createUserWithGoogle(userData);
       const org = await orgService.createOrg({ admin: user.id });
@@ -242,10 +272,15 @@ export const googleLogin = async (
       const updatedUser = await userService.updateUser(user.id, organization);
 
       const eventData = EmployeeCreatedPublisher.mapToEventData(updatedUser!);
-      await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(eventData);
-  
+      await new EmployeeCreatedPublisher(rabbitmqWrapper.channel).publish(
+        eventData
+      );
+
       payload = {
         id: user.id,
+        name: `${user.fName} ${user.lName}`,
+        email: user.email,
+        profileURL: user.profileURL,
         role: user.role,
         isActive: user.isActive,
         organization: org.id,
@@ -254,49 +289,54 @@ export const googleLogin = async (
     accessToken = generateJwtAccessToken(payload, accessSecret!);
     refreshToken = generateJwtRefreshToken(payload, refreshSecret!);
 
-    setCookie(res, 'accessToken', accessToken, {maxAge: 30 * 60 * 1000});
-    setCookie(res, 'refreshToken', refreshToken, {maxAge: 7 * 24 * 60 * 60 * 1000})
-
-    res.status(200).json({
-      success: true,
-      user: payload,
-      accessToken,
-      message: "google signin successfull",
+    setCookie(res, "accessToken", accessToken, { maxAge: 30 * 60 * 1000 });
+    setCookie(res, "refreshToken", refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    sendResponse(res, HttpStatusCode.OK, "Google signin successful", { user: payload, accessToken });
   } catch (error) {
     next(error);
   }
 };
 
-export const checkUser = async (req: Request, res: Response,
+export const checkUser = async (
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   try {
     //@ts-ignore
-    const {id} = req.user
+    const { id } = req.user;
     const user = await userService.getUserById(id);
-    res
-      .status(200)
-      .json({ success: true, user  , message: "Fetched user status successfully" });
+   sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, { user });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const logout = async (req:Request, res:Response, next:NextFunction) =>{
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
-  res.status(200).send({ success: true, message: "Logged out successfully"});
-}
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+  sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
+};
 
-export const setPassword = async (req: Request, res: Response, next: NextFunction) =>{
+export const setPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const {id} = req.user as JWTUserPayload;
-    const {password} = req.body;
+    const { id } = req.user as JWTUserPayload;
+    const { password } = req.body;
     await userService.updatePassword(id, password);
-    res.status(200).json({success: true, message: "Password created successfully"});
+    sendResponse(res, HttpStatusCode.OK, "Password created successfully");
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
-}
+};

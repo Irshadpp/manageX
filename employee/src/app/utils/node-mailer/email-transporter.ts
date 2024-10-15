@@ -1,9 +1,11 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 export const emailTransporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    host: 'smtp.gmail.com',
+    port: 465, 
+    secure: true,
     auth: {
-        user: "testerr92@outlook.com",
-        pass: "Pass4455",
+      user: "managexorg@gmail.com",
+      pass: "mzge gzqf gtzy vjec"
     }
-});
+  });

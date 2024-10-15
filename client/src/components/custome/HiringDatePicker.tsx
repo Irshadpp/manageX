@@ -1,28 +1,32 @@
+import * as React from "react";
+import { format, isAfter, isBefore, startOfToday } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { addDays, format, isAfter, isBefore } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { Button } from "../ui/button";
 
-interface InputWithIconProps {
-  field?: any;
+interface DatePickerProps {
+  field?: any; 
   title: string;
 }
 
-const HiringDatePicker: React.FC<InputWithIconProps> = ({ field, title }) => {
-  const isDateDisabled = (day: Date): boolean => {
-    return isAfter(day, new Date());
+const DatePickerDown: React.FC<DatePickerProps> = ({ field, title }) => {
+  const isDateDisabled = (date: Date): boolean => {
+    return isAfter(date, startOfToday());
   };
+
   return (
     <FormItem className="flex flex-col">
       <FormLabel>{title}</FormLabel>
@@ -31,29 +35,23 @@ const HiringDatePicker: React.FC<InputWithIconProps> = ({ field, title }) => {
           <FormControl>
             <Button
               variant={"outline"}
-              className={
-                "w-full pl-3 text-left font-normal bg-backgroundAccent"
-              }
-            >
-              {field.value ? (
-                format(field.value, "PPP")
-              ) : (
-                <span>Pick a date</span>
+              className={cn(
+                "w-full pl-3 text-left font-normal bg-background",
+                !field?.value && "text-muted-foreground"
               )}
+            >
+              {field?.value ? format(field.value, "PPP") : <span>Pick a date</span>}
               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
           </FormControl>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0">
           <Calendar
             mode="single"
-            selected={field.value}
-            onSelect={field.onChange}
+            selected={field?.value}
+            onSelect={field?.onChange}
             disabled={isDateDisabled}
             initialFocus
-            captionLayout="dropdown-buttons"
-            fromYear={1960}
-            toYear={2030}
           />
         </PopoverContent>
       </Popover>
@@ -62,4 +60,4 @@ const HiringDatePicker: React.FC<InputWithIconProps> = ({ field, title }) => {
   );
 };
 
-export default HiringDatePicker;
+export default DatePickerDown;

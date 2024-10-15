@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import UserAvatar from '/useravatar.png'
-import EditForm from "./EditForm";
-import EmployeeSettings from "./EmployeeSettings";
-import EmployeeAttendance from "./EmployeeAttendance";
+import UserAvatarImage from '/useravatar.png'
+import EditForm from "../../../components/employees/EditForm";
+import EmployeeSettings from "@/components/employees/EmployeeSettings";
+import EmployeeAttendance from "../../../components/employees/EmployeeAttendance";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
@@ -23,7 +23,7 @@ export const EmployeeProfile = () => {
           <div className="flex items-center gap-4">
             <div className="w-24 h-24 rounded-full overflow-hidden">
               <img
-                src={employee.profileURL || UserAvatar}
+                src={employee.profileURL || UserAvatarImage}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />

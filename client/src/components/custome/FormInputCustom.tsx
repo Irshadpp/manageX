@@ -26,7 +26,6 @@ const FormInputCustom: React.FC<InputProps> = ({
   disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(type === "password");
-
   return (
     <FormItem className="mt-2">
       {showTitle && <FormLabel>{title}</FormLabel>}
@@ -38,6 +37,12 @@ const FormInputCustom: React.FC<InputProps> = ({
               type === "password" ? (!showPassword ? "text" : "password") : type
             }
             {...field}
+            // value={field.value || ""}
+            // onChange={(e) =>
+            //   field.onChange(
+            //     type === "number" ? e.target.valueAsNumber : e.target.value
+            //   )
+            // } 
             disabled={disabled}
             className="bg-background"
           />
