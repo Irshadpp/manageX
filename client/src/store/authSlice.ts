@@ -4,6 +4,7 @@ import { deleteObject, storeObject } from "@/utils/local-storage";
 interface User{
     id: string,
     name: string | null,
+    email: string;
     profileURL: string | null;
     role: "owner" | "manager" | "employee" | "admin",
     organizationId: string
@@ -28,6 +29,7 @@ const authSlice = createSlice({
         setCredentials: (state, action: PayloadAction<{user: any}>) =>{
             state.isAuthenticated = true;
             state.user = action.payload.user;
+            console.log(state.user, "==========================", action.payload.user)
             storeObject("userData", state.user)
         },
         rehydrateAuthState: (state, action: PayloadAction<User | null>) => {

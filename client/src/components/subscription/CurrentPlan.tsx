@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import Managex from "../ui/Managex";
 import { Link } from "react-router-dom";
+import SubscriptionCancelButton from "./SubscriptionCancelButton";
 
 interface Props {
   product: any;
@@ -27,6 +28,7 @@ const CurrentPlan = ({ product }: Props) => {
         <Link to="/owner/billing/plans">
           <Button>Upgrade Plan</Button>
         </Link>
+        <SubscriptionCancelButton/>
       </div>
     </div>
   );

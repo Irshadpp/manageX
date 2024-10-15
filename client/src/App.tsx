@@ -65,6 +65,8 @@ import { broadcastMeetState, listenToMeetStateChanges } from "./utils/broadcast-
 import store from "./store";
 import Subscription from "./pages/owner/subscription/Subscription";
 import Plans from "./components/subscription/Plans";
+import PaymentSuccess from "./pages/owner/subscription/PaymentSuccess";
+import PaymentFailure from "./pages/owner/subscription/PaymentFailure";
 
 function App() {
   const dispatch = useDispatch();
@@ -122,6 +124,8 @@ function App() {
                     <Route path="/owner/billing" element={<Subscription/>}/>
                     <Route path="/owner/billing" element={<Subscription/>}/>
                     <Route path="/owner/billing/plans" element={<Plans/>}/>
+                    <Route path="/owner/billing/success" element={<PaymentSuccess/>}/>
+                    <Route path="/owner/billing/failure" element={<PaymentFailure/>}/>
                   </Route>
                     <Route path="/owner/meetings/room" element={<Room/>}/>
                 </Route>

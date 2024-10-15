@@ -9,7 +9,7 @@ import { createSubscriptionValidator } from "../validators/create-subscription-v
 const router = express.Router();
 
 router.post(
-  "/create",
+  "/",
   requireAuth,
   createSubscriptionValidator,
   validateRequest,

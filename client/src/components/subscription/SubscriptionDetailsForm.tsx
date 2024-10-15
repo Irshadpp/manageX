@@ -8,9 +8,13 @@ import FormInputCustom from "../custome/FormInputCustom";
 import { CountryList } from "@/components/common/CountryList";
 import { StateList } from "@/components/common/StateList";
 import { CityList } from "@/components/common/CityList";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+import { apiRequest } from "@/services/api/commonRequest";
+import { storeObject } from "@/utils/local-storage";
+import useStripe from "@/hooks/useStripe";
 // import getStripe from "@/util/getStripe";
 // import { loadStripe } from "@stripe/stripe-js";
-// import { storeObject } from "@/util/localStorage";
 
 const formSchema = z.object({
   name: z
@@ -57,11 +61,11 @@ interface Props {
 }
 
 const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
-//   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const {user} = useSelector((state: RootState) => state.auth);
+  const stripe = useStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-  // Address Listing
   const [countryISO, setCountryISO] = useState("");
   const [stateISO, setStateISO] = useState("");
 
@@ -78,51 +82,48 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // try {
-    //   setLoading(true);
+    try {
+      setLoading(true);
 
-    //   const address = {
-    //     line1: values.street,
-    //     city: values.city,
-    //     state: values.state,
-    //     country: values.country,
-    //     postal_code: values.zipCode,
-    //   };
+      const address = {
+        line1: values.street,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+        postal_code: values.zipcode,
+      };
 
-    //   if (user) {
-    //     const res = await actualCommonRequest({
-    //       route: API_ROUTES.SUBSCRIPTION,
-    //       method: "POST",
-    //       url: "/api/subscription",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       data: { address, name: values.name, price: value, email: user.email },
-    //     });
+      if (user) {
+        console.log(user, "........................")
+        const response = await apiRequest({
+            url: import.meta.env.VITE_SIBSCRIPTION_URL,
+          method: "POST",
+          route: "/api/v1/subscription",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: { address, name: values.name, price: value, email: user.email },
+        });
         setLoading(false);
 
-        // if (!res.success) {
-        //   setError(res.error);
-        // }
-        // storeObject("subscription_session", res.session);
-
-    //     const stripe = await loadStripe(
-    //       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-    //     );
-
-    //     if (stripe) {
-    //       const result = await stripe.redirectToCheckout({
-    //         sessionId: res.session.id,
-    //       });
-    //       console.log(
-    //         "file: DetailsForm.tsx:114 -> onSubmit -> result",
-    //         result
-    //       );
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log("file: DetailsForm.tsx:123 -> onSubmit -> error", error);
-    // }
+        if (!response.success) {
+          setError(response.error);
+        }
+        storeObject("subscription_sessionId", response.data.sessionId);
+        console.log(response.data.sessionId, "-----------------------")
+        if (stripe) {
+          const result = await stripe.redirectToCheckout({
+            sessionId: response.data.sessionId,
+          });
+          console.log(
+            "DetailsForm onSubmit result",
+            result
+          );
+        }
+      }
+    } catch (error) {
+      console.log("DetailsForm error", error);
+    }
   }
 
   return (
