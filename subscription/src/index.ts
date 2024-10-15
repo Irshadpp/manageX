@@ -15,8 +15,8 @@ const start = async () => {
     console.log(error.message);
   }
 
-  app.listen("8000", () => {
-    console.log("subscirption listening on port 8000");
+  app.listen("9000", () => {
+    console.log("subscirption listening on port 9000");
   });
 };
 
