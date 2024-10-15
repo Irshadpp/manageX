@@ -24,8 +24,16 @@ export class EmployeeService implements IEmployeeService{
     async findByPhone(phone: number): Promise<EmployeeDoc | null> {
         return await Employee.findOne({phone});
     }
-    async findEmployeesWithOrgId(orgId: string): Promise<any>{
-        // return await Employee.find({organizationId: orgId, hiringDate: {$exists: true}});
+    async findEmployeesWithOrgId(orgId: string, page: number, limit: number): Promise<any>{
+
+        const skip = (page - 1) * limit;
+
+        const totalEmployees = await Employee.countDocuments({
+            organizationId: new mongoose.Types.ObjectId(orgId),
+            hiringDate: { $exists: true },
+          });
+        
+          const totalPages = Math.ceil(totalEmployees / limit);
 
         const employeeDataWithAttendance = await Employee.aggregate([
             {
@@ -99,10 +107,12 @@ export class EmployeeService implements IEmployeeService{
                     id: "$_id",
                     attendanceLogs: 1
                 }
-            }
+            },
+            {$skip: skip},
+            {$limit: limit}
         ]);
         
-        const FormatedemployeeDataWithAttendance = employeeDataWithAttendance.map(employee => {
+        const formattedEmployeeDataWithAttendance = employeeDataWithAttendance.map(employee => {
             return {
                 ...employee,
                 attendanceLogs: employee.attendanceLogs.map((log: any) => ({
@@ -113,6 +123,9 @@ export class EmployeeService implements IEmployeeService{
             };
         });
         
-        return FormatedemployeeDataWithAttendance;
+        return {
+            employees: formattedEmployeeDataWithAttendance,
+            totalPages,
+          };
     }
 }

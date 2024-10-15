@@ -19,7 +19,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = React.memo(({ employee }) => {
       onClick={() => navigate(`/owner/employees/${employee.id}`)}
     >
       <div className="text-center py-5">
-        <div className="w-32 h-32 mx-auto rounded-full overflow-clip">
+        <div className="w-28 h-28 mx-auto rounded-full overflow-clip">
           <img
             src={(employee && employee.profileURL) || UserAvatar}
             alt="profile image"

@@ -31,9 +31,15 @@ export interface Employee {
     attendanceLogs: AttendanceLog[];
     // tasks: Tasks[]
   }
+
+  export interface EmployeeApiData{
+    employees: Employee[];
+    totalPages: number;
+  }
   
   export interface EmployeeState {
     employees: Employee[];
+    totalPages: number;
     loading: boolean;
     error: string | null;
     isUpdating: boolean;
@@ -42,6 +48,7 @@ export interface Employee {
   
   export const initialState: EmployeeState = {
     employees: [],
+    totalPages: 0,
     loading: false,
     error: null,
     isUpdating: false,
