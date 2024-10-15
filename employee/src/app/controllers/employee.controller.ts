@@ -143,7 +143,11 @@ export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next:
   try {
     const orgId = req.user?.organization;
     if (!orgId) throw new NotFoundError();
-    const employees = await employeeService.findEmployeesWithOrgId(orgId);
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 8;
+
+    const employees = await employeeService.findEmployeesWithOrgId(orgId, page, limit);
     sendResponse(res, HttpStatusCode.OK, "Fetched employees successfully", employees );
   } catch (error) {
     next(error);

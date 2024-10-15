@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Employee, initialState } from "./types/employee";
+import { Employee, EmployeeApiData, initialState } from "./types/employee";
 
 
 const employeeSlice = createSlice({
@@ -9,9 +9,10 @@ const employeeSlice = createSlice({
         fetchEmployeesRequest(state){
             state.loading = true;
         },
-        fetchEmployeesSuccess(state, action: PayloadAction<Employee[]>){
-            state.employees = action.payload;
-            state.loading = false;
+        fetchEmployeesSuccess(state, action: PayloadAction<EmployeeApiData>){
+            state.employees = action.payload.employees
+            state.totalPages = action.payload.totalPages
+            state.loading = false;  
             state.error = null;
             state.shouldRefetch = false;
         },

@@ -6,5 +6,5 @@ export interface IEmployeeService{
     findByEmail(email: string): Promise<EmployeeDoc | null>
     findByUsername(username: string): Promise<EmployeeDoc | null>
     findByPhone(phone: number): Promise<EmployeeDoc | null>
-    findEmployeesWithOrgId(orgId: string): Promise<EmployeeDoc[]>
+    findEmployeesWithOrgId(orgId: string, page: number, limit: number): Promise<EmployeeDoc[]>
 }
