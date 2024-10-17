@@ -48,7 +48,7 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
             ? AttendanceStatus.LATE
             : AttendanceStatus.PRESENT;
 
-        await attendanceService.createAttendance({
+        const attendance = await attendanceService.createAttendance({
             employeeId: id,
             organizationId: organization,
             checkIn: istDate,
@@ -56,7 +56,7 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
             remarks,
         });
 
-        return sendResponse(res, HttpStatusCode.OK, "Check-in recorded successfully");
+        return sendResponse(res, HttpStatusCode.OK, "Check-in recorded successfully", attendance);
 
     } else if (type === "checkOut") {
         if (!existingAttendance) {
@@ -80,7 +80,7 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
             remarks,
         });
 
-        return sendResponse(res, HttpStatusCode.OK, "Check-out recorded successfully", { updatedAttendance });
+        return sendResponse(res, HttpStatusCode.OK, "Check-out recorded successfully", updatedAttendance);
     }
 
     return next(new BadRequestError("Invalid type. Must be either 'checkIn' or 'checkOut'."));
@@ -91,6 +91,10 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
 
 export const getAttendanceLogs = async (req: Request, res: Response, next: NextFunction) =>{
     try {
+
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 8;
+
         const {empId} = req.query;
         let employeeId;
         if(empId){ //for owner
@@ -99,7 +103,7 @@ export const getAttendanceLogs = async (req: Request, res: Response, next: NextF
             employeeId = req.user!.id
         }
         const {organization} = req.user!
-        const attendanceData = await attendanceService.getAttendanceData(employeeId, organization);
+        const attendanceData = await attendanceService.getAttendanceData(employeeId, organization, page, limit);
         sendResponse(res, HttpStatusCode.OK, "Attendance data fetched successfully", attendanceData);
     } catch (error) {
         next(error);

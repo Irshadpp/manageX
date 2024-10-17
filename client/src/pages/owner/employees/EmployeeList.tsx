@@ -14,7 +14,7 @@ const EmployeeList = () => {
   const { error, loading, employees, totalPages } = useSelector((state: RootState) => state.employee);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageSize = 4;
+  const pageSize = 8;
 
   useEffect(() => {
     dispatch(fetchEmployees(currentPage, pageSize));
@@ -22,9 +22,7 @@ const EmployeeList = () => {
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      console.log("lkdjfjasdlfj")
       setCurrentPage(newPage);
-      console.log(currentPage)
       dispatch(fetchEmployees(newPage, pageSize))
     }
   };

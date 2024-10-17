@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import AttendanceForm from './AttendanceForm';
 
 const AttendanceDialog: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [attendanceType, setAttendanceType] = useState<'checkin' | 'checkout'>('checkin');
-  const [remarks, setRemarks] = useState('');
-
-  const handleSave = () => {
-    // Handle save logic
-    setModalOpen(false);
-  };
 
   return (
     <>

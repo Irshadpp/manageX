@@ -9,14 +9,14 @@ import {
   createAttendanceFailure,
 } from "./attendanceSlice";
 
-export const fetchAttendance = (employeeId?: string) => async (dispatch: AppDispatch) => {
+export const fetchAttendance = (page = 1, limit = 8, employeeId?: string) => async (dispatch: AppDispatch) => {
   dispatch(fetchAttendanceRequest());
   try {
-    const empId = employeeId ? `?empId=${employeeId}` : "";
+    const query = employeeId ? `?empId=${employeeId}&page=${page}&limit=${limit}` : `?page=${page}&limit=${limit}`;
     const response: any = await apiRequest({
       method: "GET",
       url: import.meta.env.VITE_EMPLOYEE_URL,
-      route: `/api/v1/attendance${empId}`,
+      route: `/api/v1/attendance${query}`,
       headers: {
         "Content-type": "application/json"
       }
