@@ -4,6 +4,7 @@ import store from "@/store";
 import { setParticipants, setRoomId } from "@/store/meetSlice";
 
 const server = "http://localhost:8000"
+// const server = " http://managex.online"
 // const server = "https://1z0cd2xj-8000.inc1.devtunnels.ms"
 
 let socket: any;

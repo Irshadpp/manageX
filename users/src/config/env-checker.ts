@@ -1,6 +1,6 @@
 const envChecker = () => {
-  if (!process.env.MONGO_URI_EMPLOYEE) {
-    throw new Error("MONGO_URI_EMPLOYEE must be defined");
+  if (!process.env.MONGO_URI_USERS) {
+    throw new Error("MONGO_URI_USERS must be defined");
   }
   if (!process.env.SMTP_HOST) {
     throw new Error("SMPT_HOST must be defined");
@@ -13,6 +13,12 @@ const envChecker = () => {
   }
   if (!process.env.JWT_EMAIL_SECRET) {
     throw new Error("JWT_EMAIL_SECRET must be defined");
+  }
+  if (!process.env.JWT_ACCESS_SECRET) {
+    throw new Error("JWT_ACCESS_SECRET must be defined");
+  }
+  if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error("JWT_REFRESH_SECRET must be defined");
   }
 };
 
