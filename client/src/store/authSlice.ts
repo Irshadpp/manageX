@@ -7,7 +7,7 @@ interface User{
     email: string;
     profileURL: string | null;
     role: "owner" | "manager" | "employee" | "admin",
-    organizationId: string
+    organization: string
 }
 
 interface AuthState{

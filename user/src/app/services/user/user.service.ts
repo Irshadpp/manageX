@@ -103,7 +103,7 @@ export class UserService implements IUserService {
         role: user.role,
         email: user.email,
         isActive: user.isActive,
-        organizationId: user.organizationId,
+        organization: user.organizationId,
         name: `${user.fName} ${user.lName}`
       };
     }
