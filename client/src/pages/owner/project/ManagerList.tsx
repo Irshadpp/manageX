@@ -30,7 +30,7 @@ export function ManagerList({ field }: { field: any }) {
       const res = await apiRequest({
         method: "GET",
         url: import.meta.env.VITE_PROJECT_URL,
-        route: "/api/v1/users/members?role=manager",
+        route: "/api/v1/project/members?role=manager",
         headers: {
           "Content-Type": "application/json",
         },

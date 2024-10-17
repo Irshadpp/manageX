@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat
+          image: irshadpp/chat
+          env:
+            - name: MONGO_URI_CHAT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MONGO_URI_CHAT
+            - name: CLIENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: CLIENT_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-srv
+spec:
+  selector:
+    app: chat
+  ports:
+    - name: chat
+      protocol: TCP
+      port: 7000
+      targetPort: 7000

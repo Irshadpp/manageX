@@ -1,0 +1,79 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+build:
+  local:
+    push: true
+  artifacts:
+    - image: irshadpp/users
+      context: users
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+    - image: irshadpp/employee
+      context: employee
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+    - image: irshadpp/project
+      context: project
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+    - image: irshadpp/chat
+      context: chat
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+    - image: irshadpp/meet
+      context: meet
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+    - image: irshadpp/subscription
+      context: subscription
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: "."
+
+
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+
+profiles:
+  - name: development
+    build:
+      local:
+        push: false
+    deploy:
+      kubectl:
+        manifests:
+          - ./infra/k8s/*
+
+  - name: production
+    build:
+      local:
+        push: true
+    deploy:
+      kubectl:
+        manifests:
+          - ./infra/k8s/prod/*  

@@ -2,8 +2,11 @@ import { BadRequestError, HttpStatusCode, sendResponse } from "@ir-managex/commo
 import { NextFunction, Request, Response } from "express";
 import { ProjectService } from "../services/project/project.service";
 import { Role } from "../model/enum";
+import { UserService } from "../services/user/user.service";
 
 const projectService = new ProjectService();
+const userService = new UserService();
+
 
 export const createProject = async (req: Request, res: Response, next: NextFunction) =>{
     const orgId = req.user?.organization
@@ -45,3 +48,16 @@ export const fetchProjectCount = async (req: Request, res: Response, next: NextF
       next(error)
     }
   };
+
+
+export const fetchMembers = async (req: Request, res: Response, next: NextFunction) =>{
+    try {
+        const orgId = req.user?.organization;
+        const {role} = req.query;
+        if(!orgId) throw new BadRequestError("Invalid user credentials");
+        const members = await userService.fetchEmployeesByOrgId(orgId, role as string);
+        sendResponse(res, HttpStatusCode.OK, "Fetched members successfully", members );
+    } catch (error) {
+        next(error)
+    }
+}

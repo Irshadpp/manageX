@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: project
+          image: irshadpp/project
+          env:
+            - name: MONGO_URI_PROJECT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MONGO_URI_PROJECT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-srv
+spec:
+  selector:
+    app: project
+  ports:
+    - name: project
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
