@@ -57,7 +57,9 @@ export const updateLeaveStatus = async (req: Request, res: Response, next: NextF
 
 export const fetchLeaveApplicatons = async (req: Request, res: Response, next: NextFunction) =>{
     const {id} = req.user!
-    const applications = await leaveService.fetchApplicationsByEmpId(id);
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 8;
+    const applications = await leaveService.fetchApplicationsByEmpId(id, page, limit);
     sendResponse(res, HttpStatusCode.OK, "Leave data fetched successfully", applications );
 }
 

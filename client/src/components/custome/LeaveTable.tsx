@@ -11,16 +11,12 @@ import {
 
 interface LeaveTableProps {
   data: any[];
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  totalPages: number;
 }
 
-const LeaveTable: React.FC<LeaveTableProps> = ({ data }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data && data.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = data && Math.ceil(data.length / itemsPerPage);
+const LeaveTable: React.FC<LeaveTableProps> = ({ data, currentPage, setCurrentPage, totalPages }) => {
 
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= totalPages) {
@@ -41,8 +37,8 @@ const LeaveTable: React.FC<LeaveTableProps> = ({ data }) => {
           </TableRow>
         </thead>
         <tbody>
-          {currentItems && currentItems.map((leave: any, idx) => (
-            <TableRow key={idx} className="bg-muted/40 border-background">
+          {data && data.map((leave: any, idx) => (
+            <TableRow key={idx} className="bg-muted/30 border-background">
               <TableCell>{leave.leaveType}</TableCell>
               <TableCell>{leave.startDate}</TableCell>
               <TableCell>{leave.endDate}</TableCell>

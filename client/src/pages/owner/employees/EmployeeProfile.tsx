@@ -7,6 +7,7 @@ import UserAvatarImage from '/useravatar.png'
 import EditForm from "../../../components/employees/EditForm";
 import EmployeeSettings from "@/components/employees/EmployeeSettings";
 import EmployeeAttendance from "../../../components/employees/EmployeeAttendance";
+import EmptyAttendanceLogs from "./empties/EmptyAttendanceLogs";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
@@ -73,8 +74,10 @@ export const EmployeeProfile = () => {
         <TabsContent value="profile">
           <EditForm employee={employee} />
         </TabsContent>
-        <TabsContent value="attendance">
+        <TabsContent className="h-[380px]" value="attendance">
+          {employee.attendanceLogs.length === 0 ? <EmptyAttendanceLogs/> : 
           <EmployeeAttendance attendanceLogs={employee.attendanceLogs}/>
+          } 
         </TabsContent>
         <TabsContent value="settings">
           <EmployeeSettings id={employee.id} email={employee.email}/>

@@ -1,12 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Attendance {
+  _id?: string;
   type: 'checkIn' | 'checkOut';
   remarks?: string;
+  checkOut?: string;
+}
+
+interface AttendanceApiData{
+  attendaceLogs: Attendance[];
+  totalPages: number;
 }
 
 interface AttendanceState {
   attendanceData: Attendance[];
+  totalPages: number;
   loading: boolean;
   error: string | null;
   shouldRefetch: boolean;
@@ -14,6 +22,7 @@ interface AttendanceState {
 
 const initialState: AttendanceState = {
   attendanceData: [],
+  totalPages: 0,
   loading: false,
   error: null,
   shouldRefetch: false,
@@ -27,8 +36,10 @@ const attendanceSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    fetchAttendanceSuccess(state, action: PayloadAction<Attendance[]>) {
-      state.attendanceData = action.payload;
+    fetchAttendanceSuccess(state, action: PayloadAction<AttendanceApiData>) {
+      console.log(action.payload.attendaceLogs)
+      state.attendanceData = action.payload.attendaceLogs;
+      state.totalPages = action.payload.totalPages
       state.loading = false;
       state.error = null;
       state.shouldRefetch = false;
@@ -42,7 +53,18 @@ const attendanceSlice = createSlice({
       state.error = null;
     },
     createAttendanceSuccess(state, action: PayloadAction<Attendance>) {
-      // state.attendanceData.push(action.payload);
+      console.log(action.payload)
+      if(action.payload.checkOut === ""){
+        state.attendanceData.push(action.payload)
+      }else{
+        console.log(state.attendanceData,"-------------------------------", action.payload)
+        state.attendanceData = state.attendanceData.map((a) => {
+          if (a._id === action.payload._id) {
+              return { ...a, ...action.payload }; 
+          }
+          return a; 
+      });
+      }
       state.loading = false;
       state.error = null;
     },

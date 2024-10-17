@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from "@/components/ui/button";
 import { apiRequest } from '@/services/api/commonRequest';
 import { Pagination, PaginationItem, PaginationPrevious, PaginationNext, PaginationLink } from "@/components/ui/pagination";
+import { MoreHorizontal } from 'lucide-react';
 
 const ApplicationsTable: React.FC = () => {
   const [leaveApplications, setLeaveApplications] = useState<any[]>([]);
@@ -104,7 +105,8 @@ const ApplicationsTable: React.FC = () => {
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="outline" className="text-primary border-primary">
+                      <Button aria-haspopup="true" size="icon" className="bg-accent text-foreground border-primary">
+                      <MoreHorizontal className="h-4 w-4" />
                         <span className="sr-only">Toggle menu</span>
                       </Button>
                     </DropdownMenuTrigger>

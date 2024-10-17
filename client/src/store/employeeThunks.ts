@@ -6,7 +6,6 @@ import { fetchEmployeeFailure, fetchEmployeesRequest, fetchEmployeesSuccess } fr
 export const fetchEmployees = (page=1, limit=8) => async (dispatch: AppDispatch) =>{
     dispatch(fetchEmployeesRequest());
     try {
-        console.log("calling the apiiiiiiiiiiiiiii")
         const response: any = await apiRequest({
             method: "GET",
             url: import.meta.env.VITE_EMPLOYEE_URL,
