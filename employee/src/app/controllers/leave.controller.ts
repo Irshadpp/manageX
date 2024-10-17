@@ -65,6 +65,8 @@ export const fetchLeaveApplicatons = async (req: Request, res: Response, next: N
 
 export const fetchLeaveApplicatonsForOwner = async (req: Request, res: Response, next: NextFunction) =>{
     const {organization} = req.user!
-    const applications = await leaveService.fetchApplicationsByOrg(organization);
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 8;
+    const applications = await leaveService.fetchApplicationsByOrg(organization, page, limit);
     sendResponse(res, HttpStatusCode.OK, "Leave applications fetched successfully", applications );
 }

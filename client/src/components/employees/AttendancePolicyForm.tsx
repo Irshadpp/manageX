@@ -94,7 +94,7 @@ const AttendancePolicyForm: React.FC<EditableAttendancePolicyFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-5 pb-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-5">
         <div className="grid grid-cols-2 gap-5">
           <FormField
             control={form.control}

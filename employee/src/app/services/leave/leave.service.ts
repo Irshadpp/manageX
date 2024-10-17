@@ -58,7 +58,12 @@ export class LeaveService implements ILeaveService {
     };
   }
 
-  async fetchApplicationsByOrg(organizationId: string): Promise<any | null> {
+  async fetchApplicationsByOrg(organizationId: string, page: number, limit: number): Promise<any | null> {
+
+    const skip = (page - 1) * limit;
+    const totalLeaves = await Leave.countDocuments({organizationId});
+    const totalPages = Math.ceil(totalLeaves / limit);
+
     const leaves = await Leave.aggregate([
       {
         $match: { organizationId: new mongoose.Types.ObjectId(organizationId) },
@@ -75,7 +80,12 @@ export class LeaveService implements ILeaveService {
           status: 1,
         },
       },
+      {$skip: skip},
+      {$limit: limit}
     ]);
-    return leaves;
+    return {
+      leaveApplications: leaves,
+      totalPages
+    };
   }
 }
