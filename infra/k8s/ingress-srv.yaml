@@ -5,11 +5,31 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/websocket-services: "ws"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
 spec:
   rules:
     - host: managex.online
       http:
         paths:
+          - path: /socket.io/chat/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 7000
+          - path: /socket.io/meet/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: meet-srv
+                port:
+                  number: 8000
           - path: /api/v1/users/?(.*)
             pathType: ImplementationSpecific
             backend:

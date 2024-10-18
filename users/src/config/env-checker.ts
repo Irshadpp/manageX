@@ -2,9 +2,6 @@ const envChecker = () => {
   if (!process.env.MONGO_URI_USERS) {
     throw new Error("MONGO_URI_USERS must be defined");
   }
-  if (!process.env.SMTP_HOST) {
-    throw new Error("SMPT_HOST must be defined");
-  }
   if (!process.env.SMTP_USER) {
     throw new Error("SMTP_USER must be defined");
   }

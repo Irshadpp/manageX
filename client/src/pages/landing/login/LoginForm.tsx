@@ -81,7 +81,7 @@ const LoginForm = () => {
       } catch (error) {
         setLoading(false)
         console.log(error);
-        setError("An error occured during login");
+        setError("Login fialed!");
       }
     }
 

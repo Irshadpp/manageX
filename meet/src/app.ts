@@ -10,8 +10,7 @@ const app = express();
 app.use(json());
 
 const corsOptions = {
-    origin: "http://localhost:5173",
-    // origin: "https://1z0cd2xj-5173.inc1.devtunnels.ms",
+    origin: ["http://managex.online:5173", "http://managex.online"],
     method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
