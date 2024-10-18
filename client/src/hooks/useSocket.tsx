@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_CHAT_URL
+const SOCKET_URL = 
+  window.location.protocol === 'https:' ? 'wss://managex.online' : 'ws://managex.online';
 
 const useSocket = () => {
   const socketRef = useRef<Socket | null>(null); 
 
   useEffect(() => {
     socketRef.current = io(SOCKET_URL, {
+      path: '/socket.io/chat', 
       transports: ['websocket'],
     });
 

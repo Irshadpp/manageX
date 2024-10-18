@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ConnectingButtons from '../../../components/meetings/ConnectingButtons';
-import { connectWithSocketIOServer } from '@/utils/wss';
+import { connectWithSocketIOServer, socket } from '@/utils/wss';
 // import logo from '../../../public/logo.png';
 
 const Meet = () => {
@@ -15,6 +15,13 @@ const Meet = () => {
 
   useEffect(() => {
     connectWithSocketIOServer();
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        console.log('Socket disconnected');
+      }
+    };
   }, []);
 
   return (

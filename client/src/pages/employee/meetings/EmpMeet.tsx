@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
-import { connectWithSocketIOServer } from '@/utils/wss';
+import { connectWithSocketIOServer, socket } from '@/utils/wss';
 import ConnectingButtons from '@/components/meetings/ConnectingButtons';
 
 const EmpMeet = () => {
 
   useEffect(() => {
     connectWithSocketIOServer();
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        console.log('Socket disconnected');
+      }
+    };
   }, []);
 
   return (

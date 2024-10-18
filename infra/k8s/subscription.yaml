@@ -21,6 +21,16 @@ spec:
                 configMapKeyRef:
                   name: app-config
                   key: MONGO_URI_SUBSCRIPTION
+            - name: JWT_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: JWT_ACCESS_SECRET
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: JWT_REFRESH_SECRET
             - name: CLIENT_URL
               valueFrom:
                 configMapKeyRef:
