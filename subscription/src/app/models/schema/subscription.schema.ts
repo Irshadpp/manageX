@@ -20,7 +20,17 @@ const subscriptionSchema = new mongoose.Schema({
     },
     planId: {
         type: String,
+    },    
+    SubscriptionStatus: {
+        type: String,
+        enum: ['active', 'past_due', 'canceled', 'unpaid'],
+        default: 'active'
+    },
+    subscriptionType: { 
+        type: String,
+        required: true
     }
+
 },{
     toJSON:{
         timestamps: true,

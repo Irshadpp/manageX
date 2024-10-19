@@ -7,8 +7,6 @@ import { appRouter } from "./app/routes";
 
 const app = express();
 
-app.use(json());
-
 const corsOptions = {
     origin: ["http://managex.online:5173", "http://managex.online"],
     method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
@@ -16,6 +14,15 @@ const corsOptions = {
     credentials: true
 }
 
+
+app.use((req, res, next) => {
+    console.log(req.originalUrl, "<===================url=============")
+    if (req.originalUrl === "/api/v1/subscription/webhook") {
+      next();
+    } else {
+      json()(req, res, next);
+    }
+  });
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
