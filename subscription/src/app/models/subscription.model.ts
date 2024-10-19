@@ -4,8 +4,10 @@ export interface SubscriptionAttrs{
     user: string;
     organizationId: string;
     subscriptionId: string;
-    customerId: string,
-    planId: string
+    customerId: string;
+    planId: string;
+    subscriptionType: string;
+    subscriptionStatus?: string;
 }
 
 export interface SubscriptionDoc extends mongoose.Document{
@@ -15,6 +17,8 @@ export interface SubscriptionDoc extends mongoose.Document{
     subscriptionId: string;
     customerId: string;
     planId: string;
+    subscriptionType: string;
+    subscriptionStatus: string;
     updatedAt: Date;
     createdAt: Date;
 }

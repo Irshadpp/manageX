@@ -30,11 +30,12 @@ export function CountryList({
 }) {
   const countries = Country.getAllCountries();
 
+  const [isOpen, setIsOpen] = useState(false);
   const [managers, setManagers] = useState<ICountry[]>([...countries]);
   const { setValue } = useFormContext();
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <FormControl>
           <Button
@@ -57,7 +58,7 @@ export function CountryList({
           <CommandInput placeholder="Search Country..." />
           <CommandEmpty>No Country found.</CommandEmpty>
           <CommandGroup>
-            <ScrollArea className="h-40 w-full rounded-md overflow-auto">
+            <ScrollArea className="h-40 max-h-40 w-full rounded-md ">
               {managers.map((country) => (
                 <CommandItem
                   key={country.name}
@@ -65,6 +66,7 @@ export function CountryList({
                   onSelect={() => {
                     setValue(value ? value : "country", country.name);
                     setCountryISO(country.isoCode);
+                    setIsOpen(false);
                   }}
                 >
                   <Check

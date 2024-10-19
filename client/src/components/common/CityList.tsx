@@ -17,6 +17,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormControl } from "@/components/ui/form";
 import { City } from "country-state-city";
+import { useState } from "react";
 
 export function CityList({
   field,
@@ -31,10 +32,11 @@ export function CityList({
 }) {
   const cities = City.getCitiesOfState(countryISO, stateISO);
 
+  const [isOpen, setIsOpen] = useState(false);
   const { setValue } = useFormContext();
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <FormControl>
           <Button
@@ -64,6 +66,7 @@ export function CityList({
                   value={city.name}
                   onSelect={() => {
                     setValue(value ? value : "city", city.name);
+                    setIsOpen(false)
                   }}
                 >
                   <Check
