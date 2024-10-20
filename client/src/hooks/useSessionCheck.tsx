@@ -12,7 +12,7 @@ const useSessionCheck = () =>{
             try {
                 const response = await apiRequest({
                     method: "GET",
-                    url: import.meta.env.VITE_USERS_URL,
+                    url: import.meta.env.VITE_BACKEND_URL,
                     route:`/api/v1/auth/check-user`,
                     headers:{
                         "Content-Type":"application/json"

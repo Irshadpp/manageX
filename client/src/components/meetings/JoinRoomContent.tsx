@@ -45,7 +45,7 @@ const JoinRoomContent = () => {
       }
       const response = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_MEET_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/meet/room-exists/${roomIdValue}`,
         headers:{
           "Content-Type": "application/json"

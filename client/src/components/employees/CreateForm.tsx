@@ -102,7 +102,7 @@ const CreateForm = () => {
     }
     const res = await apiRequest({
       method: "POST",
-      url: import.meta.env.VITE_EMPLOYEE_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: "/api/v1/employee",
       headers: {
         "Content-Type": "application/json"

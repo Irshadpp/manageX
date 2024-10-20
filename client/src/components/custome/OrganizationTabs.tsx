@@ -46,7 +46,7 @@ const OrganizationTabs = () => {
     const fetchOrganizations = async () =>{
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_USERS_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: "/api/v1/organization",
         headers:{
           "Content-Type": "application/json"

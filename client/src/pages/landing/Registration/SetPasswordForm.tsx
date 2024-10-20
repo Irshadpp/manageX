@@ -51,7 +51,7 @@ const SetPasswordForm = () => {
         setLoading(true);
         const res = await apiRequest({
           method: "PATCH",
-          url: import.meta.env.VITE_USERS_URL,
+          url: import.meta.env.VITE_BACKEND_URL,
           route: `/api/v1/auth/set-password`,
           data: {...values},
           headers:{

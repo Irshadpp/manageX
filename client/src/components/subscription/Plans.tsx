@@ -9,7 +9,7 @@ export default function Plans() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest({
-        url: import.meta.env.VITE_SIBSCRIPTION_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         method: "GET",
         route: "/api/v1/subscription",
         headers: {
