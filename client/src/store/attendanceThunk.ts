@@ -15,7 +15,7 @@ export const fetchAttendance = (page = 1, limit = 8, employeeId?: string) => asy
     const query = employeeId ? `?empId=${employeeId}&page=${page}&limit=${limit}` : `?page=${page}&limit=${limit}`;
     const response: any = await apiRequest({
       method: "GET",
-      url: import.meta.env.VITE_EMPLOYEE_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/attendance${query}`,
       headers: {
         "Content-type": "application/json"
@@ -32,7 +32,7 @@ export const createAttendance = (attendance: any) => async (dispatch: AppDispatc
   try {
     const response: any = await apiRequest({
       method: "POST",
-      url: import.meta.env.VITE_EMPLOYEE_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/attendance`,
       data: attendance,
       headers: {

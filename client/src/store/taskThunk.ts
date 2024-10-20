@@ -7,7 +7,7 @@ export const fetchTasks = (id: string) => async (dispatch: AppDispatch) => {
   try {
     const response: any = await apiRequest({
       method: "GET",
-      url: import.meta.env.VITE_PROJECT_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/task/${id}`,
       headers: {
         "Content-type": "application/json"
@@ -25,7 +25,7 @@ export const createTask= (task: any, id: string) => async (dispatch: AppDispatch
   try {
     const response: any = await apiRequest({
       method: "POST",
-      url: import.meta.env.VITE_PROJECT_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/task/${id}`,
       data: task,
       headers: {
@@ -51,7 +51,7 @@ export const updateTask= (task: any, id: string, isComment?: boolean) => async (
       const comment = isComment ? true : false
       const response: any = await apiRequest({
         method: "PATCH",
-        url: import.meta.env.VITE_PROJECT_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/task/${id}?comment=${comment}`,
         data: task,
         headers: {
@@ -76,7 +76,7 @@ export const updateTask= (task: any, id: string, isComment?: boolean) => async (
     try {
       const response: any = await apiRequest({
         method: "PATCH",
-        url: import.meta.env.VITE_PROJECT_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/task/${taskId}/comments/reply?id=${commentId}`,
         data: reply,
         headers: {

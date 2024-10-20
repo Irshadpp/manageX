@@ -10,7 +10,7 @@ const useLogout = () => {
       try {
         const res = await apiRequest({
           method: 'POST',
-          url: import.meta.env.VITE_USERS_URL,
+          url: import.meta.env.VITE_BACKEND_URL,
           route: '/api/v1/auth/logout',
           headers: {
             'Content-Type': 'application/json',

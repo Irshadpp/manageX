@@ -14,7 +14,7 @@ const ManAttendancePolicy = () => {
         const fetchPolicy = async () =>{
             const res = await apiRequest({
                 method: "GET",
-                url: import.meta.env.VITE_EMPLOYEE_URL,
+                url: import.meta.env.VITE_BACKEND_URL,
                 route: `/api/v1/attendance-policy/${user!.organization}`,
                 headers:{
                     "Content-Type": "application/json"

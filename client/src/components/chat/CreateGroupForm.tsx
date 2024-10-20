@@ -61,7 +61,7 @@ const CreateGroupForm = ({ setIsModalOpen }: PropsTypes) => {
   });
 
   useEffect(() => {
-    const socketInstance = io(import.meta.env.VITE_CHAT_URL);
+    const socketInstance = io(import.meta.env.VITE_BACKEND_URL);
     setSocket(socketInstance);
 
   }, []);

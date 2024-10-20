@@ -26,7 +26,7 @@ export default function MembersList({
       setLoading(true);
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_PROJECT_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: "/api/v1/project/members?role=employee",
         headers:{
             "Content-Type":"application/json"

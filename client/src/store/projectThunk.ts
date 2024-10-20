@@ -7,7 +7,7 @@ export const fetchProject = () => async (dispatch: AppDispatch) => {
   try {
     const response: any = await apiRequest({
       method: "GET",
-      url: import.meta.env.VITE_PROJECT_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/project`,
       headers: {
         "Content-type": "application/json"
@@ -24,7 +24,7 @@ export const createProject = (project: any) => async (dispatch: AppDispatch) => 
   try {
     const response: any = await apiRequest({
       method: "POST",
-      url: import.meta.env.VITE_PROJECT_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/project`,
       data: project,
       headers: {
@@ -49,7 +49,7 @@ export const updateProject = (project: any, id: string) => async (dispatch: AppD
     try {
       const response: any = await apiRequest({
         method: "PATCH",
-        url: import.meta.env.VITE_PROJECT_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/project/${id}`,
         data: project,
         headers: {

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 const SOCKET_URL = 
-  window.location.protocol === 'https:' ? 'wss://managex.online' : 'ws://managex.online';
+  window.location.protocol === 'https:' ? 'wss://managex.site' : 'ws://managex.site';
 
 const useSocket = () => {
   const socketRef = useRef<Socket | null>(null); 

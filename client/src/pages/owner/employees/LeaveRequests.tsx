@@ -18,7 +18,7 @@ const LeaveRequests: React.FC = () => {
     try {
       const response = await apiRequest({
         method: 'GET',
-        url: import.meta.env.VITE_EMPLOYEE_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/leave/requests?page=${currentPage}&limit=${itemsPerPage}`,
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const LeaveRequests: React.FC = () => {
     try {
       const response = await apiRequest({
         method: 'PATCH',
-        url: import.meta.env.VITE_EMPLOYEE_URL,
+        url: import.meta.env.VITE_BACKEND_URL,
         route: `/api/v1/leave/status/${id}`,
         data: { status: action },
         headers: {

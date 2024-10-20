@@ -20,7 +20,7 @@ GoogleAuth = () => {
     }
         const res = await apiRequest({
           method: "POST",
-          url: import.meta.env.VITE_USERS_URL,
+          url: import.meta.env.VITE_BACKEND_URL,
           route: "/api/v1/auth/google",
           data: {token},
           headers:{

@@ -114,7 +114,7 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
     }
     const res = await apiRequest({
       method: "PATCH",
-      url: import.meta.env.VITE_EMPLOYEE_URL,
+      url: import.meta.env.VITE_BACKEND_URL,
       route: `/api/v1/employee/${employee.id}`,
       headers: {
         "Content-Type": "application/json"

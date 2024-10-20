@@ -5,8 +5,8 @@ import { setParticipants, setRoomId } from "@/store/meetSlice";
 
 const server =
   window.location.protocol === "https:"
-    ? "wss://managex.online/socket.io/meet"
-    : "ws://managex.online/socket.io/meet";
+    ? "wss://managex.site/socket.io/meet"
+    : "ws://managex.site/socket.io/meet";
 // const server = " http://managex.online"
 // const server = "https://1z0cd2xj-8000.inc1.devtunnels.ms"
 
