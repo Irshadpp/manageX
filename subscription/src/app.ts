@@ -8,7 +8,7 @@ import { appRouter } from "./app/routes";
 const app = express();
 
 const corsOptions = {
-    origin: ["http://managex.online:5173", "http://managex.online"],
+    origin: ["http://managex.online:5173", "https://www.managex.site","https://managex.vercel.app"],
     method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
