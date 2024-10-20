@@ -1,0 +1,54 @@
+# NGINX Ingress Controller basic configuration
+
+controller:
+  replicaCount: 2
+  resources: 
+    requests:
+      cpu: 100m
+      memory: 90Mi
+
+  # Image to use for NGINX controller
+  # image:
+  #   repository: k8s.gcr.io/ingress-nginx/controller
+  #   tag: "v1.8.0" # You can adjust this to the latest version
+
+  # Enable service of type LoadBalancer (for public exposure)
+  # service:
+  #   type: LoadBalancer
+  #   externalTrafficPolicy: Local
+
+  # Set custom NGINX configuration options
+  # config:
+  #   use-forwarded-headers: "true"
+  #   enable-vts-status: "true"
+
+  # If your cloud provider requires a static IP for the LoadBalancer
+  # Set this to the pre-created static IP
+  # loadBalancerIP: "YOUR_STATIC_IP"
+
+  # If you need custom annotations for your cloud provider (optional)
+  # serviceAnnotations:
+  #   service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+
+  # Enable Prometheus metrics for monitoring
+  # metrics:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+
+# Configure default backend (optional, serves 404 responses)
+# defaultBackend:
+#   enabled: false
+
+# RBAC (Role-Based Access Control) configuration
+# rbac:
+#   create: true
+
+# Service account configuration
+# serviceAccount:
+#   create: true
+#   name: ""
+
+# Enable TLS for secure connections (example; configure your own certs)
+# tls:
+#   enabled: false
