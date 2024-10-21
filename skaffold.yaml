@@ -2,7 +2,7 @@ apiVersion: skaffold/v2alpha3
 kind: Config
 build:
   local:
-    push: false
+    push: true
   artifacts:
     - image: irshadpp/users
       context: users
@@ -52,6 +52,14 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: "."
+    # - image: irshadpp/client
+    #   context: client
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: "**/*.js"
+    #         dest: "."
 
 
 deploy:

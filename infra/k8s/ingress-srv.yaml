@@ -13,102 +13,102 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
 spec:
   rules:
-    - host: managex.site
+    - host: managex.online
       http:
         paths:
           - path: /socket.io/chat/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: chat-srv
                 port:
                   number: 7000
           - path: /socket.io/meet/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: meet-srv
                 port:
                   number: 8000
           - path: /api/v1/users/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: users-srv
                 port:
                   number: 3000
           - path: /api/v1/auth/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: users-srv
                 port:
                   number: 3000
           - path: /api/v1/organization/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: users-srv
                 port:
                   number: 3000
           - path: /api/v1/employee/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: employee-srv
                 port:
                   number: 4000
           - path: /api/v1/attendance/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: employee-srv
                 port:
                   number: 4000
           - path: /api/v1/attendance-policy/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: employee-srv
                 port:
                   number: 4000
           - path: /api/v1/leave/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: employee-srv
                 port:
                   number: 4000
           - path: /api/v1/project/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: project-srv
                 port:
                   number: 5000
           - path: /api/v1/task/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: project-srv
                 port:
                   number: 5000
           - path: /api/v1/chat/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: chat-srv
                 port:
                   number: 7000
           - path: /api/v1/meet/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: meet-srv
                 port:
                   number: 8000
           - path: /api/v1/subscription/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: subscription-srv

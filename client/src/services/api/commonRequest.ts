@@ -39,13 +39,7 @@ export const apiRequest = async ({method, url, route, headers, data, withCredent
                         baseURL: import.meta.env.VITE_BACKEND_URL,
                         withCredentials: withCredential,
                       });
-                    // const refreshResponse = await refreshApiInstance.post("/api/v1/auth/refresh-token");
-                    const refreshResponse = await axios.post("https://site.online/api/v1/auth/refresh-token",{
-                        withCredential:true
-                    });
-
-
-                    // const {accessToken} = refreshResponse.data;
+                    const refreshResponse = await refreshApiInstance.post("/api/v1/auth/refresh-token");
 
                     store.dispatch(setCredentials({user: store.getState().auth.user}));
 
