@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: irshadpp/client
+          env:
+            - name: VITE_BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: VITE_BACKEND_URL
+            - name: VITE_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: VITE_GOOGLE_CLIENT_ID
+            - name: VITE_CLOUDINARY_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: VITE_CLOUDINARY_NAME
+            - name: VITE_CLOUDINARY_UPLOAD_PRESET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: VITE_CLOUDINARY_UPLOAD_PRESET
+            - name: VITE_STRIPE_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: VITE_STRIPE_PUBLIC_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 4173
+      targetPort: 4173
