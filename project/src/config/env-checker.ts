@@ -8,6 +8,9 @@ const envChecker = () => {
   if (!process.env.JWT_REFRESH_SECRET) {
     throw new Error("JWT_REFRESH_SECRET must be defined");
   }
+  if (!process.env.CLIENT_URL) {
+    throw new Error("CLIENT_URL must be defined");
+  }
 };
 
 export { envChecker };

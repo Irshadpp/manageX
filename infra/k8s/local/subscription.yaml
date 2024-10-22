@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscription-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscription
+  template:
+    metadata:
+      labels:
+        app: subscription
+    spec:
+      containers:
+        - name: subscription
+          image: irshadpp/subscription
+          envFrom:
+            - configMapRef:
+                name: local-env-config
+            - secretRef:
+                name: local-env-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscription-srv
+spec:
+  selector:
+    app: subscription
+  ports:
+    - name: subscription
+      protocol: TCP
+      port: 9000
+      targetPort: 9000

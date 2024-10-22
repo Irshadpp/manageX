@@ -38,13 +38,6 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "200m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
           volumeMounts:
             - name: rabbitmq-storage
               mountPath: /var/lib/rabbitmq

@@ -10,7 +10,7 @@ const app = express();
 app.use(json());
 
 const corsOptions = {
-    origin: ["http://managex.online:5173", "https://www.managex.site","https://managex.vercel.app"],
+    origin: process.env.CLIENT_URL || "",
     method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true

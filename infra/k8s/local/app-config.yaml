@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-config
+  name: local-env-config
 data:
   SMTP_USER: "managexorg@gmail.com"
   MONGO_URI_USERS: "mongodb+srv://managex_irshad:caElzVE6hRwunI0N@cluster0.jm9yi6w.mongodb.net/managex_userdb?retryWrites=true&w=majority&appName=Cluster0"
@@ -10,5 +10,7 @@ data:
   MONGO_URI_CHAT: "mongodb+srv://managex_irshad:caElzVE6hRwunI0N@cluster0.jm9yi6w.mongodb.net/managex_chat_meetdb?retryWrites=true&w=majority&appName=Cluster0"
   MONGO_URI_MEET: "mongodb+srv://managex_irshad:caElzVE6hRwunI0N@cluster0.jm9yi6w.mongodb.net/managex_meetdb?retryWrites=true&w=majority&appName=Cluster0"
   MONGO_URI_SUBSCRIPTION: "mongodb+srv://managex_irshad:caElzVE6hRwunI0N@cluster0.jm9yi6w.mongodb.net/managex_subscriptiondb?retryWrites=true&w=majority&appName=Cluster0"
-  CLIENT_URL: http://localhost:5173
+  CLIENT_URL: http://managex.local:4173
+  VITE_BACKEND_URL: https://managex.local
+
 

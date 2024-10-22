@@ -13,7 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
 spec:
   rules:
-    - host: managex.online
+    - host: managex.local
       http:
         paths:
           - path: /socket.io/chat/?(.*)
@@ -114,4 +114,11 @@ spec:
                 name: subscription-srv
                 port:
                   number: 9000
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 4173
           

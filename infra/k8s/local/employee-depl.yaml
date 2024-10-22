@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee
+  template:
+    metadata:
+      labels:
+        app: employee
+    spec:
+      containers:
+        - name: employee
+          image: irshadpp/employee
+          envFrom:
+            - configMapRef:
+                name: local-env-config
+            - secretRef:
+                name: local-env-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-srv
+spec:
+  selector:
+    app: employee
+  ports:
+    - name: employee
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

@@ -1,8 +1,6 @@
 apiVersion: skaffold/v2alpha3
 kind: Config
 build:
-  local:
-    push: true
   artifacts:
     - image: irshadpp/users
       context: users
@@ -52,30 +50,42 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: "."
-    # - image: irshadpp/client
-    #   context: client
-    #   docker:
-    #     dockerfile: Dockerfile
-    #   sync:
-    #     manual:
-    #       - src: "**/*.js"
-    #         dest: "."
+    - image: irshadpp/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        buildArgs:
+              BUILD_ENV: development
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: "."
 
 
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s/local/*.yaml
 
 profiles:
-  - name: development
+  - name: local
     build:
       local:
         push: false
     deploy:
       kubectl:
         manifests:
-          - ./infra/k8s/*
+          - ./infra/k8s/local/*.yaml
+    
+  - name: staging
+    build:
+      local:
+        push: true
+    deploy:
+      kubectl:
+        manifests:
+          - k8s/staging/**/*.yaml
+
 
   - name: production
     build:
@@ -84,4 +94,4 @@ profiles:
     deploy:
       kubectl:
         manifests:
-          - ./infra/k8s/prod/*  
+          - ./infra/k8s/prod/**/*.yaml
