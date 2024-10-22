@@ -15,7 +15,7 @@ const envChecker = () => {
     throw new Error("STRIPE_SECRET must be defined");
   }
   if (!process.env.STRIPE_WEBHOOK_SECRET) {
-    throw new Error("STRIPE_SECRET must be defined");
+    throw new Error("STRIPE_WEBHOOK_SECRET must be defined");
   }
 };
 

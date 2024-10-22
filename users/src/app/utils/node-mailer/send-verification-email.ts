@@ -1,7 +1,7 @@
 import { emailTransporter } from "./email-transporter";
 
 export const sendVarificationEmail = async (email: string, token: string) =>{
-    const verificationLink = `https://managex.vercel.app/verify-email?token=${token}`;
+    const verificationLink = `${process.env.CIENT_URL}/verify-email?token=${token}`;
 
     console.log(verificationLink);
 
