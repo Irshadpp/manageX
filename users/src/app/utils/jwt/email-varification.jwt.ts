@@ -14,7 +14,7 @@ export const generateEmailToken = (id: string): string =>{
 
 export const verifyEamilToken = (toekn: string): {id: string}=>{
     try { 
-        console.log("verifying email..........user")
+        console.log("verifying email..........user", process.env.JWT_EMAIL_SECRET)
         const payload = jwt.verify(toekn, process.env.JWT_EMAIL_SECRET!) as {id: string};
         return payload;
     } catch (error) {

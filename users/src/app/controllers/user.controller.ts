@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user/user.service";
 import { CommonMessages, HttpStatusCode, JWTUserPayload, NotFoundError, sendResponse } from "@ir-managex/common";
 import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
-import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
+import { rabbitmqWrapper } from "../../config/rabbitmq-wrapper";
 import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
 
 const userService = new UserService();
@@ -30,6 +30,7 @@ export const updateUser = async (
     sendResponse(res, HttpStatusCode.OK, "User details updated successfully");
 
   } catch (error) {
+    throw new Error("Internal server error")
     console.log(error);
   }
 };

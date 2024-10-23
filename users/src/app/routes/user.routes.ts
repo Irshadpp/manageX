@@ -1,4 +1,4 @@
-import { requireAuth } from "@ir-managex/common";
+import { requireAuth, validateRequest } from "@ir-managex/common";
 import express from "express";
 import {blockUser, fetchUsers, updateUser} from "../controllers/user.controller";
 import { updateUserValidator } from "../validators/update-user.validator";
@@ -9,8 +9,9 @@ const router = express.Router();
 
   router.patch(
     "/",
-    updateUserValidator,
     requireAuth,
+    updateUserValidator,
+    validateRequest,
     updateUser
   )
 

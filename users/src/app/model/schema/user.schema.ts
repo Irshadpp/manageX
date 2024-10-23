@@ -69,6 +69,13 @@ userSchema.statics.build = (attrs: UserAttrs) => {
   });
 };
 
+userSchema.on('index', (error) => {
+  if (error) {
+    console.log('Index error:', error);
+  }
+});
+
+
 const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 
 export { User };

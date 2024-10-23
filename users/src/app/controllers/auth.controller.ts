@@ -24,7 +24,7 @@ import { OrgService } from "../services/organization/org.service";
 import Password from "../utils/password";
 import { checkGoogleAuthUser } from "../utils/check-googleAuth-user";
 import { EmployeeCreatedPublisher } from "../events/publishers/employee-created-publisher";
-import { rabbitmqWrapper } from "../../config/rabbimq-wrapper";
+import { rabbitmqWrapper } from "../../config/rabbitmq-wrapper";
 import { Role } from "../model/enum";
 import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-created-publisher";
 import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
@@ -81,8 +81,8 @@ export const createUser = async (
     );
 
     await handleVerificationEmail(user.id, user.email);
-
     sendResponse(res, HttpStatusCode.CREATED, "User created successfully", { user });
+
   } catch (error) {
     console.log(error);
     next(error);
@@ -104,7 +104,7 @@ export const verifyEmail = async (
     const user = await userService.verifyUserEmail(id);
 
     if (!user) {
-      throw new NotFoundError();
+      throw new NotFoundError();  
     }
 
     const payload: JWTUserPayload = {
