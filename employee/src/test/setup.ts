@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import amqp from 'amqplib';
 import jwt from "jsonwebtoken";
 import { JWTUserPayload } from "@ir-managex/common";
-import { UserService } from "../app/services/user/user.service";
 
 jest.mock('../config/rabbitmq-wrapper', () => {
   const mockChannel: Partial<amqp.Channel> = {

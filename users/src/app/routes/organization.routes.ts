@@ -9,7 +9,6 @@ const router = express.Router();
 router.patch("/",
     updateOrgValidator,
     requireAuth,
-    isBlock,
     updateOrg
 )
 

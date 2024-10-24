@@ -14,7 +14,7 @@ export const updateUser = async (
 ) => {
   try {
     const { id } = req.user as JWTUserPayload;
-    const checkUser = userService.findById(id);
+    const checkUser = await userService.findById(id);
     if (!checkUser) {
       throw new NotFoundError();
     }
@@ -28,10 +28,9 @@ export const updateUser = async (
     await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(ChatUserEventData);
 
     sendResponse(res, HttpStatusCode.OK, "User details updated successfully");
-
   } catch (error) {
-    throw new Error("Internal server error")
     console.log(error);
+    next(error)
   }
 };
 

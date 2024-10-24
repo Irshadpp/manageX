@@ -3,7 +3,7 @@ dotenv.config();
 import { app } from "./app";
 import { connectDB } from "./config/db";
 import { envChecker } from "./config/env-checker";
-import { rabbitmqWrapper } from "./config/rabbitmqWrpper";
+import { rabbitmqWrapper } from "./config/rabbitmq-Wrapper";
 import { EmployeeCreatedConsumer } from "./app/events/consumers/employee-created-consumer";
 
 const start = async () => {

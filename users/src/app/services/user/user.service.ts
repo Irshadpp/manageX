@@ -2,6 +2,7 @@ import { UserAttrs, UserDoc } from "../../model/user.model";
 import Password from "../../utils/password";
 import { IUserService } from "./user.service.interface";
 import { User } from "../../model/schema/user.schema";
+import mongoose from "mongoose";
 
 export class UserService implements IUserService {
   async createUser(attrs: UserAttrs): Promise<UserDoc> {
@@ -22,11 +23,10 @@ export class UserService implements IUserService {
 
   async updateUser(id: string, attrs: UserAttrs): Promise<UserDoc | null> {
     return await User.findByIdAndUpdate(id, { ...attrs }, {new: true});
-    console.log("updatiiinggg userrrrr------------------------")
   }
 
   async findByEmail(email: string): Promise<UserDoc | null> {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }); 
     return user;
   }
 

@@ -35,4 +35,4 @@ export const updateAttendancePolicyValidator = [
       .optional()
       .isInt({ min: 0 })
       .withMessage('Vacation leaves must be a non-negative integer'),
-  ];
+  ];  

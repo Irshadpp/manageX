@@ -33,6 +33,7 @@ export const updateOrg = async (
     );
     sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
   } catch (error) {
+    next(error)
     console.log(error);
   }
 };

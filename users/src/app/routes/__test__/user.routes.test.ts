@@ -3,7 +3,6 @@ import { login, testUser } from "../../../test/setup";
 import { app } from "../../../app";
 import { HttpStatusCode } from "@ir-managex/common";
 import mongoose from "mongoose";
-import { UserService } from "../../services/user/user.service";
 import { User } from "../../model/schema/user.schema";
 
 describe("PATCH /api/v1/users", () => {
@@ -18,8 +17,8 @@ describe("PATCH /api/v1/users", () => {
       
     it("should update user details successfully", async () => {
 
-        const user = await User.create(testUser);
-          
+        const user = await User.create({_id: testUser.id, ...testUser});
+
         const response = await request(app)
         .patch("/api/v1/users")
         .set("Cookie", login())
@@ -28,28 +27,21 @@ describe("PATCH /api/v1/users", () => {
         expect(response.status).toBe(200);
     });
   
-    // it("should return 404 if user does not exist", async () => {
-    //   const cookies = await login(new mongoose.Types.ObjectId().toHexString());
+    it("should return 401 if user does not authenticated", async () => {
+      const userData = {
+        fName: "NonExistentUser",
+      };
   
-    //   const userData = {
-    //     fName: "NonExistentUser",
-    //   };
-  
-    //   jest.spyOn(UserService as any, "findById").mockResolvedValue(null);
-  
-    //   const response = await request(app)
-    //     .patch("/api/v1/users")
-    //     //@ts-ignore
-    //     .set("Cookie", cookies)
-    //     .send(userData)
-    //     .expect(HttpStatusCode.NOT_FOUND);
+      const response = await request(app)
+        .patch("/api/v1/users")
+        .send(userData)
+        .expect(HttpStatusCode.UNAUTHORIZED);
 
-    //   expect(response.body).toHaveProperty("errors");
-    //   expect(response.body.errors).toEqual("User not found"); 
-    // });
+      expect(response.body).toHaveProperty("errors");
+    });
   
     it("should return 400 for invalid user data", async () => {
-      const cookies = await login(new mongoose.Types.ObjectId().toHexString());
+      const cookies = await login();
   
       const invalidUserData = {
         fName: "",
