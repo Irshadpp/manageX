@@ -14,40 +14,40 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
     const attendancePolicy = await attendancePolicyService.getAttendancePolicyByOrgId(organization);
 
     if (!attendancePolicy) {
-        return next(new Error("Attendance policy not found"));
+        return next(new BadRequestError("Attendance policy not found"));
     }
-
+    
     // Adjust the current time to IST (UTC+05:30)
     const currentUtcDate = new Date();
     const istOffset = 5.5 * 60 * 60 * 1000; // 5 hours 30 minutes in milliseconds
     const istDate = new Date(currentUtcDate.getTime() + istOffset);
     const currentDateString = istDate.toISOString().split('T')[0];
-
+    
     const existingAttendance = await attendanceService.findAttendance(id, organization, currentDateString);
-
+    
     const [officeStartHours, officeStartMinutes] = attendancePolicy.officeStartTime.split(':').map(Number);
     const fullDayHours = attendancePolicy.fullDayThreshold;
-
+    
     const officeStartTime = new Date();
     officeStartTime.setHours(officeStartHours, officeStartMinutes, 0, 0);
     officeStartTime.setMinutes(officeStartTime.getMinutes() - officeStartTime.getTimezoneOffset());
-
+    
     const thresholdDate = new Date(officeStartTime);
     thresholdDate.setHours(officeStartHours + fullDayHours);
-
+    
     if (type === "checkIn") {
         if (existingAttendance) {
             return next(new BadRequestError("Already checked in."));
         }
-
+        
         if (istDate > thresholdDate) {
             return next(new BadRequestError("Cannot check in after the office time"));
         }
-
+        
         const status = istDate > officeStartTime
-            ? AttendanceStatus.LATE
-            : AttendanceStatus.PRESENT;
-
+        ? AttendanceStatus.LATE
+        : AttendanceStatus.PRESENT;
+        
         const attendance = await attendanceService.createAttendance({
             employeeId: id,
             organizationId: organization,
@@ -55,9 +55,9 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
             status,
             remarks,
         });
-
+        
         return sendResponse(res, HttpStatusCode.OK, "Check-in recorded successfully", attendance);
-
+        
     } else if (type === "checkOut") {
         if (!existingAttendance) {
             return next(new BadRequestError("No check-in record found. Please check in first."));
@@ -65,24 +65,24 @@ export const markAttendance = async (req: Request, res: Response, next: NextFunc
         if (existingAttendance.checkOut) {
             return next(new BadRequestError("Already checked out. Cannot check out again."));
         }
-
+        
         const checkOutDate = istDate;
         const workingHours = (checkOutDate.getTime() - existingAttendance.checkIn!.getTime()) / (1000 * 60 * 60);
-
+        
         const status = workingHours < attendancePolicy.halfDayThreshold
-            ? AttendanceStatus.HALFDAY
-            : AttendanceStatus.PRESENT;
-
+        ? AttendanceStatus.HALFDAY
+        : AttendanceStatus.PRESENT;
+        
         const updatedAttendance = await attendanceService.updateAttendance(existingAttendance.id, {
             checkOut: checkOutDate,
             workingHours,
             status,
             remarks,
         });
-
+        
         return sendResponse(res, HttpStatusCode.OK, "Check-out recorded successfully", updatedAttendance);
     }
-
+    
     return next(new BadRequestError("Invalid type. Must be either 'checkIn' or 'checkOut'."));
 };
 

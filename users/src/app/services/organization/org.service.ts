@@ -9,7 +9,9 @@ export class OrgService implements IOrgService {
   }
 
   async findOrgById(orgId: string): Promise<OrgDoc | null> {
-    return await Organization.findById(orgId);
+    const org = await Organization.findById(orgId);
+    console.log(org, "orrggggggggggggggg=============<<<<<<<<<<<<<<<<<")
+    return org 
   }
 
   async updateOrg(

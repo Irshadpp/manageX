@@ -2,7 +2,7 @@ import { BadRequestError, CommonMessages, HttpStatusCode, NotFoundError, sendRes
 import { NextFunction, Request, Response } from "express";
 import { EmployeeService } from "../services/employee/employee.service";
 import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
-import { rabbitmqWrapper } from "../../config/rabbitmqWrpper";
+import { rabbitmqWrapper } from "../../config/rabbitmq-Wrapper";
 import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
 import { generateEmailToken } from "../utils/jwt/email-varification.jwt";
 import { sendVarificationEmail } from "../utils/node-mailer/send-verification-email";
