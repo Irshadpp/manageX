@@ -56,7 +56,6 @@ describe("PATCH /api/v1/organization", () => {
 
 
   it("should return 400 if the organization name already exists", async () => {
-    // Create two organizations with different names
     const firstOrgData = {
       admin: testUser.id,
       _id: new mongoose.Types.ObjectId().toHexString(),
