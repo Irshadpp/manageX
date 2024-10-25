@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: staging-env-config 
+  namespace: staging 
 data:
   SMTP_USER: "managexorg@gmail.com"
   MONGO_URI_USERS: "mongodb+srv://managex_irshad:caElzVE6hRwunI0N@cluster0.jm9yi6w.mongodb.net/managex_userdb?retryWrites=true&w=majority&appName=Cluster0"
