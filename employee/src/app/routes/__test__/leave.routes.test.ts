@@ -6,7 +6,7 @@ import { HttpStatusCode } from "@ir-managex/common";
 import { AttendancePolicy } from "../../model/schema/attendance-policy.schema";
 
 
-//////////////////////// applying leave ////////////////////////
+//////////////////////// applying leave ///////////////////////////
 describe("POST /api/v1/leave", () => {
   it("should verify that MongoDB is connected", async () => {
     expect(mongoose.connection.readyState).toBe(1);
