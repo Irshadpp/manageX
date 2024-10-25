@@ -1,0 +1,130 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: staging-ingress
+  namespace: staging
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/websocket-services: "ws"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+spec:
+  tls:
+    - hosts:
+      - staging.managex.site
+      secretName: letsencrypt-prod
+  rules:
+    - host: managex.site
+      http:
+        paths:
+          - path: /socket.io/chat/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 7000
+          - path: /socket.io/meet/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: meet-srv
+                port:
+                  number: 8000
+          - path: /api/v1/users/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: users-srv
+                port:
+                  number: 3000
+          - path: /api/v1/auth/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: users-srv
+                port:
+                  number: 3000
+          - path: /api/v1/organization/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: users-srv
+                port:
+                  number: 3000
+          - path: /api/v1/employee/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: employee-srv
+                port:
+                  number: 4000
+          - path: /api/v1/attendance/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: employee-srv
+                port:
+                  number: 4000
+          - path: /api/v1/attendance-policy/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: employee-srv
+                port:
+                  number: 4000
+          - path: /api/v1/leave/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: employee-srv
+                port:
+                  number: 4000
+          - path: /api/v1/project/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: project-srv
+                port:
+                  number: 5000
+          - path: /api/v1/task/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: project-srv
+                port:
+                  number: 5000
+          - path: /api/v1/chat/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 7000
+          - path: /api/v1/meet/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: meet-srv
+                port:
+                  number: 8000
+          - path: /api/v1/subscription/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: subscription-srv
+                port:
+                  number: 9000
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 4173
+          

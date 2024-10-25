@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-depl
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat
+          image: irshadpp/chat:staging 
+          envFrom:
+            - configMapRef:
+                name: staging-env-config 
+            - secretRef:
+                name: staging-env-secret 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-srv-staging
+  namespace: staging
+spec:
+  selector:
+    app: chat
+  ports:
+    - name: chat
+      protocol: TCP
+      port: 7000
+      targetPort: 7000
