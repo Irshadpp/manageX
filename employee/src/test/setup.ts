@@ -4,7 +4,7 @@ import amqp from 'amqplib';
 import jwt from "jsonwebtoken";
 import { JWTUserPayload } from "@ir-managex/common";
 
-jest.mock('../config/rabbitmq-wrapper', () => {
+jest.mock('../config/rabbitmq-Wrapper.ts', () => {
   const mockChannel: Partial<amqp.Channel> = {
     assertQueue: jest.fn().mockResolvedValue(true),
     sendToQueue: jest.fn(),
