@@ -1,0 +1,73 @@
+name: CI for All Services
+
+on:
+  push:
+    paths:
+      - 'users/**'
+      - 'employee/**'
+      # - 'project/**'
+      # - 'chat/**'
+      # - 'meet/**'
+      # - 'subscription/**'
+      # - 'client/**'
+  pull_request:
+    paths:
+      - 'users/**'
+      - 'employee/**'
+      # - 'project/**'
+      # - 'chat/**'
+      # - 'meet/**'
+      # - 'subscription/**'
+      # - 'client/**'
+
+jobs:
+  test-users:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd users && npm install && npm run test:ci
+
+  test-employee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd employee && npm install && npm run test:ci
+
+  # test-project:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: cd project && npm install && npm run test:ci
+
+  # test-chat:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: cd chat && npm install && npm run test:ci
+
+  # test-meet:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: cd meet && npm install && npm run test:ci
+
+  # test-subscription:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: cd subscription && npm install && npm run test:ci
+
+  # test-client:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: cd client && npm install && npm run test:ci
+
+  trigger-jenkins:
+    runs-on: ubuntu-latest
+    needs: [test-users, test-employee]
+    steps:
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST http://jenkins.managex.site/job/ManageX-Deployement/build \
+          --user ${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}
