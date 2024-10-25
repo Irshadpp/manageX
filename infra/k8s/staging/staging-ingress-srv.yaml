@@ -19,7 +19,7 @@ spec:
       - staging.managex.site
       secretName: letsencrypt-prod
   rules:
-    - host: managex.site
+    - host: staging.managex.site
       http:
         paths:
           - path: /socket.io/chat/?(.*)
