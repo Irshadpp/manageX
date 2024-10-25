@@ -84,7 +84,7 @@ profiles:
     deploy:
       kubectl:
         manifests:
-          - k8s/staging/*.yaml
+          - ./infra/k8s/staging/*.yaml
 
 
   - name: production
