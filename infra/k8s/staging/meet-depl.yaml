@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meet-depl
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meet
+  template:
+    metadata:
+      labels:
+        app: meet
+    spec:
+      containers:
+        - name: meet
+          image: irshadpp/meet:staging 
+          envFrom:
+            - configMapRef:
+                name: staging-env-config 
+            - secretRef:
+                name: staging-env-secret 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meet-srv-staging
+  namespace: staging
+spec:
+  selector:
+    app: meet
+  ports:
+    - name: meet
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
