@@ -15,22 +15,11 @@ spec:
       containers:
         - name: project
           image: irshadpp/project
-          env:
-            - name: MONGO_URI_PROJECT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: MONGO_URI_PROJECT
-            - name: JWT_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_ACCESS_SECRET
-            - name: JWT_REFRESH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_REFRESH_SECRET
+          envFrom:
+            - configMapRef:
+                name: app-config 
+            - secretRef:
+                name: app-secret 
 ---
 apiVersion: v1
 kind: Service

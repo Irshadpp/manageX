@@ -15,32 +15,11 @@ spec:
       containers:
         - name: client
           image: irshadpp/client
-          env:
-            - name: VITE_BACKEND_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: VITE_BACKEND_URL
-            - name: VITE_GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: VITE_GOOGLE_CLIENT_ID
-            - name: VITE_CLOUDINARY_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: VITE_CLOUDINARY_NAME
-            - name: VITE_CLOUDINARY_UPLOAD_PRESET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: VITE_CLOUDINARY_UPLOAD_PRESET
-            - name: VITE_STRIPE_PUBLIC_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: VITE_STRIPE_PUBLIC_KEY
+          envFrom:
+            - configMapRef:
+                name: app-config 
+            - secretRef:
+                name: app-secret 
 ---
 apiVersion: v1
 kind: Service

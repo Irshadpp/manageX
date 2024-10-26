@@ -15,27 +15,11 @@ spec:
       containers:
         - name: chat
           image: irshadpp/chat
-          env:
-            - name: MONGO_URI_CHAT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: MONGO_URI_CHAT
-            - name: CLIENT_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: CLIENT_URL
-            - name: JWT_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_ACCESS_SECRET
-            - name: JWT_REFRESH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_REFRESH_SECRET
+          envFrom:
+            - configMapRef:
+                name: app-config 
+            - secretRef:
+                name: app-secret 
 ---
 apiVersion: v1
 kind: Service

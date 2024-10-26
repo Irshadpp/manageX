@@ -1,14 +1,12 @@
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/services/api/commonRequest";
 import { EmailVerificationSkeleton } from "./EmailVerificationSkelton";
 import VerifyError from "./VerifyError";
 import { useDispatch } from "react-redux";
 import { setCredentials, updateIntitialSetup } from "@/store/authSlice";
-import VerifiedEmail from "./VerifiedEmail";
 
 const VerifyEmail = () => {
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [loading, setLoading] = useState(true);
@@ -30,6 +28,7 @@ const VerifyEmail = () => {
           const userData = {
             user:{...res.user},
           }
+          console.log(res, "==============================================", res.user)
           dispatch(updateIntitialSetup({value: true}));
           dispatch(setCredentials({user: res.user}));
         } else {

@@ -15,37 +15,11 @@ spec:
       containers:
         - name: users
           image: irshadpp/users
-          env:
-            - name: MONGO_URI_USERS
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: MONGO_URI_USERS
-            - name: SMTP_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: SMTP_USER
-            - name: SMTP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: SMTP_PASSWORD
-            - name: JWT_EMAIL_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_EMAIL_SECRET
-            - name: JWT_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_ACCESS_SECRET
-            - name: JWT_REFRESH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_REFRESH_SECRET
+          envFrom:
+            - configMapRef:
+                name: app-config 
+            - secretRef:
+                name: app-secret 
 ---
 apiVersion: v1
 kind: Service

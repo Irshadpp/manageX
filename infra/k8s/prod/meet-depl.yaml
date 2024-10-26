@@ -15,37 +15,11 @@ spec:
       containers:
         - name: meet
           image: irshadpp/meet
-          env:
-            - name: MONGO_URI_MEET
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: MONGO_URI_MEET
-            - name: JWT_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_ACCESS_SECRET
-            - name: JWT_REFRESH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: JWT_REFRESH_SECRET
-            - name: CLIENT_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: CLIENT_URL
-            - name: ACCOUNT_SID
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: ACCOUNT_SID
-            - name: AUTH_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: AUTH_TOKEN
+          envFrom:
+            - configMapRef:
+                name: app-config 
+            - secretRef:
+                name: app-secret 
 ---
 apiVersion: v1
 kind: Service
