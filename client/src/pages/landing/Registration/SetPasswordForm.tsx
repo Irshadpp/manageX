@@ -32,6 +32,7 @@ const formSchema = z.object({
 const SetPasswordForm = () => {
     const logout = useLogout();
     const {user} = useSelector((state: RootState) => state.auth)
+    console.log(user, "-----------------------==========================-----------------------------------------")
     const userId = user!.id
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
