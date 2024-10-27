@@ -12,7 +12,7 @@
 
 FROM node:alpine
 WORKDIR /app
-COPY package.json package-lock.json .
+COPY package.json package-lock.json /app/
 RUN npm install
 COPY . .
 ENV NODE_OPTIONS=--max-old-space-size=4096
