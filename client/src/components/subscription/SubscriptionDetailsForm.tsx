@@ -111,6 +111,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
         }
         storeObject("subscription_sessionId", response.data.sessionId);
         console.log(response.data.sessionId, "-----------------------")
+        console.log('Stripe instance:', stripe);
         if (stripe) {
           const result = await stripe.redirectToCheckout({
             sessionId: response.data.sessionId,
