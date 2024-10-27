@@ -64,10 +64,18 @@ jobs:
   #     - run: cd client && npm install && npm run test:ci
 
   trigger-jenkins:
-    runs-on: ubuntu-latest
-    needs: [test-users, test-employee]
-    steps:
-      - name: Trigger Jenkins Job
+     runs-on: ubuntu-latest
+     needs: [test-users, test-employee]
+     steps:
+      - name: Fetch Jenkins Crumb
+        id: get-crumb
         run: |
-          curl -X POST http://jenkins.managex.site/job/ManageX-Deployement/build \
-          --user ${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}
+         CRUMB=$(curl -s --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" "http://jenkins.managex.site/crumbIssuer/api/json" | jq -r .crumb)
+         echo "CRUMB=$CRUMB" >> $GITHUB_ENV
+      - name: Trigger Jenkins Job
+        env:
+         CRUMB: ${{ env.CRUMB }}
+        run: |
+          curl -X POST http://jenkins.managex.site/job/ManageX-Deployment/build \
+          --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+          -H "Jenkins-Crumb:$CRUMB"
