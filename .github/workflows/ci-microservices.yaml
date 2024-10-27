@@ -77,4 +77,4 @@ jobs:
         run: |
           curl -X POST "https://jenkins.managex.site/job/ManageX-Deployment/build" \
           --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
-          -H "Jenkins-Crumb:${{ env.CRUMB }}"
+          -H "Jenkins-Crumb: ${{ env.CRUMB }}"
