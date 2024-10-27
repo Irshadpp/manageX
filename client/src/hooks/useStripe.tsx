@@ -4,6 +4,8 @@ import { loadStripe, Stripe } from '@stripe/stripe-js';
 const useStripe = (publicKey: string): Stripe | null => {
   const [stripe, setStripe] = useState<Stripe | null>(null);
 
+  console.log("Stripe Public Key:", publicKey);
+
   useEffect(() => {
     const initializeStripe = async () => {
       if (!publicKey) return;
