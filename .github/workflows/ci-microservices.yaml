@@ -5,20 +5,20 @@ on:
     paths:
       - 'users/**'
       - 'employee/**'
-      # - 'project/**'
-      # - 'chat/**'
-      # - 'meet/**'
-      # - 'subscription/**'
-      # - 'client/**'
+      - 'project/**'
+      - 'chat/**'
+      - 'meet/**'
+      - 'subscription/**'
+      - 'client/**'
   pull_request:
     paths:
       - 'users/**'
       - 'employee/**'
-      # - 'project/**'
-      # - 'chat/**'
-      # - 'meet/**'
-      # - 'subscription/**'
-      # - 'client/**'
+      - 'project/**'
+      - 'chat/**'
+      - 'meet/**'
+      - 'subscription/**'
+      - 'client/**'
 
 jobs:
   test-users:
