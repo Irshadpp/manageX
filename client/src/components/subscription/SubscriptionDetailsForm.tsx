@@ -64,6 +64,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const {user} = useSelector((state: RootState) => state.auth);
+  console.log("public key from component-------->",import.meta.env.VITE_STRIPE_PUBLIC_KEY)
   const stripe = useStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
   const [countryISO, setCountryISO] = useState("");
