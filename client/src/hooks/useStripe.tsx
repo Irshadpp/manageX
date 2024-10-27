@@ -7,6 +7,7 @@ const useStripe = (publicKey: string): Stripe | null => {
   console.log("Stripe Public Key:", publicKey);
 
   useEffect(() => {
+    console.log("-----------------stripe hook useEffedct called.........")
     const initializeStripe = async () => {
       if (!publicKey) return;
       const stripeInstance = await loadStripe(publicKey);
