@@ -76,6 +76,7 @@ function App() {
     console.log("VITE_CLOUDINARY_NAME:", import.meta.env.VITE_CLOUDINARY_NAME);
     console.log("VITE_CLOUDINARY_UPLOAD_PRESET:", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     console.log("VITE_STRIPE_PUBLIC_KEY:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    console.log("VITE_STRIPE_PUBLIC_KEY:", import.meta.env.BACKEND_URL);
   }
 
   logEnvVariables();
@@ -94,6 +95,10 @@ function App() {
       unsubscribe();
     };
   }, [dispatch]);
+
+  useEffect(()=>{
+    logEnvVariables();
+  },[])
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
