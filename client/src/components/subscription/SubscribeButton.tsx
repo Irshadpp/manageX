@@ -20,15 +20,14 @@ const SubscribeButton = ({ title, value }: Props) => {
   return (
     <>
       <Button className="my-5" onClick={() => setIsModalOpen(true)}>
-        {title}
+          {title}
       </Button>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Enter your details</DialogTitle>
             <DialogDescription>
-              To subscribe we need your details as per the Indian Laws, So
-              please enter below details.
+              To subscribe, we need your details as per Indian laws. Please fill out the information below.
             </DialogDescription>
           </DialogHeader>
           <SubscriptionDetailsForm setIsModalOpen={setIsModalOpen} value={value} />

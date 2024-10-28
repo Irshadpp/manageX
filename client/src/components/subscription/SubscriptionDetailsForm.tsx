@@ -64,8 +64,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const {user} = useSelector((state: RootState) => state.auth);
-  console.log("public key from component-------->",import.meta.env.VITE_STRIPE_PUBLIC_KEY)
-  const stripe = useStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  const stripe = useStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || "pk_test_51Q9lFJKT4uALUwNb9q0sU4TIQk10YsXuuRCe99OKOhJ3ARHDR6ngjikifmbmEUtZif5VmDSq2f95CDsd8YK2z9ey00wN3FEeKC");
 
   const [countryISO, setCountryISO] = useState("");
   const [stateISO, setStateISO] = useState("");
