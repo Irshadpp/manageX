@@ -15,6 +15,10 @@ WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm install
 COPY . .
+
+ARG VITE_STRIPE_PUBLIC_KEY
+ENV VITE_STRIPE_PUBLIC_KEY=$VITE_STRIPE_PUBLIC_KEY
+
 ENV NODE_OPTIONS=--max-old-space-size=4096
 RUN npm run build
 CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
