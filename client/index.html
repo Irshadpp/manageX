@@ -72,12 +72,21 @@
   <div class="loader-wrapper" id="fallbackLoader">
     <div class="loader-container">
       <div class="logo"></div>
-      <div class="loading-text">Loading ManageX...</div>
     </div>
   </div>
   <div id="root"></div>
   <div id="videos_portal"></div>
   <script type="module" src="/src/main.tsx"></script>
+
+  <script>
+    // Hide the loader when React is ready
+    window.addEventListener("load", () => {
+      const fallbackLoader = document.getElementById("fallbackLoader");
+      if (fallbackLoader) {
+        fallbackLoader.style.display = "none";
+      }
+    });
+  </script>
 </body>
 
 </html>
