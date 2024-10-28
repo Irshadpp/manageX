@@ -10,10 +10,68 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ManageX</title>
+  <style>
+    /* Center the loader */
+    #root {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f4f8;
+    }
+
+    /* Loader styling */
+    .loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1.2s ease-in-out both;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: url("https://res.cloudinary.com/dajairt5h/image/upload/v1730103174/managexPngLogo_yv0wrt.png")
+        no-repeat center/contain;
+      animation: bounce 1.5s infinite alternate ease-in-out;
+    }
+
+    .loading-text {
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      color: #666;
+      margin-top: 10px;
+      animation: fadeIn 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Fallback loader -->
+    <div class="loader-container">
+      <div class="logo"></div>
+      <div class="loading-text">Loading ManageX...</div>
+    </div>
+  </div>
   <div id="videos_portal"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
