@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Subscription } from "../models/schema/subscription.schema";
 import { SubscriptionAttrs, SubscriptionDoc } from "../models/subscription.model";
 import { ISubscriptionService } from "./subscription.interface";
@@ -15,8 +16,11 @@ export class SubscriptionService implements ISubscriptionService{
         }
       }
 
-    async getSubscripton(organizationId: string): Promise<SubscriptionDoc | null> {
-        return await Subscription.findOne({organizationId});
+    async getSubscripton(user: string): Promise<SubscriptionDoc | null> {
+        return await Subscription.findOne({user});
+    }
+    async getActiveSubscripton(user: string): Promise<SubscriptionDoc | null> {
+        return await Subscription.findOne({user: new mongoose.Types.ObjectId(user), subscriptionStatus:"active"});
     }
 
     async deleteSubscription(subscriptionId: string): Promise<void> {

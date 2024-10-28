@@ -21,7 +21,7 @@ const subscriptionSchema = new mongoose.Schema({
     planId: {
         type: String,
     },    
-    SubscriptionStatus: {
+    subscriptionStatus: {
         type: String,
         enum: ['active', 'past_due', 'canceled', 'unpaid'],
         default: 'active'
