@@ -9,6 +9,8 @@ const app = express();
 
 app.use(json());
 
+console.log(process.env.CLIENT_URL, "-----------clint url");
+
 const corsOptions = {
     origin: process.env.CLIENT_URL || "",
     method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
