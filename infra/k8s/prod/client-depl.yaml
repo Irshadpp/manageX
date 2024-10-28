@@ -15,11 +15,14 @@ spec:
       containers:
         - name: client
           image: irshadpp/client
-          envFrom:
-            - configMapRef:
-                name: app-config 
-            - secretRef:
-                name: app-secret 
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+            subPath: client-config.env
+volumes:
+  - name: config-volume
+    configMap:
+      name: client-config
 ---
 apiVersion: v1
 kind: Service

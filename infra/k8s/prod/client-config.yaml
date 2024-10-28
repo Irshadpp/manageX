@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+data:
+  VITE_GOOGLE_CLIENT_ID: "386330701931-4rojccv07tb6bsd182u9661s6irlimel.apps.googleusercontent.com"
+  VITE_CLOUDINARY_NAME: "dajairt5h"
+  VITE_CLOUDINARY_UPLOAD_PRESET: "ya6pdewh"
+  VITE_STRIPE_PUBLIC_KEY: "pk_test_51Q9lFJKT4uALUwNb9q0sU4TIQk10YsXuuRCe99OKOhJ3ARHDR6ngjikifmbmEUtZif5VmDSq2f95CDsd8YK2z9ey00wN3FEeKC"

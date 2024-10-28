@@ -10,11 +10,21 @@
 
 
 
+# FROM node:alpine
+# WORKDIR /app
+# COPY package.json package-lock.json /app/
+# RUN npm install
+# COPY . .
+# ENV NODE_OPTIONS=--max-old-space-size=4096
+# RUN npm run build
+# CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+
 FROM node:alpine
 WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm install
 COPY . .
 ENV NODE_OPTIONS=--max-old-space-size=4096
-RUN npm run build
+ENV FILE_PATH=/app/config/client-config.env
+RUN export $(cat $FILE_PATH | xargs) && npm run build
 CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
