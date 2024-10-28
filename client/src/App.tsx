@@ -71,6 +71,14 @@ import PaymentFailure from "./pages/owner/subscription/PaymentFailure";
 function App() {
   const dispatch = useDispatch();
 
+  function logEnvVariables() {
+    console.log("VITE_GOOGLE_CLIENT_ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+    console.log("VITE_CLOUDINARY_NAME:", import.meta.env.VITE_CLOUDINARY_NAME);
+    console.log("VITE_CLOUDINARY_UPLOAD_PRESET:", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    console.log("VITE_STRIPE_PUBLIC_KEY:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  }
+
+  logEnvVariables();
   useEffect(() => {
     // Listen for state changes across tabs
     listenToMeetStateChanges(dispatch);
