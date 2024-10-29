@@ -105,10 +105,10 @@ export default function NewAttachmentForm({
 
     const formData = new FormData();
     formData.append("file", selectedFile as Blob);
-    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string);
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string || "ya6pdewh");
 
     try {
-        const res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/auto/upload`,
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME || "dajairt5h"}/auto/upload`,
             formData);
         return res.data.secure_url  
     } catch (error) {

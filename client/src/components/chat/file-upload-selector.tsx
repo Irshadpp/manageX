@@ -76,12 +76,12 @@ const FileUploadSelector = ({ chat, setIsModalOpen }: Props) => {
     formData.append("file", selectedFile as Blob);
     formData.append(
       "upload_preset",
-      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string || "ya6pdewh"
     );
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/auto/upload`,
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME || "dajairt5h"}/auto/upload`,
         formData
       );
       return response.data.secure_url;

@@ -71,15 +71,6 @@ import PaymentFailure from "./pages/owner/subscription/PaymentFailure";
 function App() {
   const dispatch = useDispatch();
 
-  function logEnvVariables() {
-    console.log("VITE_GOOGLE_CLIENT_ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
-    console.log("VITE_CLOUDINARY_NAME:", import.meta.env.VITE_CLOUDINARY_NAME);
-    console.log("VITE_CLOUDINARY_UPLOAD_PRESET:", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
-    console.log("VITE_STRIPE_PUBLIC_KEY:", import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-    console.log("VITE_STRIPE_PUBLIC_KEY:", import.meta.env.BACKEND_URL);
-  }
-
-  logEnvVariables();
   useEffect(() => {
     // Listen for state changes across tabs
     listenToMeetStateChanges(dispatch);
@@ -96,14 +87,11 @@ function App() {
     };
   }, [dispatch]);
 
-  useEffect(()=>{
-    logEnvVariables();
-  },[])
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <ToastProvider>
-          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "386330701931-4rojccv07tb6bsd182u9661s6irlimel.apps.googleusercontent.com"}>
             <Router>
               <Routes>
                 <Route element={<PublicRoute />}>

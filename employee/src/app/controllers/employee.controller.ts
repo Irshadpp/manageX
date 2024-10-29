@@ -154,7 +154,7 @@ export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next:
   }
 }
 
-export const checkSubscriptionLimit = async(req: Request, res: Response, next: NextFunction) =>{
+export const checkSubscriptionLimit = async (req: Request, res: Response, next: NextFunction) =>{
   try {
     const orgId = req.user?.organization;
     if (!orgId) throw new NotFoundError();
@@ -169,4 +169,38 @@ export const checkSubscriptionLimit = async(req: Request, res: Response, next: N
   }
 }
 
+export const terminateEmployee = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const {employeeId} = req.params;
+    if (!employeeId) throw new NotFoundError();
 
+    const {terminationReason} = req.body
+
+    const employeeData = await employeeService.terminateEmployee(employeeId, terminationReason);
+
+    const eventData = UserUpdatedPublisher.moveToEventData(employeeData!);
+    await new UserUpdatedPublisher(rabbitmqWrapper.channel).publish(eventData);
+
+    const projectUserEventData = ProjectUserUpdatedPublisher.mapToEventData(employeeData!)
+    await new ProjectUserUpdatedPublisher(rabbitmqWrapper.channel).publish(projectUserEventData);
+
+    const chatUserEventData = ChatUserUpdatedPublisher.mapToEventData(employeeData!);
+    await new ChatUserUpdatedPublisher(rabbitmqWrapper.channel).publish(chatUserEventData);
+
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, employeeData);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const fetchExEmployees = async (req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const orgId = req.user?.organization;
+    if (!orgId) throw new NotFoundError();
+
+    const exEmployees = await employeeService.fetchExEmployees(orgId);
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, exEmployees);
+  } catch (error) {
+    next(error);
+  }
+}
