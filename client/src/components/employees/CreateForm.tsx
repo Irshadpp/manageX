@@ -20,10 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ImageUpload from "@/components/common/ImageUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadImage } from "@/utils/uploadImage";
 import { apiRequest } from "@/services/api/commonRequest";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const employeeSchema = z.object({
   fName: z
@@ -36,27 +37,18 @@ const employeeSchema = z.object({
   phone: z
     .string()
     .min(8, { message: "Phone Number must be at least 10 numbers." }),
-  email: z
-    .string()
-    .email()
-    .min(2, { message: "Please give a valid email" }),
-  username: z
-    .string()
-    .min(2, { message: "Please give a valid username." }),
+  email: z.string().email().min(2, { message: "Please give a valid email" }),
+  username: z.string().min(2, { message: "Please give a valid username." }),
   employeeType: z
     .string()
     .min(2, { message: "Please give valid employee type." }),
   salary: z.string(),
-  hiringDate: z
-    .date()
-    .refine((date) => date <= new Date(), {
-      message: "Hiring date cannot be in the future.",
-    }),
+  hiringDate: z.date().refine((date) => date <= new Date(), {
+    message: "Hiring date cannot be in the future.",
+  }),
   profileURL: z.string().optional(),
-  gender: z
-    .string()
-    .min(2, { message: "Please give valid gender." }),
-    street: z
+  gender: z.string().min(2, { message: "Please give valid gender." }),
+  street: z
     .string()
     .min(2, { message: "Street must be at least 2 characters." }),
   state: z.string().min(2, { message: "State must be at least 2 characters." }),
@@ -70,8 +62,46 @@ const employeeSchema = z.object({
 const CreateForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>();
   const [error, setError] = useState("");
-  const [ loading, setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [IslimitExceed, setIsLimitExceed] = useState(false);
   const navigate = useNavigate();
+
+  const employeeResource = async () => {
+    const res = await apiRequest({
+      method: "GET",
+      url: import.meta.env.VITE_BACKEND_URL,
+      route: "/api/v1/employee/subscripton-limit",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.success) {
+      setIsLimitExceed(false);
+    } else {
+      setIsLimitExceed(true);
+    }
+  };
+  useEffect(() => {
+    employeeResource();
+  }, []);
+
+  const handleSubscriptionClick = () => {
+    Swal.fire({
+      title: "Subscription Required",
+      text: "To create an employee, you need to subscribe. Redirecting you to the subscription page...",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "Subscribe Now",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        navigate("/owner/billing");
+      }
+    });
+  
+  };
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
@@ -86,11 +116,11 @@ const CreateForm = () => {
       gender: "",
       salary: "",
       hiringDate: new Date(),
-        city: "",
-        country: "",
-        state: "",
-        street: "",
-        zipcode: "",
+      city: "",
+      country: "",
+      state: "",
+      street: "",
+      zipcode: "",
     },
   });
 
@@ -105,12 +135,12 @@ const CreateForm = () => {
       url: import.meta.env.VITE_BACKEND_URL,
       route: "/api/v1/employee",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      data: {...values}
+      data: { ...values },
     });
 
-    if(!res.success){
+    if (!res.success) {
       setError(res?.errors[0]?.message || "Employee creation failed");
       return setLoading(false);
     }
@@ -121,10 +151,7 @@ const CreateForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 px-5"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-5">
         <div className="md:grid grid-cols-4 gap-10">
           <div>
             <ImageUpload
@@ -352,8 +379,18 @@ const CreateForm = () => {
                 />
               )}
             />
-            <Button type="submit" className="mt-3">
+            {/* <Button type="submit" className="mt-3">
               {loading ? "Creating..." : "Create Employee"}
+            </Button> */}
+            <Button
+              type={IslimitExceed ? "button" : "submit"}
+              onClick={IslimitExceed ? handleSubscriptionClick : undefined}
+            >
+              {loading
+                ? "Creating..."
+                : IslimitExceed
+                ? "Subscribe to Create Employee"
+                : "Create Employee"}
             </Button>
             {error && <p className="text-sm text-red-500">{error}</p>}
           </div>

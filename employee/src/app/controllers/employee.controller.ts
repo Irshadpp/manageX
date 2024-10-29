@@ -1,4 +1,4 @@
-import { BadRequestError, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
+import { BadRequestError, checkSubscriptionLimits, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { EmployeeService } from "../services/employee/employee.service";
 import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
@@ -153,3 +153,18 @@ export const fetchEmployeesWithOrgId = async (req: Request, res: Response, next:
     next(error);
   }
 }
+
+export const checkSubscriptionLimit = async(req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const orgId = req.user?.organization;
+    if (!orgId) throw new NotFoundError();
+
+    const currentEmployeeCount = await employeeService.countEmployees(orgId);
+    await checkSubscriptionLimits(orgId, "employees", currentEmployeeCount);
+
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
+  } catch (error) {
+    next(error);
+  }
+}
+

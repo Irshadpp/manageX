@@ -2,6 +2,7 @@ import { requireAuth, validateRequest } from "@ir-managex/common";
 import express from "express";
 import {
   createSubscription,
+  getSubscriptionDetails,
   getSubscriptionStatus,
   handleStripeWebhook,
 } from "../controllers/subscription.controller";
@@ -27,6 +28,12 @@ router.get(
   "/status",
   requireAuth,
   getSubscriptionStatus
+);
+
+router.get(
+  "/",
+  requireAuth,
+  getSubscriptionDetails
 );
 
 export { router as subscriptionRouter };

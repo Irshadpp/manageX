@@ -129,4 +129,7 @@ export class EmployeeService implements IEmployeeService{
             totalPages,
           };
     }
+    async countEmployees(organizationId: string): Promise<number> {
+        return await Employee.find({organizationId}).countDocuments();
+    }
 }
