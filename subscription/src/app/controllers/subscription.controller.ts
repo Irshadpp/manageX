@@ -4,6 +4,7 @@ import {
   BadRequestError,
   CommonMessages,
   HttpStatusCode,
+  NotFoundError,
   sendResponse,
 } from "@ir-managex/common";
 import { stripe } from "../utils/stripe";
@@ -181,12 +182,61 @@ export const handleStripeWebhook = async (
 };
 
 
+export const getSubscriptionDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    
+    const subscription = await subscriptionService.getActiveSubscripton(
+      userId as string
+    );
+    
+    if (!subscription) {
+      throw new NotFoundError();
+    }
+    
+    const stripeSubscription = await stripe.subscriptions.retrieve(subscription.subscriptionId);
+    
+    const product = await stripe.products.retrieve(subscription.planId);
+
+    console.log(stripeSubscription.status, "stattuuuuussss================")
+    
+    let upcomingInvoice = null;
+    if (stripeSubscription.status === 'active' && !stripeSubscription.cancel_at_period_end) {
+      upcomingInvoice = await stripe.invoices.retrieveUpcoming({
+        customer: subscription.customerId,
+      });
+    } else {
+      console.warn(`No upcoming invoice because the subscription status is: ${stripeSubscription.status}`);
+    }
+    
+    const pastInvoices = await stripe.invoices.list({
+      customer: subscription.customerId,
+      limit: 10,
+    });
+    
+    return sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, {
+      product,
+      subscription: stripeSubscription,
+      upcomingInvoice,
+      invoices: pastInvoices,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getSubscriptionStatus = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
-    console.log("userId------------", userId)
-    const subscription = await subscriptionService.getActiveSubscripton(userId as string);
-    console.log("userId------------", subscription)
+    console.log("userId------------", userId);
+    const subscription = await subscriptionService.getActiveSubscripton(
+      userId as string
+    );
+    console.log("userId------------", subscription);
 
     if (!subscription) {
       return res.status(200).json({ active: false });
@@ -198,12 +248,13 @@ export const getSubscriptionStatus = async (req: Request, res: Response) => {
     });
 
     console.log(session);
-    
 
-    return sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, { active: true, manageUrl: session.url })
+    return sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS, {
+      active: true,
+      manageUrl: session.url,
+    });
   } catch (error) {
     console.error("Error fetching subscription status:", error);
     res.status(500).json({ error: "Error fetching subscription status" });
   }
 };
-

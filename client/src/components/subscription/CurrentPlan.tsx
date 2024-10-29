@@ -57,7 +57,7 @@ const CurrentPlan = ({ product }: Props) => {
           ? product.description
           : 
           <>
-          Free plan doesn't give you all the benefits of <Managex /> Subscribe to Pro or Business to enjoy all benefits.
+        Explore <Managex/> with basic features. Upgrade to Pro or Business to unlock full productivity and advanced tools.
         </>}
       </p>
       <div className="flex items-center gap-5">

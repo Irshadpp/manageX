@@ -1,7 +1,7 @@
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import express from 'express';
 import { createEmployeeValidator } from '../validators/create-employee.validator';
-import { createEmployee, fetchEmployeesWithOrgId, sendInvitationMail, updateEmployee } from '../controllers/employee.controller';
+import { checkSubscriptionLimit, createEmployee, fetchEmployeesWithOrgId, sendInvitationMail, updateEmployee } from '../controllers/employee.controller';
 import { sendInvitationValidator } from '../validators/send-invitation.mail.validator';
 import { updateEmployeeValidator } from '../validators/update-employee.validator';
 
@@ -31,5 +31,10 @@ router.post('/send-invitation',
 router.get('/',
     requireAuth,
     fetchEmployeesWithOrgId
+)
+
+router.get('/subscription-limit',
+    requireAuth,
+    checkSubscriptionLimit
 )
 export {router as employeeRouter}

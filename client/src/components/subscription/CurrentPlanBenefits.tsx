@@ -22,7 +22,7 @@ const CurrentPlanBenefits = ({ product }: Props) => {
       <div className="bg-border h-1 w-full rounded-full my-3"></div>
       <div className="grid grid-cols-2 gap-3 pt-2">
         {product ? (
-          product.features.map((feat: { name: string }, index: number) => (
+          product.marketing_features.map((feat: { name: string }, index: number) => (
             <p key={index} className="flex gap-1">
               <HiCheckCircle className="text-primary text-xl" />
               {feat.name}

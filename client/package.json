@@ -68,6 +68,7 @@
     "shadcn-ui": "^0.8.0",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.0",
+    "sweetalert2": "^11.14.4",
     "tailwind-merge": "^2.5.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
