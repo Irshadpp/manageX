@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProject, fetchMembers, fetchProjectCount, getProjects, updateProject } from '../controllers/project.controller';
+import { checkSubscriptionLimit, createProject, fetchMembers, fetchProjectCount, getProjects, updateProject } from '../controllers/project.controller';
 import { requireAuth, validateRequest } from '@ir-managex/common';
 import { createProjectValidator } from '../validators/create-project-validator';
 import { updateProjectValidator } from '../validators/update-project-validator';
@@ -38,6 +38,12 @@ router.get(
     "/members",
     requireAuth,
     fetchMembers
+);
+
+router.get(
+    "/subscription-limit",
+    requireAuth,
+    checkSubscriptionLimit
 );
 
 export {router as projectRouter}

@@ -25,6 +25,7 @@ import { uploadImage } from "@/utils/uploadImage";
 import { apiRequest } from "@/services/api/commonRequest";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import SubscriptionWarning from "../subscription/SubscriptionWarning";
 
 const employeeSchema = z.object({
   fName: z
@@ -148,6 +149,10 @@ const CreateForm = () => {
     setLoading(false);
     navigate("/owner/employees/list");
   };
+
+  if(IslimitExceed){
+    return <SubscriptionWarning resource="Employees"/>
+  }
 
   return (
     <Form {...form}>

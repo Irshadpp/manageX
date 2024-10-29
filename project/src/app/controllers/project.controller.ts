@@ -1,4 +1,4 @@
-import { BadRequestError, HttpStatusCode, sendResponse } from "@ir-managex/common";
+import { BadRequestError, checkSubscriptionLimits, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { ProjectService } from "../services/project/project.service";
 import { Role } from "../model/enum";
@@ -60,4 +60,19 @@ export const fetchMembers = async (req: Request, res: Response, next: NextFuncti
     } catch (error) {
         next(error)
     }
+}
+
+export const checkSubscriptionLimit = async(req: Request, res: Response, next: NextFunction) =>{
+  try {
+    const orgId = req.user?.organization;
+    if (!orgId) throw new NotFoundError();
+
+    const currentEmployeeCount = await projectService.countProjects(orgId);
+    await checkSubscriptionLimits(orgId, "projects", currentEmployeeCount);
+
+    sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
+  } catch (error) {
+    next(error);
+ 
+  }
 }

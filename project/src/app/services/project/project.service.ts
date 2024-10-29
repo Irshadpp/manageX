@@ -101,4 +101,7 @@ export class ProjectService implements IProjectService{
         }
       }
       
+      async countProjects(organizationId: string): Promise<number> {
+        return await Project.find({organizationId}).countDocuments();
+    }
 }
