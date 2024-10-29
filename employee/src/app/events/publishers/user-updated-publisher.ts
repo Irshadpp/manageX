@@ -8,6 +8,7 @@ export class UserUpdatedPublisher extends Publisher<UserUpdatedEvent>{
         await super.publish(data);
     }
 
+    //unexpected error here
     static moveToEventData(employee: EmployeeAttrs): UserUpdatedEvent['data']{
         return {
             id: employee.id,
