@@ -49,6 +49,10 @@ export const createSubscription = async (
         email,
         name,
         address,
+        metadata: {
+          userId: req.user!.id.toString(),
+          organizationId: organization.toString(),
+        }
       });
     } else {
       customer = existingCustomer.data[0];
