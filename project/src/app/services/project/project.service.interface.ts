@@ -5,4 +5,5 @@ export interface IProjectService{
     updateProject(id: string, attrs: ProjectAttrs): Promise<ProjectDoc | null>;
     fetchProjectsByOrgId(orgId: string): Promise<ProjectDoc[] | null>;
     getProjectById(_id: string): Promise<any>
+    countProjects(organizationId: string): Promise<number>;
 }
