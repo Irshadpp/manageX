@@ -39,7 +39,8 @@ export class EmployeeService implements IEmployeeService{
             {
                 $match: {
                     organizationId: new mongoose.Types.ObjectId(orgId),
-                    hiringDate: { $exists: true }
+                    hiringDate: { $exists: true },
+                    isActive: true
                 }
             },
             {
@@ -131,5 +132,13 @@ export class EmployeeService implements IEmployeeService{
     }
     async countEmployees(organizationId: string): Promise<number> {
         return await Employee.find({organizationId}).countDocuments();
+    }
+
+    async terminateEmployee(employeeId: string, terminationReason: string): Promise<EmployeeDoc | null> {
+        return await Employee.findByIdAndUpdate(employeeId, {isActive: false, terminationReason}, {new: true});
+    }
+
+    async fetchExEmployees(orgId: string): Promise<EmployeeDoc[]> {
+        return await Employee.find({organizationId: new mongoose.Types.ObjectId(orgId), isActive: false});
     }
 }

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
 import { apiRequest } from '@/services/api/commonRequest';
+import TerminationForm from '@/components/employees/TerminationForm';
 
 const EmployeeSettings = ({id, email}: {id: string, email: string}) => {
     const [loading, setLoading] = useState(false);
@@ -65,7 +66,7 @@ const EmployeeSettings = ({id, email}: {id: string, email: string}) => {
                 termination?
               </DialogDescription>
             </DialogHeader>
-            {/* <TerminationForm setIsModalOpen={setIsModalOpen} id={id} /> */}
+            <TerminationForm setIsModalOpen={setIsModalOpen} id={id} />
           </DialogContent>
         </Dialog>
       </div>

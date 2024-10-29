@@ -8,4 +8,6 @@ export interface IEmployeeService{
     findByPhone(phone: number): Promise<EmployeeDoc | null>
     findEmployeesWithOrgId(orgId: string, page: number, limit: number): Promise<EmployeeDoc[]>
     countEmployees(organizationId: string): Promise<number>;
+    terminateEmployee(employeeId: string, terminationReason: string): Promise<EmployeeDoc | null>; 
+    fetchExEmployees(orgId: string): Promise<EmployeeDoc[]>; 
 }

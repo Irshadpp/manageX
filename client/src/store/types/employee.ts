@@ -39,6 +39,7 @@ export interface Employee {
   
   export interface EmployeeState {
     employees: Employee[];
+    exEmployees: any[];
     totalPages: number;
     loading: boolean;
     error: string | null;
@@ -48,6 +49,7 @@ export interface Employee {
   
   export const initialState: EmployeeState = {
     employees: [],
+    exEmployees: [],
     totalPages: 0,
     loading: false,
     error: null,

@@ -17,6 +17,7 @@ export class UserUpdatedPublisher extends Publisher<UserUpdatedEvent>{
             username: employee.username,
             phone: employee.phone!,
             role: employee.role,
+            isActive: employee.isActive,
             profileURL: employee.profileURL,
             address: employee.address!,
             dob: employee.dob!,
