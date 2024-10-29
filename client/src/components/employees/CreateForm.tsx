@@ -70,7 +70,7 @@ const CreateForm = () => {
     const res = await apiRequest({
       method: "GET",
       url: import.meta.env.VITE_BACKEND_URL,
-      route: "/api/v1/employee/subscripton-limit",
+      route: "/api/v1/employee/subscription-limit",
       headers: {
         "Content-Type": "application/json",
       },
@@ -383,6 +383,7 @@ const CreateForm = () => {
               {loading ? "Creating..." : "Create Employee"}
             </Button> */}
             <Button
+            className="mt-5"
               type={IslimitExceed ? "button" : "submit"}
               onClick={IslimitExceed ? handleSubscriptionClick : undefined}
             >

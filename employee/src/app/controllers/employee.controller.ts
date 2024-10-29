@@ -1,4 +1,4 @@
-import { BadRequestError, checkSubscriptionLimits, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
+import { BadRequestError, CommonMessages, HttpStatusCode, NotFoundError, sendResponse } from "@ir-managex/common";
 import { NextFunction, Request, Response } from "express";
 import { EmployeeService } from "../services/employee/employee.service";
 import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
@@ -10,8 +10,61 @@ import { ProjectUserCreatedPublisher } from "../events/publishers/project-user-c
 import { ProjectUserUpdatedPublisher } from "../events/publishers/project-user-updated-publisher";
 import { ChatUserCreatedPublisher } from "../events/publishers/chat-user-created-publisher";
 import { ChatUserUpdatedPublisher } from "../events/publishers/chat-user-updated-publisher";
+import Stripe from "stripe";
 
 const employeeService = new EmployeeService();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET! || "sk_test_51Q9lFJKT4uALUwNbQ24h8dhZLpfWXmf9QjxUNajM2WuHZDt5MAtFfmYvAay0LfExDfFJU7JLzuIL1fGZPQBDfO1r00oAYX4HjQ");
+
+const resourceLimits: any = {
+  Free: { employees: 5, projects: 2 },
+  Pro: { employees: 20, projects: 10 },
+  Business: { employees: Infinity, projects: Infinity },
+};
+
+ const checkSubscriptionLimits = async (
+  organizationId: string,
+  resourceType: "employees" | "projects",
+  currentCount: number
+) => {
+  try {
+      const customers = await stripe.customers.list({
+          limit: 100,
+        });
+        
+        
+        
+        console.log("organizationId------------------>", organizationId)
+        const organizationCustomers = customers.data.filter(
+          (customer) => customer.metadata.organizationId === organizationId
+        );
+        
+        console.log("customersss.............", organizationCustomers);
+
+    const subscriptionId = organizationCustomers[0]?.subscriptions?.data[0]?.id;
+
+    if (!subscriptionId && resourceLimits["Free"][resourceType] > currentCount) {
+      return true;
+    }
+    if(!subscriptionId){
+        throw new Error("Subscription not found and free limit exceeded");
+    }
+
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const product = await stripe.products.retrieve( subscription.items.data[0].price.product as string);
+    const subscriptionPlan = product.name;
+
+    const limit = resourceLimits[subscriptionPlan][resourceType];
+
+    if (currentCount >= limit) {
+      throw new Error(`Limit exceeded for ${resourceType}: ${limit}`);
+    }
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const createEmployee = async (
   req: Request,
@@ -165,6 +218,8 @@ export const checkSubscriptionLimit = async(req: Request, res: Response, next: N
     sendResponse(res, HttpStatusCode.OK, CommonMessages.SUCCESS);
   } catch (error) {
     next(error);
+ 
   }
 }
+
 
