@@ -8,7 +8,6 @@ export const broadcastMeetState = (meetState: any) => {
 
 export const listenToMeetStateChanges = (dispatch: AppDispatch) => {
   meetChannel.onmessage = (event) => {
-    // Sync meet state in other tabs
     dispatch({ type: "meet/setMeetState", payload: event.data });
   };
 };

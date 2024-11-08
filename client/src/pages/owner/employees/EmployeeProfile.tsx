@@ -8,6 +8,7 @@ import EditForm from "../../../components/employees/EditForm";
 import EmployeeSettings from "@/components/employees/EmployeeSettings";
 import EmployeeAttendance from "../../../components/employees/EmployeeAttendance";
 import EmptyAttendanceLogs from "./empties/EmptyAttendanceLogs";
+import EmployeeTasks from "@/components/employees/EmployeeTasks";
 
 export const EmployeeProfile = () => {
   const { id } = useParams();
@@ -34,19 +35,16 @@ export const EmployeeProfile = () => {
                 {employee.fName} {employee.lName}
               </h1>
               <p className="text-muted">{employee.role}</p>
-              <p className="text-muted">
-                Logged in Since 8:30 AM | {new Date().toLocaleTimeString()}
-              </p>
             </div>
           </div>
           <div className="flex gap-8">
             <div className="flex items-center gap-2">
               <FaList className="text-red-500" />
-              <span className="text-foreground">Assigned: {"200"}</span>
+              <span className="text-foreground">Assigned: {"0"}</span>
             </div>
             <div className="flex items-center gap-2">
               <FaTasks className="text-green-500" />
-              <span className="text-foreground">Completed: {"120"}</span>
+              <span className="text-foreground">Completed: {"0"}</span>
             </div>
           </div>
         </div>
@@ -69,7 +67,8 @@ export const EmployeeProfile = () => {
 
       <div className="absolute left-0 right-0 mt-4">
         <TabsContent value="tasks">
-          <div className="p-4 bg-white shadow-md rounded-lg">Task Content Here</div>
+          {/* TODO  */}
+          {/* <EmployeeTasks /> */}
         </TabsContent>
         <TabsContent value="profile">
           <EditForm employee={employee} />
