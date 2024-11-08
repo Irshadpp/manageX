@@ -132,12 +132,12 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
   };
 
   return (
-    <ScrollArea className="h-96">
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 px-5 pb-5"
       >
+        <ScrollArea className="h-96 overflow-y-auto">
         <div className="md:grid grid-cols-4 gap-10">
           <div>
             <ImageUpload
@@ -401,9 +401,9 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
             {error && <p className="text-sm text-red-500">{error}</p>}
           </div>
         </div>
+        </ScrollArea>
       </form>
     </Form>
-    </ScrollArea>
   );
 };
 

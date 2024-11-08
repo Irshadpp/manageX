@@ -21,6 +21,7 @@ const EmployeeTasks = () => {
   return (
     <div className="flex flex-col space-y-8">
       <div className="flex flex-col gap-6">
+        <h1></h1>
         {/* <AttendanceTable
           attendanceData={paginatedAttendanceLogs}
           totalPages={totalPages}

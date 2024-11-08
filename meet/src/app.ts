@@ -9,9 +9,11 @@ const app = express();
 
 app.use(json());
 
+console.log("client urlllll-----------------------", process.env.CLIENT_URL)
+
 const corsOptions = {
     origin: process.env.CLIENT_URL || "",
-    method: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }

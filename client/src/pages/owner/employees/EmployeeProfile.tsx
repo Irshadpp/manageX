@@ -19,7 +19,7 @@ export const EmployeeProfile = () => {
 
   return (
 
-    <Tabs defaultValue="tasks" className="relative">
+    <Tabs defaultValue="profile" className="relative">
       <div className="py-6 bg-background shadow-md rounded-lg">
         <div className="flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
@@ -50,9 +50,9 @@ export const EmployeeProfile = () => {
         </div>
 
         <TabsList className="flex justify-start space-x-6 border-b border-border mt-6">
-          <TabsTrigger value="tasks" className="pb-2">
+          {/* <TabsTrigger value="tasks" className="pb-2">
             <FaTasks className="inline mr-2" /> Tasks
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger value="profile" className="pb-2">
             <FaUser className="inline mr-2" /> Profile
           </TabsTrigger>
@@ -66,10 +66,10 @@ export const EmployeeProfile = () => {
       </div>
 
       <div className="absolute left-0 right-0 mt-4">
-        <TabsContent value="tasks">
           {/* TODO  */}
-          {/* <EmployeeTasks /> */}
-        </TabsContent>
+        {/* <TabsContent value="tasks">
+          <EmployeeTasks />
+        </TabsContent> */}
         <TabsContent value="profile">
           <EditForm employee={employee} />
         </TabsContent>
