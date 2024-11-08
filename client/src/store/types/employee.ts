@@ -7,6 +7,15 @@ export interface AttendanceLog{
   checkOut: string;
 }
 
+export interface Task{
+  id: string;
+  title: string
+  project: string;
+  startData: Date;
+  endDate: Date;
+  status: string;
+}
+
 export interface Employee {
     id: string;
     fName: string;
