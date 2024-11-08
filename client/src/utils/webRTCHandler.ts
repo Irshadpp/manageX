@@ -24,18 +24,22 @@ export const getLocalPreviewAndInitRoomConnection = async (
     roomId: null | string = null,
     onlyAudio: boolean
 ) =>{
-    await fetchTURNCredentials()
+    await fetchTURNCredentials();
     const constraints = onlyAudio ? onlyAudioConstraints : defaultConstraints;
-    navigator.mediaDevices.getUserMedia(constraints).then(stream =>{
-        console.log("Recieved local stream successfully");
-        localStream = stream;
-        showLocalVideoPreview(localStream);
-        store.dispatch(setShowOverlay(false));
-        isRoomHost ? wss.createNewRoom(identity, onlyAudio) : wss.joinRoom(identity, roomId as string, onlyAudio);
-    }).catch((error: any) =>{
-        console.log("error occured when when trying to get an access to local stream");
-        console.log(error)
-    })
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            console.log("Received local stream successfully");
+            localStream = stream;
+            showLocalVideoPreview(localStream);
+            store.dispatch(setShowOverlay(false));
+            isRoomHost ? wss.createNewRoom(identity, onlyAudio) : wss.joinRoom(identity, roomId as string, onlyAudio);
+        }).catch((error: any) => {
+            console.error("Error occurred when trying to get access to local stream:", error);
+        });
+    } else {
+        console.error("navigator.mediaDevices.getUserMedia is not supported or undefined");
+    }
 }
 
 
