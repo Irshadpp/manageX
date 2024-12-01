@@ -50,16 +50,16 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: "."
-    # - image: irshadpp/client
-    #   context: client
-    #   docker:
-    #     dockerfile: Dockerfile
-    #     buildArgs:npm 
-    #           BUILD_ENV: development
-    #   sync:
-    #     manual:
-    #       - src: "**/*.js"
-    #         dest: "."
+    - image: irshadpp/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        # buildArgs:npm 
+        #       BUILD_ENV: development
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: "."
 
 
 deploy:
