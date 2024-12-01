@@ -28,7 +28,11 @@ export default defineConfig({
     },
   },
   server: {
-    host: '127.0.0.1', // or '127.0.0.1' 
+    https: {
+      key: '../managex.local.key',
+      cert: '../managex.local.crt'
+    },
+    host: 'managex.local', // or '127.0.0.1' 
   }
   // resolve: {
   //   alias: {
