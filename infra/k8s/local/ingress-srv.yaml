@@ -12,6 +12,10 @@ metadata:
     nginx.ingress.kubernetes.io/websocket-services: "ws"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
 spec:
+  tls:
+    - hosts:
+      - managex.local
+      secretName: managex-tls
   rules:
     - host: managex.local
       http:

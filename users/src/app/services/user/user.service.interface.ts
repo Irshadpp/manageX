@@ -12,4 +12,4 @@ export interface IUserService{
     getUserById(id: string): Promise<boolean | null>;
     blockAndUnblock(id: string): Promise<void>;
     updatePassword(id: string, password: string): Promise<void>;
-}
+} 

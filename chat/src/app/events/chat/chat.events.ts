@@ -7,6 +7,7 @@ const chatService = new ChatService();
 
 export class ChatEvents{
     static init(){
+        console.log("chat socket connection init called-------------------")
         const io = socketWrapper.io;
 
         io.on('connection', (socket) =>{
