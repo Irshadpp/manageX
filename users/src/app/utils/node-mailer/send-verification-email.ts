@@ -3,8 +3,6 @@ import { emailTransporter } from "./email-transporter";
 export const sendVarificationEmail = async (email: string, token: string) =>{
     const verificationLink = `${process.env.CIENT_URL}/verify-email?token=${token}`;
 
-    console.log(verificationLink);
-
     const mailOptions = {
         from: process.env.SMTP_USER,
         to: email,

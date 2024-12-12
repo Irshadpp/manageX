@@ -143,6 +143,7 @@ const EditForm: React.FC<EditableEmployeeFormProps> = ({employee}) => {
             <ImageUpload
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
+              imageURL={employee.profileURL}
             />
             <FormField
               control={form.control}
