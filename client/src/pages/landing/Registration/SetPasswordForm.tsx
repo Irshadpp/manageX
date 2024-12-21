@@ -67,7 +67,9 @@ const SetPasswordForm = () => {
         setLoading(false);
         // dispatch(updateIntitialSetup({value: false}))
         logout();
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } catch (error) {
         setLoading(false)
         console.log(error);

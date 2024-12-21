@@ -26,11 +26,11 @@ const VerifyEmail = () => {
         });
         if (res.success) {
           const userData = {
-            user:{...res.user},
+            user:{...res.data.user},
           }
-          console.log(res, "==============================================", res.user)
+          console.log(res, "==============================================", userData)
           dispatch(updateIntitialSetup({value: true}));
-          dispatch(setCredentials({user: res.user}));
+          dispatch(setCredentials({user: userData}));
         } else {
           setError(true);
         }
