@@ -21,7 +21,7 @@ const Leaves: React.FC = () => {
     try {
       const response = await apiRequest({
         method: 'GET',
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_EMPLOYEE_URL,
         route: `/api/v1/leave?page=${page}&limit=${itemsPerPage}`,
         headers: {
           'Content-Type': 'application/json',

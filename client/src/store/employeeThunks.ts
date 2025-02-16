@@ -8,7 +8,7 @@ export const fetchEmployees = (page=1, limit=8) => async (dispatch: AppDispatch)
     try {
         const response: any = await apiRequest({
             method: "GET",
-            url: import.meta.env.VITE_BACKEND_URL,
+            url: import.meta.env.VITE_EMPLOYEE_URL,
             route: `/api/v1/employee?page=${page}&limit=${limit}`,
             headers: {
                 "Content-type": "application/json"
@@ -27,7 +27,7 @@ export const terminateEmployee = (values: any, id: string) => async (dispatch: A
     try {
         const response: any = await apiRequest({
             method: "PATCH",
-            url: import.meta.env.VITE_BACKEND_URL,
+            url: import.meta.env.VITE_EMPLOYEE_URL,
             route: `/api/v1/employee/terminate/${id}`,
             headers: {
                 "Content-type": "application/json"

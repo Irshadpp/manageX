@@ -21,7 +21,7 @@ const EmployeeSettings = ({id, email}: {id: string, email: string}) => {
       setLoading(true);
       const response = await apiRequest({
         method: "POST",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_EMPLOYEE_URL,
         route: `/api/v1/employee/send-invitation`,
         data: {id, email},
         headers:{

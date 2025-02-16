@@ -105,7 +105,7 @@ export function UsersTable({ data, refresh }: { data: any, refresh: React.Dispat
         const handleBlockUser = async () =>{
           const res = await apiRequest({
             method: "PATCH",
-            url: import.meta.env.VITE_BACKEND_URL,
+            url: import.meta.env.VITE_USERS_URL,
             route: `/api/v1/users/block/${user._id}`,
             headers: {
               "Content-Type": "application/json"

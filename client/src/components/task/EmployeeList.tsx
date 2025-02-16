@@ -29,7 +29,7 @@ export function EmployeeList({ field }: { field: any }) {
     const fetchData = async () => {
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_EMPLOYEE_URL,
         route: "/api/v1/project/members?role=employee",
         headers: {
           "Content-Type": "application/json",

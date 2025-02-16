@@ -18,7 +18,7 @@ const CurrentPlan = ({ product }: Props) => {
       try {
         const response = await apiRequest({
           method: "GET",
-          url: import.meta.env.VITE_BACKEND_URL,
+          url: import.meta.env.VITE_SIBSCRIPTION_URL,
           route: "/api/v1/subscription/status",
           headers: {
             "Content-Type": "application/json"

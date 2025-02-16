@@ -16,7 +16,7 @@ const TaskComments = ({ task }: { task: any }) => {
     try {
       const response = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_PROJECT_URL,
         route: `/api/v1/task/${task.id}/comments`,
         headers: {
           "Content-Type": "application/json",

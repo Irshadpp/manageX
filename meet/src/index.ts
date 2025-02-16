@@ -13,6 +13,7 @@ export let rooms: any[] = [];
 
 const start = async () => {
   try {
+    const PORT = process.env.PORT || 8000
     envChecker();
 
     // connectDB();
@@ -21,8 +22,8 @@ const start = async () => {
     socketWrapper.init(httpServer);
     SocketEvents.init()
 
-    httpServer.listen("8000", () => {
-      console.log("Meet listening on port 8000");
+    httpServer.listen(PORT, () => {
+      console.log(`Meet listening on port ${PORT}`);
     });
 
   } catch (error: any) {

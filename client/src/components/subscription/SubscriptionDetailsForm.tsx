@@ -96,7 +96,7 @@ const SubscriptionDetailsForm = ({ setIsModalOpen, value }: Props) => {
       if (user) {
         console.log(user, "........................")
         const response = await apiRequest({
-            url: import.meta.env.VITE_BACKEND_URL,
+            url: import.meta.env.VITE_SIBSCRIPTION_URL,
           method: "POST",
           route: "/api/v1/subscription",
           headers: {

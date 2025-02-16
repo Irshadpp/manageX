@@ -12,6 +12,8 @@ dotenv.config();
 
 const start = async () => {
   try {
+
+    const PORT = process.env.PORT || 7000
     envChecker();
     await rabbitmqWrapper.connect();
     new ChatUserCreatedConsumer(rabbitmqWrapper.channel).consume();
@@ -23,7 +25,7 @@ const start = async () => {
     socketWrapper.init(httpServer);
     ChatEvents.init();
 
-    httpServer.listen("7000", () => {
+    httpServer.listen(PORT, () => {
       console.log("Chat-Meet listening on port 7000");
     });
 

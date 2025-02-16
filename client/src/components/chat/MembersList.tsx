@@ -29,7 +29,7 @@ export default function MembersList({
       setLoading(true);
       const res = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_PROJECT_URL,
         route: "/api/v1/project/members",
         headers:{
             "Content-Type":"application/json"

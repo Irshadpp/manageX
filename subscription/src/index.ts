@@ -6,6 +6,7 @@ import { envChecker } from "./config/env-checker";
 import { rabbitmqWrapper } from "./config/rabbimq-wrapper";
 
 const start = async () => {
+  const PORT = process.env.PORT || 9000
   try {
     envChecker();
     await rabbitmqWrapper.connect();
@@ -15,8 +16,8 @@ const start = async () => {
     console.log(error.message);
   }
 
-  app.listen("9000", () => {
-    console.log("subscirption listening on port 9000");
+  app.listen(PORT, () => {
+    console.log(`subscirption listening on port ${PORT}`);
   });
 };
 

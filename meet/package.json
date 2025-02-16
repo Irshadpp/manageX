@@ -4,7 +4,7 @@
   "description": "meet server",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "NODE_OPTIONS='--max-old-space-size=512' ts-node-dev src/index.ts",
     "build": "tsc",
     "dev": "ts-node-dev --respawn src/index.ts"
   },

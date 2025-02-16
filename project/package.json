@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts"
+    "start": "NODE_OPTIONS='--max-old-space-size=512' ts-node-dev src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ir-managex/common": "^1.0.81",
+    "@ir-managex/common": "^1.0.86",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",

@@ -8,7 +8,7 @@ export const fetchChats = () => async (dispatch: AppDispatch) => {
     try {
       const response: any = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_CHAT_URL,
         route: `/api/v1/chat`,
         headers: {
           "Content-type": "application/json"
@@ -32,7 +32,7 @@ export const createGroup = (data: any) => async (dispatch: AppDispatch) => {
     try {
       const response: any = await apiRequest({
         method: "POST",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_CHAT_URL,
         route: `/api/v1/chat`,
         data: data,
         headers: {

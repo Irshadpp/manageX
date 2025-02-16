@@ -4,7 +4,7 @@ export const fetchUserStatus = async (id: string) => {
   try {
     const response = await apiRequest({
         method: "GET",
-        url: import.meta.env.VITE_BACKEND_URL,
+        url: import.meta.env.VITE_USERS_URL,
         route: `/api/v1/users/status/${id}`,
       headers: {
         "Content-Type": "application/json"
