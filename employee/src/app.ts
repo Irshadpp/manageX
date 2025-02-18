@@ -12,7 +12,7 @@ app.use(json());
 const corsOptions = {
     origin: process.env.CLIENT_URL || "",
     method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE',],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     credentials: true
 }
 
